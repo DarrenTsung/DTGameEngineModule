@@ -28,15 +28,19 @@ namespace DT {
 		[SerializeField]
 		protected PlayerInputType _inputType;
 		
-		[Header("Primary Direction")]
+		[Header("Primary Direction - Properties")]
 		[SerializeField]
-		protected bool _primaryDirectionEnabled;
+		protected bool _primaryDirectionEnabled = false;
 		
-		[Header("Secondary Direction")]
+		[Header("Secondary Direction - Properties")]
 		[SerializeField]
-		protected bool _secondaryDirectionEnabled;
+		protected bool _secondaryDirectionEnabled = false;
 		[SerializeField]
 		protected Vector3 _playerMouseInputPlaneNormal;
+		
+		[Header("Mouse Position - Properties")]
+		[SerializeField]
+		protected bool _mousePositionEnabled = false;
 		
 		[Header("Read-Only")]
 		[SerializeField, ReadOnly]
@@ -77,6 +81,11 @@ namespace DT {
 			if (_secondaryDirectionEnabled) {
 				Vector2 secondaryDirection = this.GetSecondaryDirection();
 				NotificationModule<Vector2>.Post(NotificationTypesBase.HANDLE_SECONDARY_DIRECTION, secondaryDirection);
+			}
+			
+			if (_inputType == PlayerInputType.MOUSE_AND_KEYBOARD && _mousePositionEnabled) {
+				Vector2 mouseScreenPosition = Input.mousePosition;
+				NotificationModule<Vector2>.Post(NotificationTypesBase.HANDLE_MOUSE_SCREEN_POSITION, mouseScreenPosition);
 			}
 		}
 		

@@ -75,7 +75,7 @@ namespace DT {
 			// do nothing
 		}
 		
-		protected void Update() {
+		protected void LateUpdate() {
 			if (!_targetTransform) {
 				return;
 			}
