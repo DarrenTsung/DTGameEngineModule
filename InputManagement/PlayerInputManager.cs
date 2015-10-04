@@ -11,8 +11,7 @@ namespace DT {
 		CONTROLLER
 	}
 	
-	public class PlayerInputManager<TPlayerActions, KPlayer> : Singleton<PlayerInputManager<TPlayerActions, KPlayer>> where TPlayerActions : PlayerActions, new()
-	 																																																									where KPlayer : Player {
+	public class PlayerInputManager<TPlayerActions> : Singleton<PlayerInputManager<TPlayerActions>> where TPlayerActions : PlayerActions, new() {
 		protected PlayerInputManager() {}
 		
 		// PRAGMA MARK - INTERFACE
@@ -47,10 +46,9 @@ namespace DT {
 		protected bool _inputDisabled;
 		
 		protected TPlayerActions _playerActions;
-		protected Player _player;
 		
 		protected virtual void Awake() {
-			NotificationModule.AddObserver(NotificationTypesBase.PLAYER_CHANGED, SetupPlayerActions);
+			// do nothing at the moment
 		}
 		
 		protected virtual void Start() {
@@ -61,12 +59,8 @@ namespace DT {
 			_playerActions = new TPlayerActions();
 			_playerActions.BindWithActions(_inputType);
 		}
-		
-		protected void SetupWithPlayer(GameObject player) {
-			_player = player.GetComponent<KPlayer>();
-		}
 
-		protected void Update() {
+		protected virtual void Update() {
 			if (_player != null && !this.InputDisabled) {
 				this.UpdateInput();
 			}
@@ -75,17 +69,17 @@ namespace DT {
 		protected virtual void UpdateInput() {
 			if (_primaryDirectionEnabled) {
 				Vector2 primaryDirection = this.GetPrimaryDirection();
-				NotificationModule<Vector2>.Post(NotificationTypesBase.HANDLE_PRIMARY_DIRECTION, primaryDirection);
+				NotificationsBase.HandlePrimaryDirection.Invoke(primaryDirection);
 			}
 			
 			if (_secondaryDirectionEnabled) {
 				Vector2 secondaryDirection = this.GetSecondaryDirection();
-				NotificationModule<Vector2>.Post(NotificationTypesBase.HANDLE_SECONDARY_DIRECTION, secondaryDirection);
+				NotificationsBase.HandleSecondaryDirection.Invoke(primaryDirection);
 			}
 			
 			if (_inputType == PlayerInputType.MOUSE_AND_KEYBOARD && _mousePositionEnabled) {
 				Vector2 mouseScreenPosition = Input.mousePosition;
-				NotificationModule<Vector2>.Post(NotificationTypesBase.HANDLE_MOUSE_SCREEN_POSITION, mouseScreenPosition);
+				NotificationsBase.HandleMouseScreenPosition.Invoke(primaryDirection);
 			}
 		}
 		

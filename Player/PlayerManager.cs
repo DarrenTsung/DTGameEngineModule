@@ -10,7 +10,7 @@ namespace DT {
 			get { return _player; }
 			set { 
 				_player = value; 
-				NotificationModule<GameObject>.Post(NotificationTypesBase.PLAYER_CHANGED, _player);
+				NotificationsBase.PlayerChanged.Invoke(_player);
 			}
 		}
 		

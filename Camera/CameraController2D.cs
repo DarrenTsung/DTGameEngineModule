@@ -68,11 +68,11 @@ namespace DT {
 		
 		protected void Awake() {
 			_camera = this.GetComponent<tk2dCamera>();
-			NotificationModule.AddObserver(NotificationTypesBase.PLAYER_CHANGED, SetupWithPlayer);
+			NotificationsBase.PlayerChanged.AddListener(SetupWithPlayer);
 		}
 
 		protected virtual void SetupWithPlayer(GameObject player) {
-			// do nothing
+			_targetTransform = player.transform;
 		}
 		
 		protected void LateUpdate() {
