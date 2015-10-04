@@ -24,18 +24,29 @@ namespace DT {
 		}
 		
 		// PRAGMA MARK - INTERNAL
-		[SerializeField]
-		protected Player _player;
+		[Header("Properties")]
 		[SerializeField]
 		protected PlayerInputType _inputType;
+		
+		[Header("Primary Direction")]
+		[SerializeField]
+		protected bool _primaryDirectionEnabled;
+		
+		[Header("Secondary Direction")]
+		[SerializeField]
+		protected bool _secondaryDirectionEnabled;
 		[SerializeField]
 		protected Vector3 _playerMouseInputPlaneNormal;
 		
+		[Header("Read-Only")]
+		[SerializeField, ReadOnly]
 		protected bool _inputDisabled;
+		
 		protected TPlayerActions _playerActions;
+		protected Player _player;
 		
 		protected virtual void Awake() {
-			PlayerManager.Instance.OnPlayerChange.AddListener((object playerObject) => { this.SetupWithPlayer(playerObject as GameObject); });
+			NotificationModule.AddObserver(NotificationTypesBase.PLAYER_CHANGED, SetupPlayerActions);
 		}
 		
 		protected virtual void Start() {
@@ -58,11 +69,15 @@ namespace DT {
 		}
 		
 		protected virtual void UpdateInput() {
-			Vector2 primaryDirection = this.GetPrimaryDirection();
-			_player.HandlePrimaryDirectionVector.Invoke(primaryDirection);
+			if (_primaryDirectionEnabled) {
+				Vector2 primaryDirection = this.GetPrimaryDirection();
+				NotificationModule<Vector2>.Post(NotificationTypesBase.HANDLE_PRIMARY_DIRECTION, primaryDirection);
+			}
 			
-			Vector2 secondaryDirection = this.GetSecondaryDirection();
-			_player.HandleSecondaryDirectionVector.Invoke(secondaryDirection);
+			if (_secondaryDirectionEnabled) {
+				Vector2 secondaryDirection = this.GetSecondaryDirection();
+				NotificationModule<Vector2>.Post(NotificationTypesBase.HANDLE_SECONDARY_DIRECTION, secondaryDirection);
+			}
 		}
 		
 		protected virtual Vector2 GetPrimaryDirection() {

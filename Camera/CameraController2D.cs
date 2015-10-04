@@ -31,7 +31,7 @@ namespace DT {
 		
 		protected void Awake() {
 			_camera = this.GetComponent<tk2dCamera>();
-			PlayerManager.Instance.OnPlayerChange.AddListener((object playerObject) => { this.SetupWithPlayer(playerObject as GameObject); });
+			NotificationModule.AddObserver(NotificationTypesBase.PLAYER_CHANGED, SetupWithPlayer);
 		}
 
 		protected virtual void SetupWithPlayer(GameObject player) {

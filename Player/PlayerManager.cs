@@ -10,11 +10,9 @@ namespace DT {
 			get { return _player; }
 			set { 
 				_player = value; 
-				this.OnPlayerChange.Invoke(_player);
+				NotificationModule<GameObject>.Post(NotificationTypesBase.PLAYER_CHANGED, _player);
 			}
 		}
-		
-		public UnityEvents.O OnPlayerChange;
 		
 		// PRAGMA MARK - INTERNAL
 		[SerializeField]
