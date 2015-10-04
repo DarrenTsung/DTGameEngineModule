@@ -10,7 +10,7 @@ namespace DT {
 			get { return _player; }
 			set { 
 				_player = value; 
-				NotificationsBase.PlayerChanged.Invoke(_player);
+				Notifications.PlayerChanged.Invoke(_player);
 			}
 		}
 		

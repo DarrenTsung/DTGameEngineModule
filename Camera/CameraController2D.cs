@@ -68,7 +68,7 @@ namespace DT {
 		
 		protected void Awake() {
 			_camera = this.GetComponent<tk2dCamera>();
-			NotificationsBase.PlayerChanged.AddListener(SetupWithPlayer);
+			Notifications.PlayerChanged.AddListener(SetupWithPlayer);
 		}
 
 		protected virtual void SetupWithPlayer(GameObject player) {

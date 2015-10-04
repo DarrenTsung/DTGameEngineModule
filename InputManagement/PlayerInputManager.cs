@@ -69,17 +69,17 @@ namespace DT {
 		protected virtual void UpdateInput() {
 			if (_primaryDirectionEnabled) {
 				Vector2 primaryDirection = this.GetPrimaryDirection();
-				NotificationsBase.HandlePrimaryDirection.Invoke(primaryDirection);
+				Notifications.HandlePrimaryDirection.Invoke(primaryDirection);
 			}
 			
 			if (_secondaryDirectionEnabled) {
 				Vector2 secondaryDirection = this.GetSecondaryDirection();
-				NotificationsBase.HandleSecondaryDirection.Invoke(primaryDirection);
+				Notifications.HandleSecondaryDirection.Invoke(primaryDirection);
 			}
 			
 			if (_inputType == PlayerInputType.MOUSE_AND_KEYBOARD && _mousePositionEnabled) {
 				Vector2 mouseScreenPosition = Input.mousePosition;
-				NotificationsBase.HandleMouseScreenPosition.Invoke(primaryDirection);
+				Notifications.HandleMouseScreenPosition.Invoke(primaryDirection);
 			}
 		}
 		
