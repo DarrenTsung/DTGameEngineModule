@@ -1,9 +1,10 @@
 using DT;
-using InControl;
 using System.Collections;
 ﻿using UnityEngine;
 
 #if IN_CONTROL
+using InControl;
+
 namespace DT {
 	public enum PlayerInputType {
 		MOUSE_AND_KEYBOARD,
