@@ -25,6 +25,43 @@ namespace DT {
 			return distanceOutside;
 		}
 		
+		public Vector2 DistanceFromCameraSide(Direction cameraSide, Vector2 point) {
+			Rect cameraExtents = this.CameraWorldScreenExtents();
+			
+			float x = 0.0f;
+			float y = 0.0f;
+			switch (cameraSide) {
+				case Direction.LEFT:
+					x = point.x - cameraExtents.xMin;
+					break;
+				case Direction.RIGHT:
+					x = point.x - cameraExtents.xMax;
+					break;
+				case Direction.UP:
+					y = point.y - cameraExtents.yMax;
+					break;
+				case Direction.DOWN:
+					y = point.y - cameraExtents.yMin;
+					break;
+			}
+			
+			if (cameraSide == Direction.LEFT || cameraSide == Direction.RIGHT) {
+				if (point.y > cameraExtents.yMax) {
+					y = point.y - cameraExtents.yMax;
+				} else if (point.y < cameraExtents.yMin) {
+					y = point.y - cameraExtents.yMin;
+				}
+			} else if (cameraSide == Direction.UP || cameraSide == Direction.DOWN) {
+				if (point.x > cameraExtents.xMax) {
+					x = point.x - cameraExtents.xMax;
+				} else if (point.x < cameraExtents.xMin) {
+					x = point.x - cameraExtents.xMin;
+				}
+			}
+			
+			return new Vector2(x, y);
+		}
+			
 		// PRAGMA MARK - INTERNAL
 		protected tk2dCamera _camera;
 		protected Transform _targetTransform;
