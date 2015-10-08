@@ -2,7 +2,7 @@
 using System.Collections;
 ﻿using UnityEngine;
 
-namespace DT {
+namespace DT.GameEngine {
 	public class PlayerManager : Singleton<PlayerManager> {
 		protected PlayerManager() {}
 		
@@ -10,7 +10,7 @@ namespace DT {
 			get { return _player; }
 			set { 
 				_player = value; 
-				Notifications.PlayerChanged.Invoke(_player);
+				DTNotifications.PlayerChanged.Invoke(_player);
 			}
 		}
 		

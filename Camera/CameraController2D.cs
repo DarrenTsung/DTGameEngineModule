@@ -3,8 +3,8 @@ using System.Collections;
 ﻿using UnityEngine;
 
 #if TK2D
-namespace DT {
-	public class CameraController2D : CameraController {
+namespace DT.GameEngine {
+	public class CameraController2D : CameraController<CameraController2D> {
 		// PRAGMA MARK - INTERFACE
 		public float DistanceOutsideCameraScreenExtents(Vector2 point) {
 			Rect cameraExtents = this.CameraWorldScreenExtents();
@@ -61,14 +61,19 @@ namespace DT {
 			
 			return new Vector2(x, y);
 		}
+		
+		public Vector2 OffsetVector {
+			set { _offsetVector = value; }
+		}
 			
 		// PRAGMA MARK - INTERNAL
 		protected tk2dCamera _camera;
 		protected Transform _targetTransform;
+		protected Vector2 _offsetVector;
 		
 		protected void Awake() {
 			_camera = this.GetComponent<tk2dCamera>();
-			Notifications.PlayerChanged.AddListener(SetupWithPlayer);
+			DTNotifications.PlayerChanged.AddListener(SetupWithPlayer);
 		}
 
 		protected virtual void SetupWithPlayer(GameObject player) {
@@ -80,7 +85,7 @@ namespace DT {
 				return;
 			}
 			
-			Vector3 targetPosition = _targetTransform.position + (Vector3)_playerInfluenceVector;
+			Vector3 targetPosition = _targetTransform.position + (Vector3)_offsetVector;
 			targetPosition.z = transform.position.z; // don't move in the z axis
 			
 			transform.position = Vector3.Lerp(transform.position, targetPosition, _cameraSpeed * Time.deltaTime);

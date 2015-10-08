@@ -5,7 +5,7 @@ using System.Collections;
 #if IN_CONTROL
 using InControl;
 
-namespace DT {
+namespace DT.GameEngine {
 	public enum PlayerInputType {
 		MOUSE_AND_KEYBOARD,
 		CONTROLLER
@@ -23,7 +23,7 @@ namespace DT {
 		}
 		
 		// PRAGMA MARK - INTERNAL
-		[Header("Properties")]
+		[Header("---- PlayerInputManager Properties ----")]
 		[SerializeField]
 		protected PlayerInputType _inputType;
 		
@@ -46,9 +46,14 @@ namespace DT {
 		protected bool _inputDisabled;
 		
 		protected TPlayerActions _playerActions;
+		protected GameObject _player;
 		
 		protected virtual void Awake() {
-			// do nothing at the moment
+			DTNotifications.PlayerChanged.AddListener(SetupWithPlayer);
+		}
+		
+		protected void SetupWithPlayer(GameObject player) {
+			_player = player;
 		}
 		
 		protected virtual void Start() {
@@ -61,7 +66,7 @@ namespace DT {
 		}
 
 		protected virtual void Update() {
-			if (_player != null && !this.InputDisabled) {
+			if (_player && !this.InputDisabled) {
 				this.UpdateInput();
 			}
 		}
@@ -69,17 +74,17 @@ namespace DT {
 		protected virtual void UpdateInput() {
 			if (_primaryDirectionEnabled) {
 				Vector2 primaryDirection = this.GetPrimaryDirection();
-				Notifications.HandlePrimaryDirection.Invoke(primaryDirection);
+				DTNotifications.HandlePrimaryDirection.Invoke(primaryDirection);
 			}
 			
 			if (_secondaryDirectionEnabled) {
 				Vector2 secondaryDirection = this.GetSecondaryDirection();
-				Notifications.HandleSecondaryDirection.Invoke(primaryDirection);
+				DTNotifications.HandleSecondaryDirection.Invoke(secondaryDirection);
 			}
 			
 			if (_inputType == PlayerInputType.MOUSE_AND_KEYBOARD && _mousePositionEnabled) {
 				Vector2 mouseScreenPosition = Input.mousePosition;
-				Notifications.HandleMouseScreenPosition.Invoke(primaryDirection);
+				DTNotifications.HandleMouseScreenPosition.Invoke(mouseScreenPosition);
 			}
 		}
 		

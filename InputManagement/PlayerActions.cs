@@ -5,7 +5,7 @@ using System.Collections;
 #if IN_CONTROL
 using InControl;
 
-namespace DT {
+namespace DT.GameEngine {
 	public class PlayerActions : PlayerActionSet {
 		public PlayerTwoAxisAction PrimaryDirection;
 		public PlayerTwoAxisAction SecondaryDirection;
@@ -24,27 +24,35 @@ namespace DT {
 			this.SecondaryDirection = this.CreateTwoAxisPlayerAction(_secondaryLeft, _secondaryRight, _secondaryDown, _secondaryUp);
 		}
 
-		public virtual void BindWithActions(PlayerInputType type) {
+		public void BindWithActions(PlayerInputType type) {
 			switch (type) {
 				case PlayerInputType.MOUSE_AND_KEYBOARD:
-					_primaryLeft.AddDefaultBinding(Key.A);
-					_primaryRight.AddDefaultBinding(Key.D);
-					_primaryUp.AddDefaultBinding(Key.W);
-					_primaryDown.AddDefaultBinding(Key.S);
+					this.BindMouseAndKeyboardActions(type);
 					break;
 				
 				case PlayerInputType.CONTROLLER:
-					_primaryLeft.AddDefaultBinding(InputControlType.LeftStickLeft);
-					_primaryRight.AddDefaultBinding(InputControlType.LeftStickRight);
-					_primaryUp.AddDefaultBinding(InputControlType.LeftStickUp);
-					_primaryDown.AddDefaultBinding(InputControlType.LeftStickDown);
-					
-					_secondaryLeft.AddDefaultBinding(InputControlType.RightStickLeft);
-					_secondaryRight.AddDefaultBinding(InputControlType.RightStickRight);
-					_secondaryUp.AddDefaultBinding(InputControlType.RightStickUp);
-					_secondaryDown.AddDefaultBinding(InputControlType.RightStickDown);
+					this.BindControllerActions(type);
 					break;
 			}
+		}
+		
+		protected virtual void BindMouseAndKeyboardActions(PlayerInputType type) {
+			_primaryLeft.AddDefaultBinding(Key.A);
+			_primaryRight.AddDefaultBinding(Key.D);
+			_primaryUp.AddDefaultBinding(Key.W);
+			_primaryDown.AddDefaultBinding(Key.S);
+		}
+		
+		protected virtual void BindControllerActions(PlayerInputType type) {
+			_primaryLeft.AddDefaultBinding(InputControlType.LeftStickLeft);
+			_primaryRight.AddDefaultBinding(InputControlType.LeftStickRight);
+			_primaryUp.AddDefaultBinding(InputControlType.LeftStickUp);
+			_primaryDown.AddDefaultBinding(InputControlType.LeftStickDown);
+			
+			_secondaryLeft.AddDefaultBinding(InputControlType.RightStickLeft);
+			_secondaryRight.AddDefaultBinding(InputControlType.RightStickRight);
+			_secondaryUp.AddDefaultBinding(InputControlType.RightStickUp);
+			_secondaryDown.AddDefaultBinding(InputControlType.RightStickDown);
 		}
 		
 		// PRAGMA MARK - INTERNAL

@@ -3,13 +3,13 @@ using System.Collections;
 ﻿using UnityEngine;
 
 namespace DT {
-	public class CameraController : MonoBehaviour {
+	public class CameraController<T> : MonoBehaviour {
 		// PRAGMA MARK - INTERFACE
-		public static CameraController _cachedMainCameraController;
+		public static T _cachedMainCameraController;
 		
-		public static CameraController MainCameraController() {
+		public static T MainCameraController() {
 			if (_cachedMainCameraController == null) {
-				_cachedMainCameraController = Camera.main.GetComponent<CameraController>();
+				_cachedMainCameraController = Camera.main.GetComponent<T>();
 			}
 			return _cachedMainCameraController;
 		}
