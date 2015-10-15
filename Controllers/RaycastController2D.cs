@@ -118,6 +118,10 @@ namespace DT.Controllers {
 			_raycastOrigins.BottomRight = new Vector2(bounds.max.x, bounds.min.y);
 			_raycastOrigins.TopLeft = new Vector2(bounds.min.x, bounds.max.y);
 			_raycastOrigins.TopRight = new Vector2(bounds.max.x, bounds.max.y);
+			
+			if (bounds.size.x != _raycastOrigins.Width || bounds.size.y != _raycastOrigins.Height) {
+				this.CalculateRaySpacing();
+			}
 			_raycastOrigins.Width = bounds.size.x;
 			_raycastOrigins.Height = bounds.size.y;
 		}
