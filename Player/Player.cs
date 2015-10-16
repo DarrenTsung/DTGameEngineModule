@@ -8,9 +8,18 @@ public abstract class Player : MonoBehaviour {
     this.RegisterNotifications();
   }
   
+  protected void OnDisable() {
+    this.RemoveNotifications();
+  }
+  
   protected virtual void RegisterNotifications() {
     DTNotifications.HandlePrimaryDirection.AddListener(this.HandlePrimaryDirection);
     DTNotifications.HandleSecondaryDirection.AddListener(this.HandleSecondaryDirection);
+  }
+  
+  protected virtual void RemoveNotifications() {
+    DTNotifications.HandlePrimaryDirection.RemoveListener(this.HandlePrimaryDirection);
+    DTNotifications.HandleSecondaryDirection.RemoveListener(this.HandleSecondaryDirection);
   }
   
   protected virtual void HandlePrimaryDirection(Vector2 primaryDirection) {
