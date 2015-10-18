@@ -38,12 +38,12 @@ public class Player : MonoBehaviour {
     if (playerIndex == _playerIndex) this.HandlePrimaryDirection(primaryDirection);
   }
   
-  protected void HandleSecondaryDirectionWrapper(int playerIndex, Vector2 secondaryDirection) {
-    if (playerIndex == _playerIndex) this.HandleSecondaryDirection(secondaryDirection);
-  }
-  
   protected virtual void HandlePrimaryDirection(Vector2 primaryDirection) {
     // do nothing for now
+  }
+  
+  protected void HandleSecondaryDirectionWrapper(int playerIndex, Vector2 secondaryDirection) {
+    if (playerIndex == _playerIndex) this.HandleSecondaryDirection(secondaryDirection);
   }
   
   protected virtual void HandleSecondaryDirection(Vector2 secondaryDirection) {
