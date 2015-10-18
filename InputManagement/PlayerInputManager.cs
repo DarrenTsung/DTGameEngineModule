@@ -1,5 +1,6 @@
 using DT;
 using System.Collections;
+using System.Collections.Generic;
 ﻿using UnityEngine;
 
 #if IN_CONTROL
@@ -25,91 +26,151 @@ namespace DT.GameEngine {
 		// PRAGMA MARK - INTERNAL
 		[Header("---- PlayerInputManager Properties ----")]
 		[SerializeField]
-		protected PlayerInputType _inputType;
-		
-		[Header("Primary Direction - Properties")]
+		protected bool _inputDisabled = false;
 		[SerializeField]
-		protected bool _primaryDirectionEnabled = false;
+		protected bool _logDebugInfo = false;
 		
-		[Header("Secondary Direction - Properties")]
+		[Header("---- Player One Properties (all other players default to controller) ----")]
 		[SerializeField]
-		protected bool _secondaryDirectionEnabled = false;
+		protected PlayerInputType _playerOneInputType = PlayerInputType.CONTROLLER;
 		[SerializeField]
-		protected Vector3 _playerMouseInputPlaneNormal;
+		protected Vector3 _playerOneMouseInputPlaneNormal = new Vector3(0.0f, 1.0f, 0.0f);
 		
-		[Header("Mouse Position - Properties")]
-		[SerializeField]
-		protected bool _mousePositionEnabled = false;
+		protected Dictionary<InputDevice, int> _playerMapping;
+		protected Dictionary<int, TPlayerActions> _playerActions;
 		
-		[Header("Read-Only")]
-		[SerializeField, ReadOnly]
-		protected bool _inputDisabled;
-		
-		protected TPlayerActions _playerActions;
-		protected GameObject _player;
+		protected GameObject _playerOne;
 		
 		protected virtual void Awake() {
-			DTNotifications.PlayerChanged.AddListener(SetupWithPlayer);
+			_playerMapping = new Dictionary<InputDevice, int>();
+			_playerActions = new Dictionary<int, TPlayerActions>();
+			
+			DTNotifications.PlayerChanged.AddListener(this.HandlePlayerChanged);
+			InputManager.OnDeviceAttached += this.OnDeviceAttached;
+			InputManager.OnDeviceDetached += this.OnDeviceDetached;
 		}
 		
-		protected void SetupWithPlayer(GameObject player) {
-			_player = player;
+		protected void HandlePlayerChanged(int playerIndex, GameObject player) {
+			if (_playerMapping.ContainsValue(playerIndex)) {
+				// no need to do anything if this player has already been registered
+				return;
+			}
+			
+			InputDevice unusedDevice = this.FindUnusedDevice();
+			if (unusedDevice) {
+				TPlayerActions actions = new TPlayerActions();
+				actions.Device = unusedDevice;
+				
+				PlayerInputType type = (playerIndex == 0) ? _playerOneInputType : PlayerInputType.CONTROLLER;
+				actions.BindWithInputType(type);
+				
+				this.LogIfDebugEnabled("Registered player " + playerIndex + " (type: " + type + ") with device: (" + unusedDevice.Name + ")");
+				
+				_playerActions[playerIndex] = actions;
+				_playerMapping[unusedDevice] = playerIndex;
+			} else {
+				Debug.LogWarning("Attempted to register player " + playerIndex + ", but failed to find an unused device!");
+			}
 		}
 		
-		protected virtual void Start() {
-			this.SetupPlayerActions();
+		protected void OnDeviceAttached(InputDevice device) {
+			this.LogIfDebugEnabled("Device (" + device.Name + ") attached! Iterating through players to see if any players could use a controller");
+			foreach (KeyValuePair<int, TPlayerActions> pair in _playerActions) {
+				TPlayerActions actions = pair.Value;
+				if (!actions.Device.IsAttached) {
+					actions.Device = device;
+					this.LogIfDebugEnabled("Device attached to player " + pair.Key + "!");
+					break;
+				}
+			}
 		}
 		
-		protected virtual void SetupPlayerActions() {
-			_playerActions = new TPlayerActions();
-			_playerActions.BindWithActions(_inputType);
+		protected void OnDeviceDetached(InputDevice device) {
+			if (_playerMapping.ContainsKey(device)) {
+				int playerIndex = -1;
+				foreach (KeyValuePair<int, TPlayerActions> pair in _playerActions) {
+					if (pair.Value.Device == device) {
+						playerIndex = pair.Key;
+					}
+				}
+				this.LogIfDebugEnabled("Device detached (" + device.Name + ") - player " + playerIndex + " is not connected anymore!");
+				_playerMapping.Remove(device);
+			} else {
+				this.LogIfDebugEnabled("Device detached (" + device.Name + ") - no player was mapped.");
+			}
 		}
+		
+		protected InputDevice FindUnusedDevice() {
+			foreach (InputDevice device in InputManager.Devices) {
+				if (!_playerMapping.ContainsKey(device)) {
+					return device;
+					}
+			}
+			return null;
+		}
+		
+		protected void LogIfDebugEnabled(string logString) {
+			if (_logDebugInfo) {
+				Debug.Log(logString);
+			}
+		}
+		
+		#region mark - Updating Input
 
 		protected virtual void Update() {
-			if (_player && !this.InputDisabled) {
+			if (!this.InputDisabled) {
 				this.UpdateInput();
 			}
 		}
 		
 		protected virtual void UpdateInput() {
-			if (_primaryDirectionEnabled) {
-				Vector2 primaryDirection = this.GetPrimaryDirection();
-				DTNotifications.HandlePrimaryDirection.Invoke(primaryDirection);
+			foreach (KeyValuePair<int, TPlayerActions> entry in _playerActions) {
+				TPlayerActions actions = entry.Value;
+				if (actions.Device.IsAttached) {
+					this.UpdateInputForPlayer(entry.Key, actions);
+				}
 			}
+		}
+		
+		protected virtual void UpdateInputForPlayer(int playerIndex, TPlayerActions actions) {
+			Vector2 primaryDirection = this.GetPrimaryDirection(playerIndex, actions);
+			DTNotifications.HandlePrimaryDirection.Invoke(playerIndex, primaryDirection);
+		
+			Vector2 secondaryDirection = this.GetSecondaryDirection(playerIndex, actions);
+			DTNotifications.HandleSecondaryDirection.Invoke(playerIndex, secondaryDirection);
 			
-			if (_secondaryDirectionEnabled) {
-				Vector2 secondaryDirection = this.GetSecondaryDirection();
-				DTNotifications.HandleSecondaryDirection.Invoke(secondaryDirection);
-			}
-			
-			if (_inputType == PlayerInputType.MOUSE_AND_KEYBOARD && _mousePositionEnabled) {
+			// player one specific
+			if (playerIndex == 0 && _playerOneInputType == PlayerInputType.MOUSE_AND_KEYBOARD) {
 				Vector2 mouseScreenPosition = Input.mousePosition;
 				DTNotifications.HandleMouseScreenPosition.Invoke(mouseScreenPosition);
 			}
 		}
 		
-		protected virtual Vector2 GetPrimaryDirection() {
-			Vector2 primaryDirection = _playerActions.PrimaryDirection.Value;
+		protected virtual Vector2 GetPrimaryDirection(int playerIndex, TPlayerActions actions) {
+			Vector2 primaryDirection = actions.PrimaryDirection.Value;
 			return primaryDirection;
 		}
 		
-		protected virtual Vector2 GetSecondaryDirection() {
-			Vector2 secondaryDirection = _playerActions.SecondaryDirection.Value;
-			if (_inputType == PlayerInputType.MOUSE_AND_KEYBOARD) {
-				Plane playerMouseInputPlane = new Plane(_playerMouseInputPlaneNormal, _player.transform.position);
+		protected virtual Vector2 GetSecondaryDirection(int playerIndex, TPlayerActions actions) {
+			Vector2 secondaryDirection = actions.SecondaryDirection.Value;
+			// player one specific
+			if (playerIndex == 0 && _playerOneInputType == PlayerInputType.MOUSE_AND_KEYBOARD) {
+				Plane playerMouseInputPlane = new Plane(_playerOneMouseInputPlaneNormal, _playerOne.transform.position);
 				Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 				float rayDistance;
 				
 				if (playerMouseInputPlane.Raycast(mouseRay, out rayDistance)) {
-					Vector3 mouseVector = mouseRay.GetPoint(rayDistance) - _player.transform.position;
+					Vector3 mouseVector = mouseRay.GetPoint(rayDistance) - _playerOne.transform.position;
 					// use this quaternion to convert the line into the xy plane 
-					Quaternion normalRotation = Quaternion.FromToRotation(_playerMouseInputPlaneNormal, Vector3.back);
+					Quaternion normalRotation = Quaternion.FromToRotation(_playerOneMouseInputPlaneNormal, Vector3.back);
 					Vector3 xyPlaneVector = normalRotation * mouseVector;
 					secondaryDirection = xyPlaneVector;
 				}
 			}
 			return secondaryDirection;
 		}
+		
+		#endregion
 	}
 }
 #endif

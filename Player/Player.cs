@@ -2,9 +2,21 @@
 using System.Collections;
 ﻿using UnityEngine;
 
-public abstract class Player : MonoBehaviour {
+public class Player : MonoBehaviour {
+  #region mark - Interface 
+  
+  public int PlayerIndex {
+    set { _playerIndex = value; }
+    get { return _playerIndex; }
+  }
+  
+  #endregion
+  
   // PRAGMA MARK - INTERNAL
-  protected void Awake() {
+  [SerializeField, ReadOnly]
+  protected int _playerIndex = 0;
+  
+  protected virtual void Awake() {
     this.RegisterNotifications();
   }
   
@@ -13,20 +25,28 @@ public abstract class Player : MonoBehaviour {
   }
   
   protected virtual void RegisterNotifications() {
-    DTNotifications.HandlePrimaryDirection.AddListener(this.HandlePrimaryDirection);
-    DTNotifications.HandleSecondaryDirection.AddListener(this.HandleSecondaryDirection);
+    DTNotifications.HandlePrimaryDirection.AddListener(this.HandlePrimaryDirectionWrapper);
+    DTNotifications.HandleSecondaryDirection.AddListener(this.HandleSecondaryDirectionWrapper);
   }
   
   protected virtual void RemoveNotifications() {
-    DTNotifications.HandlePrimaryDirection.RemoveListener(this.HandlePrimaryDirection);
-    DTNotifications.HandleSecondaryDirection.RemoveListener(this.HandleSecondaryDirection);
+    DTNotifications.HandlePrimaryDirection.RemoveListener(this.HandlePrimaryDirectionWrapper);
+    DTNotifications.HandleSecondaryDirection.RemoveListener(this.HandleSecondaryDirectionWrapper);
+  }
+  
+  protected void HandlePrimaryDirectionWrapper(int playerIndex, Vector2 primaryDirection) {
+    if (playerIndex == _playerIndex) this.HandlePrimaryDirection(primaryDirection);
+  }
+  
+  protected void HandleSecondaryDirectionWrapper(int playerIndex, Vector2 secondaryDirection) {
+    if (playerIndex == _playerIndex) this.HandleSecondaryDirection(secondaryDirection);
   }
   
   protected virtual void HandlePrimaryDirection(Vector2 primaryDirection) {
-    // do nothing
+    // do nothing for now
   }
   
   protected virtual void HandleSecondaryDirection(Vector2 secondaryDirection) {
-    // do nothing
+    // do nothing for now
   }
 }

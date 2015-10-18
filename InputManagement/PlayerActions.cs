@@ -24,26 +24,26 @@ namespace DT.GameEngine {
 			this.SecondaryDirection = this.CreateTwoAxisPlayerAction(_secondaryLeft, _secondaryRight, _secondaryDown, _secondaryUp);
 		}
 
-		public void BindWithActions(PlayerInputType type) {
+		public void BindWithInputType(PlayerInputType type) {
 			switch (type) {
 				case PlayerInputType.MOUSE_AND_KEYBOARD:
-					this.BindMouseAndKeyboardActions(type);
+					this.BindMouseAndKeyboardType(type);
 					break;
 				
 				case PlayerInputType.CONTROLLER:
-					this.BindControllerActions(type);
+					this.BindControllerType(type);
 					break;
 			}
 		}
 		
-		protected virtual void BindMouseAndKeyboardActions(PlayerInputType type) {
+		protected virtual void BindMouseAndKeyboardType(PlayerInputType type) {
 			_primaryLeft.AddDefaultBinding(Key.A);
 			_primaryRight.AddDefaultBinding(Key.D);
 			_primaryUp.AddDefaultBinding(Key.W);
 			_primaryDown.AddDefaultBinding(Key.S);
 		}
 		
-		protected virtual void BindControllerActions(PlayerInputType type) {
+		protected virtual void BindControllerType(PlayerInputType type) {
 			_primaryLeft.AddDefaultBinding(InputControlType.LeftStickLeft);
 			_primaryRight.AddDefaultBinding(InputControlType.LeftStickRight);
 			_primaryUp.AddDefaultBinding(InputControlType.LeftStickUp);
