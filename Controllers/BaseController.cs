@@ -79,7 +79,7 @@ namespace DT.Controllers {
   		get { return new Vector2(_velocity.x / this.Width, _velocity.y / this.Height); }
   	}
   	
-  	// PRAGMA MARK - INTERNAL
+  	// PRAGMA MARK - Internal
   	[SerializeField]
   	protected CollisionInfo2D _collisions;
     

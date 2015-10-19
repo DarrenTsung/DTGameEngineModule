@@ -55,7 +55,7 @@ namespace DT.GameEngine {
 			_secondaryDown.AddDefaultBinding(InputControlType.RightStickDown);
 		}
 		
-		// PRAGMA MARK - INTERNAL
+		// PRAGMA MARK - Internal
 		protected PlayerAction _primaryLeft;
 		protected PlayerAction _primaryRight;
 		protected PlayerAction _primaryUp;

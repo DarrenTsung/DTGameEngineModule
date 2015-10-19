@@ -3,16 +3,13 @@ using System.Collections;
 ﻿using UnityEngine;
 
 public class Player : MonoBehaviour {
-  #region mark - Interface 
-  
+  // PRAGMA MARK - Interface 
   public int PlayerIndex {
     set { _playerIndex = value; }
     get { return _playerIndex; }
   }
   
-  #endregion
-  
-  // PRAGMA MARK - INTERNAL
+  // PRAGMA MARK - Internal
   [SerializeField, ReadOnly]
   protected int _playerIndex = 0;
   

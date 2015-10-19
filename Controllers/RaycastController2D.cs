@@ -11,7 +11,7 @@ namespace DT.Controllers {
 	}
 
 	public class RaycastController2D : MonoBehaviour {
-		// PRAGMA MARK - INTERFACE 
+		// PRAGMA MARK - Interface 
 		/// <summary>
 		/// Helper function that passes Vector2.zero to the absolute ray offset
 		/// </summary>
@@ -67,7 +67,7 @@ namespace DT.Controllers {
 			get { return _raycastOrigins.Height; }
 		}
 		
-		// PRAGMA MARK - INTERNAL
+		// PRAGMA MARK - Internal
 		[SerializeField, Range(2, 20)]
 		protected int _horizontalRayCount = 4;
 		[SerializeField, Range(2, 20)]

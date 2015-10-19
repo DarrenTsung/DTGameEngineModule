@@ -24,7 +24,7 @@ namespace DT.Controllers {
   		get { return _maxDescendAngle; }
   	}
   	
-  	// PRAGMA MARK - INTERNAL
+  	// PRAGMA MARK - Internal
   	[SerializeField]
   	protected float _gravity = -24.0f;
   	[SerializeField]

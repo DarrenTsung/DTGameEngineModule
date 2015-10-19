@@ -5,7 +5,7 @@ using System.Collections;
 #if TK2D
 namespace DT.GameEngine {
 	public class CameraController2D : CameraController<CameraController2D> {
-		// PRAGMA MARK - INTERFACE
+		// PRAGMA MARK - Interface
 		public float DistanceOutsideCameraScreenExtents(Vector2 point) {
 			Rect cameraExtents = this.CameraWorldScreenExtents();
 			float distanceOutside = 0.0f;
@@ -66,7 +66,7 @@ namespace DT.GameEngine {
 			set { _offsetVector = value; }
 		}
 			
-		// PRAGMA MARK - INTERNAL
+		// PRAGMA MARK - Internal
 		protected tk2dCamera _camera;
 		protected Transform _targetTransform;
 		protected Vector2 _offsetVector;

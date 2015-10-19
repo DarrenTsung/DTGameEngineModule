@@ -12,7 +12,7 @@ namespace DT.GameEngine {
 			DTNotifications.PlayerChanged.Invoke(playerIndex, player);
 		}
 		
-		// PRAGMA MARK - INTERNAL
+		// PRAGMA MARK - Internal
 		[Header("---- PlayerManager Properties ----")]
 		[SerializeField]
 		protected List<Player> _startingPlayers;

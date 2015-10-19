@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace DT {
 	public class CameraController<T> : MonoBehaviour {
-		// PRAGMA MARK - INTERFACE
+		// PRAGMA MARK - Interface
 		public static T _cachedMainCameraController;
 		
 		public static T MainCameraController() {
@@ -14,7 +14,7 @@ namespace DT {
 			return _cachedMainCameraController;
 		}
 		
-		// PRAGMA MARK - INTERNAL
+		// PRAGMA MARK - Internal
 		[SerializeField]
 		protected float _cameraSpeed = 1.5f; 
 	}

@@ -15,7 +15,7 @@ namespace DT.GameEngine {
 	public class PlayerInputManager<TPlayerActions> : Singleton<PlayerInputManager<TPlayerActions>> where TPlayerActions : PlayerActions, new() {
 		protected PlayerInputManager() {}
 		
-		// PRAGMA MARK - INTERFACE
+		// PRAGMA MARK - Interface
 		public bool InputDisabled {
 			get { return _inputDisabled; }
 			set {
@@ -23,7 +23,7 @@ namespace DT.GameEngine {
 			}
 		}
 		
-		// PRAGMA MARK - INTERNAL
+		// PRAGMA MARK - Internal
 		[Header("---- PlayerInputManager Properties ----")]
 		[SerializeField]
 		protected bool _inputDisabled = false;
@@ -115,8 +115,7 @@ namespace DT.GameEngine {
 			}
 		}
 		
-		#region mark - Updating Input
-
+		// PRAGMA MARK - Updating Input
 		protected virtual void Update() {
 			if (!this.InputDisabled) {
 				this.UpdateInput();
@@ -169,8 +168,6 @@ namespace DT.GameEngine {
 			}
 			return secondaryDirection;
 		}
-		
-		#endregion
 	}
 }
 #endif

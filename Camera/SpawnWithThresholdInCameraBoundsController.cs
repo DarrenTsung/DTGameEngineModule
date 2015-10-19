@@ -5,7 +5,7 @@ using System.Collections;
 #if TK2D
 namespace DT.GameEngine {
 	public class SpawnWithThresholdInCameraBoundsController : MonoBehaviour {
-		// PRAGMA MARK - INTERNAL
+		// PRAGMA MARK - Internal
 		[SerializeField]
 		protected Direction _direction;
 		[SerializeField]
