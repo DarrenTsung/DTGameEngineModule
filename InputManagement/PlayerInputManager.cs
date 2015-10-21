@@ -35,13 +35,8 @@ namespace DT.GameEngine {
 			return _playerSecondaryDirectionEvents.GetAndCreateIfNotFound(playerIndex);
 		}
 		
-		protected Dictionary<int, UnityEvents.V2> _playerPrimaryDirectionEvents;
-		protected Dictionary<int, UnityEvents.V2> _playerSecondaryDirectionEvents;
-		
-		protected virtual void CreateEventDictionaries() {
-			_playerPrimaryDirectionEvents = new Dictionary<int, UnityEvents.V2>();
-			_playerSecondaryDirectionEvents = new Dictionary<int, UnityEvents.V2>();
-		}
+		protected Dictionary<int, UnityEvents.V2> _playerPrimaryDirectionEvents = new Dictionary<int, UnityEvents.V2>();
+		protected Dictionary<int, UnityEvents.V2> _playerSecondaryDirectionEvents = new Dictionary<int, UnityEvents.V2>();
 		
 		
 		// PRAGMA MARK - Internal
@@ -63,8 +58,6 @@ namespace DT.GameEngine {
 		protected GameObject _playerOne;
 		
 		protected virtual void Awake() {
-			this.CreateEventDictionaries();
-			
 			_playerMapping = new Dictionary<InputDevice, int>();
 			_playerActions = new Dictionary<int, TPlayerActions>();
 			

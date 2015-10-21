@@ -6,7 +6,11 @@ namespace DT.GameEngine {
   public class Player : MonoBehaviour {
     // PRAGMA MARK - Interface 
     public int PlayerIndex {
-      set { _playerIndex = value; }
+      set { 
+        this.CleanupNotifications();
+        _playerIndex = value; 
+        this.RegisterNotifications();
+      }
       get { return _playerIndex; }
     }
     
@@ -15,7 +19,7 @@ namespace DT.GameEngine {
     protected int _playerIndex = 0;
     
     protected virtual void Awake() {
-      this.RegisterNotifications();
+      // do nothing
     }
     
     protected void OnDisable() {
