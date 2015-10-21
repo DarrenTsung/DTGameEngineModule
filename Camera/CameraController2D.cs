@@ -76,7 +76,7 @@ namespace DT.GameEngine {
 			DTNotifications.PlayerChanged.AddListener(SetupWithPlayer);
 		}
 
-		protected virtual void SetupWithPlayer(GameObject player) {
+		protected virtual void SetupWithPlayer(int playerIndex, GameObject player) {
 			_targetTransform = player.transform;
 		}
 		

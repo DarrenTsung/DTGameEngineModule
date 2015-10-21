@@ -7,7 +7,8 @@ namespace DT.GameEngine {
 	public class PlayerManager : Singleton<PlayerManager> {
 		protected PlayerManager() {}
 		
-		protected void SetPlayer(int playerIndex, GameObject player) {
+		// PRAGMA MARK - Interface
+		public void SetPlayer(int playerIndex, GameObject player) {
 			_players[playerIndex] = player;
 			DTNotifications.PlayerChanged.Invoke(playerIndex, player);
 		}

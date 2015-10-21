@@ -2,6 +2,7 @@ using DT;
 using System.Collections;
 using System.Collections.Generic;
 ﻿using UnityEngine;
+﻿using UnityEngine.Events;
 
 #if IN_CONTROL
 using InControl;
@@ -12,8 +13,9 @@ namespace DT.GameEngine {
 		CONTROLLER
 	}
 	
-	public class PlayerInputManager<TPlayerActions> : Singleton<PlayerInputManager<TPlayerActions>> where TPlayerActions : PlayerActions, new() {
+	public class PlayerInputManager<TPlayerActions> : MonoBehaviour, IPlayerInputManager where TPlayerActions : PlayerActions, new() {
 		protected PlayerInputManager() {}
+		
 		
 		// PRAGMA MARK - Interface
 		public bool InputDisabled {
@@ -22,6 +24,25 @@ namespace DT.GameEngine {
 				_inputDisabled = value;
 			}
 		}
+		
+		
+		// PRAGMA MARK - Input Unity Events
+		public UnityEvents.V2 GetPrimaryDirectionEvent(int playerIndex) {
+			return _playerPrimaryDirectionEvents.GetAndCreateIfNotFound(playerIndex);
+		}
+		
+		public UnityEvents.V2 GetSecondaryDirectionEvent(int playerIndex) {
+			return _playerSecondaryDirectionEvents.GetAndCreateIfNotFound(playerIndex);
+		}
+		
+		protected Dictionary<int, UnityEvents.V2> _playerPrimaryDirectionEvents;
+		protected Dictionary<int, UnityEvents.V2> _playerSecondaryDirectionEvents;
+		
+		protected virtual void CreateEventDictionaries() {
+			_playerPrimaryDirectionEvents = new Dictionary<int, UnityEvents.V2>();
+			_playerSecondaryDirectionEvents = new Dictionary<int, UnityEvents.V2>();
+		}
+		
 		
 		// PRAGMA MARK - Internal
 		[Header("---- PlayerInputManager Properties ----")]
@@ -42,6 +63,8 @@ namespace DT.GameEngine {
 		protected GameObject _playerOne;
 		
 		protected virtual void Awake() {
+			this.CreateEventDictionaries();
+			
 			_playerMapping = new Dictionary<InputDevice, int>();
 			_playerActions = new Dictionary<int, TPlayerActions>();
 			
@@ -64,15 +87,23 @@ namespace DT.GameEngine {
 				PlayerInputType type = (playerIndex == 0) ? _playerOneInputType : PlayerInputType.CONTROLLER;
 				actions.BindWithInputType(type);
 				
-				this.LogIfDebugEnabled("Registered player " + playerIndex + " (type: " + type + ") with device: (" + unusedDevice.Name + ")");
-				
 				_playerActions[playerIndex] = actions;
 				_playerMapping[unusedDevice] = playerIndex;
+				
+				this.LogIfDebugEnabled("Registered player " + playerIndex + " (type: " + type + ") with device: (" + unusedDevice.Name + ")");
 			} else {
 				Debug.LogWarning("Attempted to register player " + playerIndex + ", but failed to find an unused device!");
 			}
 		}
 		
+		protected void LogIfDebugEnabled(string logString) {
+			if (_logDebugInfo) {
+				Debug.Log(logString);
+			}
+		}
+		
+		
+		// PRAGMA MARK - Device Handling
 		protected void OnDeviceAttached(InputDevice device) {
 			this.LogIfDebugEnabled("Device (" + device.Name + ") attached! Iterating through players to see if any players could use a controller");
 			foreach (KeyValuePair<int, TPlayerActions> pair in _playerActions) {
@@ -109,11 +140,6 @@ namespace DT.GameEngine {
 			return null;
 		}
 		
-		protected void LogIfDebugEnabled(string logString) {
-			if (_logDebugInfo) {
-				Debug.Log(logString);
-			}
-		}
 		
 		// PRAGMA MARK - Updating Input
 		protected virtual void Update() {
@@ -134,9 +160,11 @@ namespace DT.GameEngine {
 		protected virtual void UpdateInputForPlayer(int playerIndex, TPlayerActions actions) {
 			Vector2 primaryDirection = this.GetPrimaryDirection(playerIndex, actions);
 			DTNotifications.HandlePrimaryDirection.Invoke(playerIndex, primaryDirection);
+			this.GetPrimaryDirectionEvent(playerIndex).Invoke(primaryDirection);
 		
 			Vector2 secondaryDirection = this.GetSecondaryDirection(playerIndex, actions);
 			DTNotifications.HandleSecondaryDirection.Invoke(playerIndex, secondaryDirection);
+			this.GetSecondaryDirectionEvent(playerIndex).Invoke(secondaryDirection);
 			
 			// player one specific
 			if (playerIndex == 0 && _playerOneInputType == PlayerInputType.MOUSE_AND_KEYBOARD) {
