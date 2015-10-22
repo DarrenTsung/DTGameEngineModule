@@ -44,8 +44,26 @@ namespace DT.GameEngine {
       // do nothing for now
     }
     
+    protected void DisableInputAfterDelay(float delay) {
+      StartCoroutine(this.DisableInputAfterDelayCoroutine(delay));
+    }
+    
+    protected IEnumerator DisableInputAfterDelayCoroutine(float delay) {
+      yield return new WaitForSeconds(delay);
+      this.DisableInput();
+    }
+    
     protected void DisableInput() {
       Toolbox.GetInstance<IPlayerInputManager>().SetInputDisabledForPlayer(_playerIndex, true);
+    }
+    
+    protected void EnableInputAfterDelay(float delay) {
+      StartCoroutine(this.EnableInputAfterDelayCoroutine(delay));
+    }
+    
+    protected IEnumerator EnableInputAfterDelayCoroutine(float delay) {
+      yield return new WaitForSeconds(delay);
+      this.EnableInput();
     }
     
     protected void EnableInput() {
