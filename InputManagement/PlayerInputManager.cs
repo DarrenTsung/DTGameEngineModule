@@ -25,6 +25,16 @@ namespace DT.GameEngine {
 			}
 		}
 		
+		public void SetInputDisabledForPlayer(int playerIndex, bool inputDisabled) {
+			_playerInputDisabledMapping[playerIndex] = inputDisabled;
+		}
+		
+		public bool IsInputDisabledForPlayer(int playerIndex) {
+			return _playerInputDisabledMapping.SafeGet(playerIndex, false);
+		}
+		
+		protected Dictionary<int, bool> _playerInputDisabledMapping = new Dictionary<int, bool>();
+		
 		
 		// PRAGMA MARK - Input Unity Events
 		public UnityEvents.V2 GetPrimaryDirectionEvent(int playerIndex) {
@@ -144,8 +154,9 @@ namespace DT.GameEngine {
 		protected virtual void UpdateInput() {
 			foreach (KeyValuePair<int, TPlayerActions> entry in _playerActions) {
 				TPlayerActions actions = entry.Value;
-				if (actions.Device.IsAttached) {
-					this.UpdateInputForPlayer(entry.Key, actions);
+				int playerIndex = entry.Key;
+				if (actions.Device.IsAttached && !this.IsInputDisabledForPlayer(playerIndex)) {
+					this.UpdateInputForPlayer(playerIndex, actions);
 				}
 			}
 		}

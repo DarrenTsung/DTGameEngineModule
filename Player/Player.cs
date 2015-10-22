@@ -43,5 +43,13 @@ namespace DT.GameEngine {
     protected virtual void HandleSecondaryDirection(Vector2 secondaryDirection) {
       // do nothing for now
     }
+    
+    protected void DisableInput() {
+      Toolbox.GetInstance<IPlayerInputManager>().SetInputDisabledForPlayer(_playerIndex, true);
+    }
+    
+    protected void EnableInput() {
+      Toolbox.GetInstance<IPlayerInputManager>().SetInputDisabledForPlayer(_playerIndex, false);
+    }
   }
 }
