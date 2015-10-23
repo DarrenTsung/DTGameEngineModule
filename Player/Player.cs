@@ -14,6 +14,22 @@ namespace DT.GameEngine {
       get { return _playerIndex; }
     }
     
+    public void DisableInputAfterDelay(float delay) {
+      StartCoroutine(this.DisableInputAfterDelayCoroutine(delay));
+    }
+    
+    public void DisableInput() {
+      Toolbox.GetInstance<IPlayerInputManager>().SetInputDisabledForPlayer(_playerIndex, true);
+    }
+    
+    public void EnableInputAfterDelay(float delay) {
+      StartCoroutine(this.EnableInputAfterDelayCoroutine(delay));
+    }
+    
+    public void EnableInput() {
+      Toolbox.GetInstance<IPlayerInputManager>().SetInputDisabledForPlayer(_playerIndex, false);
+    }
+    
     // PRAGMA MARK - Internal
     [SerializeField, ReadOnly]
     protected int _playerIndex = 0;
@@ -44,30 +60,14 @@ namespace DT.GameEngine {
       // do nothing for now
     }
     
-    protected void DisableInputAfterDelay(float delay) {
-      StartCoroutine(this.DisableInputAfterDelayCoroutine(delay));
-    }
-    
-    protected IEnumerator DisableInputAfterDelayCoroutine(float delay) {
-      yield return new WaitForSeconds(delay);
-      this.DisableInput();
-    }
-    
-    protected void DisableInput() {
-      Toolbox.GetInstance<IPlayerInputManager>().SetInputDisabledForPlayer(_playerIndex, true);
-    }
-    
-    protected void EnableInputAfterDelay(float delay) {
-      StartCoroutine(this.EnableInputAfterDelayCoroutine(delay));
-    }
-    
     protected IEnumerator EnableInputAfterDelayCoroutine(float delay) {
       yield return new WaitForSeconds(delay);
       this.EnableInput();
     }
     
-    protected void EnableInput() {
-      Toolbox.GetInstance<IPlayerInputManager>().SetInputDisabledForPlayer(_playerIndex, false);
+    protected IEnumerator DisableInputAfterDelayCoroutine(float delay) {
+      yield return new WaitForSeconds(delay);
+      this.DisableInput();
     }
   }
 }
