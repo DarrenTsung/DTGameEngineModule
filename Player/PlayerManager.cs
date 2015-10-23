@@ -9,6 +9,10 @@ namespace DT.GameEngine {
 		
 		// PRAGMA MARK - Interface
 		public void SetPlayer(int playerIndex, GameObject player) {
+			GameObject previousPlayer = _players.SafeGet(playerIndex, null);
+			if (previousPlayer) {
+				Destroy(previousPlayer);
+			}
 			_players[playerIndex] = player;
 			DTNotifications.PlayerChanged.Invoke(playerIndex, player);
 		}
@@ -19,11 +23,11 @@ namespace DT.GameEngine {
 		protected List<Player> _startingPlayers;
 		protected Dictionary<int, GameObject> _players;
 		
-		protected void Awake() {
+		protected virtual void Awake() {
 			_players = new Dictionary<int, GameObject>();
 		}
 		
-		protected void Start() {
+		protected virtual void Start() {
 			if (_startingPlayers.Count == 0) {
 				Debug.LogError("PlayerManager - no starting players!");
 			}
