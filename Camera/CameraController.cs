@@ -11,7 +11,7 @@ namespace DT {
 			return Camera.main.gameObject.GetCachedComponent<T>(_cachedComponentMap);
 		}
 		
-		public void Shake(float magnitude, float duration, EaseType easeType = EaseType.QuadOut) {
+		public virtual void Shake(float magnitude, float duration, EaseType easeType = EaseType.QuadOut) {
 			if (_shakeCoroutine != null) {
 				this.StopCoroutine(_shakeCoroutine);
 			}
