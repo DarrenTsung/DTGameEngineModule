@@ -25,7 +25,7 @@ namespace DT.GameEngine {
 		}
 
 		protected void Update() {
-			Vector2 distanceOutside = CameraController2D.MainCameraController().DistanceFromCameraSide(_direction, transform.position);
+			Vector2 distanceOutside = CameraController.Main<CameraController2D>().DistanceFromCameraSide(_direction, transform.position);
 			// if the direction is left / right than we will use the x value, otherwise y value
 			float appropriateValue = _direction.ApplicableValueToVector2(distanceOutside);
 			bool conditionCheck = _condition.Apply(appropriateValue, _threshold);
