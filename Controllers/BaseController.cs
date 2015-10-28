@@ -90,8 +90,8 @@ namespace DT.Controllers {
   	protected Vector2 _velocity;
   	protected IEnumerator _fallThroughCoroutine = null;
   	
-  	protected virtual void FixedUpdate() {
-			this.Move(_velocity * Time.fixedDeltaTime);
+  	protected virtual void Update() {
+			this.Move(_velocity * Time.deltaTime);
   		this.ApplyCollisionsAndConstraintsToVelocity();
   	}
   	

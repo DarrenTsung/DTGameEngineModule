@@ -40,11 +40,11 @@ namespace DT.Controllers {
     
   	protected Vector2 _previousDeltaVelocity;
   	
-  	protected override void FixedUpdate() {
+  	protected override void Update() {
   		if (!_gravityDisabled) {
-  			_velocity.y += _gravity * Time.fixedDeltaTime;
+  			_velocity.y += _gravity * Time.deltaTime;
   		}
-  		base.FixedUpdate();
+  		base.Update();
   	}
   		
   	protected override void EndMove(ref Vector2 deltaVelocity) {
