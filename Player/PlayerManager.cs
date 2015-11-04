@@ -14,6 +14,10 @@ namespace DT.GameEngine {
 				Destroy(previousPlayer);
 			}
 			_players[playerIndex] = player;
+			
+			Player playerComponent = player.GetComponent<Player>();
+			playerComponent.PlayerIndex = playerIndex;
+			
 			DTNotifications.PlayerChanged.Invoke(playerIndex, player);
 		}
 		
@@ -34,7 +38,6 @@ namespace DT.GameEngine {
 			
 			int playerIndex = 0;
 			foreach (Player player in _startingPlayers) {
-				player.PlayerIndex = playerIndex;
 				this.SetPlayer(playerIndex, player.gameObject);
 				playerIndex++;
 			}

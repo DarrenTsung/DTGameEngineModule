@@ -25,6 +25,14 @@ namespace DT.GameEngine {
 			}
 		}
 		
+		public void DisableInputForPlayer(int playerIndex) {
+			this.SetInputDisabledForPlayer(playerIndex, true);
+		}
+		
+		public void EnableInputForPlayer(int playerIndex) {
+			this.SetInputDisabledForPlayer(playerIndex, false);
+		}
+		
 		public void SetInputDisabledForPlayer(int playerIndex, bool inputDisabled) {
 			_playerInputDisabledMapping[playerIndex] = inputDisabled;
 		}
@@ -77,6 +85,9 @@ namespace DT.GameEngine {
 		}
 		
 		protected void HandlePlayerChanged(int playerIndex, GameObject player) {
+			// always re-enable player input when player changes
+			this.EnableInputForPlayer(playerIndex);
+			
 			if (_playerMapping.ContainsValue(playerIndex)) {
 				// no need to do anything if this player has already been registered
 				return;
