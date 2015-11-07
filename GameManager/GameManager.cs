@@ -2,7 +2,7 @@
 using System.Collections;
 ﻿using UnityEngine;
 
-public class GameManager : Singleton<GameManager> {
+public class GameManager : MonoBehaviour {
 	// PRAGMA MARK - Interface
 	
 	

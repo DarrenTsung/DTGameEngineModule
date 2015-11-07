@@ -84,6 +84,12 @@ namespace DT.GameEngine {
 			InputManager.OnDeviceDetached += this.OnDeviceDetached;
 		}
 		
+		protected virtual void Update() {
+			if (!this.InputDisabled) {
+				this.UpdateInput();
+			}
+		}
+		
 		protected void HandlePlayerChanged(int playerIndex, GameObject player) {
 			// always re-enable player input when player changes
 			this.EnableInputForPlayer(playerIndex);
@@ -95,19 +101,23 @@ namespace DT.GameEngine {
 			
 			InputDevice unusedDevice = this.FindUnusedDevice();
 			if (unusedDevice) {
-				TPlayerActions actions = new TPlayerActions();
-				actions.Device = unusedDevice;
-				
-				PlayerInputType type = (playerIndex == 0) ? _playerOneInputType : PlayerInputType.CONTROLLER;
-				actions.BindWithInputType(type);
-				
-				_playerActions[playerIndex] = actions;
-				_playerMapping[unusedDevice] = playerIndex;
-				
-				this.LogIfDebugEnabled("Registered player " + playerIndex + " (type: " + type + ") with device: (" + unusedDevice.Name + ")");
+				this.BindDeviceWithPlayerIndex(unusedDevice, playerIndex);
 			} else {
-				Debug.LogWarning("Attempted to register player " + playerIndex + ", but failed to find an unused device!");
+				Debug.LogWarning("Player changed (" + playerIndex + ") and had no mapping - failed to find an unused device!");
 			}
+		}
+		
+		protected void BindDeviceWithPlayerIndex(InputDevice device, int playerIndex) {
+			TPlayerActions actions = new TPlayerActions();
+			actions.Device = device;
+			
+			PlayerInputType type = (playerIndex == 0) ? _playerOneInputType : PlayerInputType.CONTROLLER;
+			actions.BindWithInputType(type);
+			
+			_playerActions[playerIndex] = actions;
+			_playerMapping[device] = playerIndex;
+			
+			this.LogIfDebugEnabled("Registered player " + playerIndex + " (type: " + type + ") with device: (" + device.Name + ")");
 		}
 		
 		protected void LogIfDebugEnabled(string logString) {
@@ -121,9 +131,11 @@ namespace DT.GameEngine {
 		protected void OnDeviceAttached(InputDevice device) {
 			this.LogIfDebugEnabled("Device (" + device.Name + ") attached! Iterating through players to see if any players could use a controller");
 			foreach (KeyValuePair<int, TPlayerActions> pair in _playerActions) {
+				int playerIndex = pair.Key;
 				TPlayerActions actions = pair.Value;
 				if (!actions.Device.IsAttached) {
 					actions.Device = device;
+					_playerMapping[device] = playerIndex;
 					this.LogIfDebugEnabled("Device attached to player " + pair.Key + "!");
 					break;
 				}
@@ -156,12 +168,6 @@ namespace DT.GameEngine {
 		
 		
 		// PRAGMA MARK - Updating Input
-		protected virtual void Update() {
-			if (!this.InputDisabled) {
-				this.UpdateInput();
-			}
-		}
-		
 		protected virtual void UpdateInput() {
 			foreach (KeyValuePair<int, TPlayerActions> entry in _playerActions) {
 				TPlayerActions actions = entry.Value;
