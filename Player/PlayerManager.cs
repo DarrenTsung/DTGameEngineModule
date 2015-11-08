@@ -18,7 +18,7 @@ namespace DT.GameEngine {
 			Player playerComponent = player.GetComponent<Player>();
 			playerComponent.PlayerIndex = playerIndex;
 			
-			DTNotifications.PlayerChanged.Invoke(playerIndex, player);
+			DTGameEngineNotifications.PlayerChanged.Invoke(playerIndex, player);
 		}
 		
 		// PRAGMA MARK - Internal

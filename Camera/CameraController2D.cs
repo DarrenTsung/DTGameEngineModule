@@ -73,7 +73,7 @@ namespace DT.GameEngine {
 		
 		protected void Awake() {
 			_camera = this.GetComponent<tk2dCamera>();
-			DTNotifications.PlayerChanged.AddListener(SetupWithPlayer);
+			DTGameEngineNotifications.PlayerChanged.AddListener(SetupWithPlayer);
 		}
 
 		protected virtual void SetupWithPlayer(int playerIndex, GameObject player) {

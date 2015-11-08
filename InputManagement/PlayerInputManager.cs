@@ -25,6 +25,20 @@ namespace DT.GameEngine {
 			}
 		}
 		
+		public void BindDeviceToUnusedPlayerIndex(InputDevice device) {
+			if (this.IsDeviceBoundToAPlayerIndex(device)) {
+				// nothing if device is already mapped
+				return;
+			}
+			
+			int playerIndex = this.FindUnusedPlayerIndex();
+			this.BindDeviceWithPlayerIndex(device, playerIndex);
+		}
+		
+		public bool IsDeviceBoundToAPlayerIndex(InputDevice device) {
+			return _playerMapping.ContainsKey(device);
+		}
+		
 		public void DisableInputForPlayer(int playerIndex) {
 			this.SetInputDisabledForPlayer(playerIndex, true);
 		}
@@ -79,7 +93,7 @@ namespace DT.GameEngine {
 			_playerMapping = new Dictionary<InputDevice, int>();
 			_playerActions = new Dictionary<int, TPlayerActions>();
 			
-			DTNotifications.PlayerChanged.AddListener(this.HandlePlayerChanged);
+			DTGameEngineNotifications.PlayerChanged.AddListener(this.HandlePlayerChanged);
 			InputManager.OnDeviceAttached += this.OnDeviceAttached;
 			InputManager.OnDeviceDetached += this.OnDeviceDetached;
 		}
@@ -118,6 +132,14 @@ namespace DT.GameEngine {
 			_playerMapping[device] = playerIndex;
 			
 			this.LogIfDebugEnabled("Registered player " + playerIndex + " (type: " + type + ") with device: (" + device.Name + ")");
+		}
+		
+		protected int FindUnusedPlayerIndex() {
+			for (int i = 0;; i++) {
+				if (!_playerActions.ContainsKey(i)) {
+					return i;
+				}
+			}
 		}
 		
 		protected void LogIfDebugEnabled(string logString) {
@@ -180,17 +202,17 @@ namespace DT.GameEngine {
 		
 		protected virtual void UpdateInputForPlayer(int playerIndex, TPlayerActions actions) {
 			Vector2 primaryDirection = this.GetPrimaryDirection(playerIndex, actions);
-			DTNotifications.HandlePrimaryDirection.Invoke(playerIndex, primaryDirection);
+			DTGameEngineNotifications.HandlePrimaryDirection.Invoke(playerIndex, primaryDirection);
 			this.GetPrimaryDirectionEvent(playerIndex).Invoke(primaryDirection);
 		
 			Vector2 secondaryDirection = this.GetSecondaryDirection(playerIndex, actions);
-			DTNotifications.HandleSecondaryDirection.Invoke(playerIndex, secondaryDirection);
+			DTGameEngineNotifications.HandleSecondaryDirection.Invoke(playerIndex, secondaryDirection);
 			this.GetSecondaryDirectionEvent(playerIndex).Invoke(secondaryDirection);
 			
 			// player one specific
 			if (playerIndex == 0 && _playerOneInputType == PlayerInputType.MOUSE_AND_KEYBOARD) {
 				Vector2 mouseScreenPosition = Input.mousePosition;
-				DTNotifications.HandleMouseScreenPosition.Invoke(mouseScreenPosition);
+				DTGameEngineNotifications.HandleMouseScreenPosition.Invoke(mouseScreenPosition);
 			}
 		}
 		
