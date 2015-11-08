@@ -8,7 +8,8 @@ using InControl;
 namespace DT.GameEngine {
 	public class PlayerRegistrationGameSection : GameSection {
 		// PRAGMA MARK - Interface
-		public PlayerRegistrationGameSection(InputControlType registerControlType, InputControlType finishRegistrationControlType) {
+		public PlayerRegistrationGameSection(InputControlType registerControlType, 
+																				 InputControlType finishRegistrationControlType) {
 			_registerControlType = registerControlType;
 			_finishRegistrationControlType = finishRegistrationControlType;
 		}
@@ -24,12 +25,10 @@ namespace DT.GameEngine {
 		
 		protected override void InternalSetup() {
 			this.SetupInputListeners();
-			Debug.Log("Setup - Player Registration Game Section!");
 		}
 		
 		protected override void InternalTeardown() {
 			this.CleanupInputListeners();
-			Debug.Log("Teardown - Player Registration Game Section!");
 		}
 		
 		protected void SetupInputListeners() {

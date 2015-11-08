@@ -14,6 +14,8 @@ public interface IPlayerInputManager {
 	void BindDeviceToUnusedPlayerIndex(InputDevice device);
 	bool IsDeviceBoundToAPlayerIndex(InputDevice device);
 		
+	int[] UsedPlayerIndexes();
+	
 	UnityEvents.V2 GetPrimaryDirectionEvent(int playerIndex);
 	UnityEvents.V2 GetSecondaryDirectionEvent(int playerIndex);
 	

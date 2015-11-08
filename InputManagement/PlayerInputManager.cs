@@ -1,4 +1,5 @@
 using DT;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 ﻿using UnityEngine;
@@ -37,6 +38,10 @@ namespace DT.GameEngine {
 		
 		public bool IsDeviceBoundToAPlayerIndex(InputDevice device) {
 			return _playerMapping.ContainsKey(device);
+		}
+		
+		public int[] UsedPlayerIndexes() {
+			return _playerMapping.Values.ToArray();
 		}
 		
 		public void DisableInputForPlayer(int playerIndex) {

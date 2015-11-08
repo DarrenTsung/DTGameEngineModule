@@ -21,7 +21,7 @@ namespace DT {
 		}
 		
 		public void RemoveCallbackForType(InputControlType type, Action<InputDevice> callback) {
-			this.ListenersForType(type).Remove(callback);
+			this.StartCoroutine(this.RemoveCallBackForTypeAtEndOfFrame(type, callback));
 		}
 		
 		
@@ -56,6 +56,11 @@ namespace DT {
 		
 		protected HashSet<Action<InputDevice>> ListenersForType(InputControlType type) {
 			return _listenersForInputTypes.GetAndCreateIfNotFound(type);
+		}
+		
+		protected IEnumerator RemoveCallBackForTypeAtEndOfFrame(InputControlType type, Action<InputDevice> callback) {
+			yield return new WaitForEndOfFrame();
+			this.ListenersForType(type).Remove(callback);
 		}
 	}
 }

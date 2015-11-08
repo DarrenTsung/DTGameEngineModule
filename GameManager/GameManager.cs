@@ -4,35 +4,24 @@ using System.Collections;
 using System.Collections.Generic;
 ﻿using UnityEngine;
 
-#if IN_CONTROL
-using InControl;
-
 namespace DT.GameEngine {
-	public enum GameSectionKey {
-		REGISTRATION 
-	}
-	
 	public abstract class GameManager : MonoBehaviour {
 		// PRAGMA MARK - Interface
-		public void SwitchToSection(Enum sectionKey) {
+		public void SwitchToSection<T>() {
 			// NOTE: should we do anything here?
-			this.InternalSwitchToSection(sectionKey);
+			this.InternalSwitchToSection<T>();
+		}
+		
+		public T GetGameSection<T>() where T : class {
+			return _sections.SafeGet(typeof(T)) as T;
 		}
 		
 		// PRAGMA MARK - Internal
-		[Header("Player Registration Properties")]
-		[SerializeField]
-		protected bool _playerRegistrationEnabled;
-		[SerializeField]
-		protected InputControlType _registerControlType;
-		[SerializeField]
-		protected InputControlType _finishRegistrationControlType;
-	
-		protected Dictionary<Enum, GameSection> _sections;
+		protected Dictionary<Type, GameSection> _sections;
 		private GameSection _activeSection;
 		
 		protected void Awake() {
-			_sections = new Dictionary<Enum, GameSection>();
+			_sections = new Dictionary<Type, GameSection>();
 		}
 		
 		protected void Start() {
@@ -52,48 +41,49 @@ namespace DT.GameEngine {
 		}
 		
 		protected virtual void RegisterNotifications() {
-			DTGameEngineNotifications.PlayerRegistrationFinished.AddListener(this.HandlePlayerRegistrationFinished);
+			// do nothing
 		}
 		
 		protected virtual void CleanupNotifications() {
-			DTGameEngineNotifications.PlayerRegistrationFinished.RemoveListener(this.HandlePlayerRegistrationFinished);
+			// do nothing
 		}
 		
-		protected virtual void HandlePlayerRegistrationFinished() {}
-		
 		protected void InitializeGameSections() {
-			this.MapGameSectionWithKey(GameSectionKey.REGISTRATION, new PlayerRegistrationGameSection(_registerControlType, _finishRegistrationControlType));
 			this.InitializeInheritedGameSections();
 		}
 		
 		protected abstract void InitializeInheritedGameSections();
 		
-		protected abstract Enum StartingSectionKey();
+		protected abstract Type StartingSectionKey();
 		
-		protected void MapGameSectionWithKey(Enum key, GameSection section) {
-			_sections[key] = section;
+		protected void AddGameSection(GameSection section) {
+			section.SetContext(this);
+			_sections[section.GetType()] = section;
 		}
 		
 		protected void StartGame() {
-			this.InternalSwitchToSection(this.StartingSectionKey());
+			this.InternalSwitchToSectionType(this.StartingSectionKey());		
 		}
 		
-		protected void InternalSwitchToSection(Enum sectionKey) {
+		protected void InternalSwitchToSection<T>() {
+			Type sectionType = typeof(T);
+			this.InternalSwitchToSectionType(sectionType);
+		}
+		
+		protected void InternalSwitchToSectionType(Type sectionType) {
 			if (_activeSection != null) {
 				_activeSection.Teardown();
 			}
 			
-			if (!_sections.ContainsKey(sectionKey)) {
-				Debug.LogError("SwitchToSection - invalid section key to switch to!");
+			if (!_sections.ContainsKey(sectionType)) {
+				Debug.LogError("SwitchToSection - invalid section type (" + sectionType + ") to switch to!");
 				return;
 			}
 			
-			GameSection newSection = _sections[sectionKey];
+			GameSection newSection = _sections[sectionType];
 			newSection.Setup();
 			
 			_activeSection = newSection;
 		}
 	}
 }
-
-#endif
