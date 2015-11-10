@@ -65,6 +65,12 @@ namespace DT.GameEngine {
 		public Vector2 OffsetVector {
 			set { _offsetVector = value; }
 		}
+		
+		public void TeleportToTarget() {
+			Vector3 targetPosition = _targetTransform.position;
+			targetPosition.z = transform.position.z; // don't move in the z axis
+			transform.position = targetPosition;
+		}
 			
 		// PRAGMA MARK - Internal
 		protected tk2dCamera _camera;

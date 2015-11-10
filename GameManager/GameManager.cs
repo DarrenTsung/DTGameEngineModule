@@ -13,14 +13,14 @@ namespace DT.GameEngine {
 		}
 		
 		public T GetGameSection<T>() where T : class {
-			return _sections.SafeGet(typeof(T)) as T;
+			return this.GetGameSectionForType(typeof(T)) as T;
 		}
 		
 		// PRAGMA MARK - Internal
 		protected Dictionary<Type, GameSection> _sections;
 		private GameSection _activeSection;
 		
-		protected void Awake() {
+		protected virtual void Awake() {
 			_sections = new Dictionary<Type, GameSection>();
 		}
 		
@@ -75,15 +75,25 @@ namespace DT.GameEngine {
 				_activeSection.Teardown();
 			}
 			
-			if (!_sections.ContainsKey(sectionType)) {
-				Debug.LogError("SwitchToSection - invalid section type (" + sectionType + ") to switch to!");
-				return;
-			}
-			
-			GameSection newSection = _sections[sectionType];
+			GameSection newSection = this.GetGameSectionForType(sectionType);
 			newSection.Setup();
 			
 			_activeSection = newSection;
+		}
+		
+		protected GameSection GetGameSectionForType(Type sectionType) {
+			if (!_sections.ContainsKey(sectionType)) {
+				foreach (KeyValuePair<Type, GameSection> pair in _sections) {
+					Type classType = pair.Key;
+					if (classType.IsSubclassOf(sectionType)) {
+						GameSection subclassSection = pair.Value;
+						_sections[sectionType] = subclassSection;
+						return subclassSection; 
+					}
+				}
+				Debug.LogError("GetGameSectionForType - invalid section type (" + sectionType + ") to switch to (also no subclasses found)!");
+			}
+			return _sections.SafeGet(sectionType);
 		}
 	}
 }

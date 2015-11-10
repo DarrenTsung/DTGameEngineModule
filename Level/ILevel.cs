@@ -4,7 +4,10 @@ using System.Collections;
 
 namespace DT.GameEngine {
   public interface ILevel {
-  	// PRAGMA MARK - Interface
+    int LevelId {
+      get;
+    }
+    
   	GameObject SpawnPlayerFromTemplate(int playerIndex, GameObject template);
   }
 }

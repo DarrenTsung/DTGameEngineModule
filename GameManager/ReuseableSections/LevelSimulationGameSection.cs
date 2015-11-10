@@ -4,15 +4,25 @@ using System.Collections;
 
 namespace DT.GameEngine {
 	public class LevelSimulationGameSection : GameSection {
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Constructors
 		public LevelSimulationGameSection(GameObject levelPrefab,
 																			GameObject playerTemplatePrefab) {
 		  _levelPrefab = levelPrefab;
 			_playerTemplatePrefab = playerTemplatePrefab;
 		}
 		
-		// not passing in prefabs is not allowed
+		// not passing in no prefabs is not allowed
 		protected LevelSimulationGameSection() {}
+		
+		
+		// PRAGMA MARK - Interface
+		public GameObject CurrentLevel {
+			get { return _level; }
+		}
+		
+		public ILevel CurrentLevelInterface {
+			get { return _levelInterfaceComponent; }
+		}
 		
 		
 		// PRAGMA MARK - Internal
@@ -20,6 +30,7 @@ namespace DT.GameEngine {
 		protected GameObject _playerTemplatePrefab;
 		
 		protected GameObject _level;
+		protected ILevel _levelInterfaceComponent;
 		
 		protected override void InternalSetup() {
 			if (_levelPrefab == null || _playerTemplatePrefab == null) {
@@ -27,16 +38,16 @@ namespace DT.GameEngine {
 				return;
 			}
 			
-			GameObject _level = Object.Instantiate(_levelPrefab) as GameObject;
+			this.SetupWithLevelObject(Object.Instantiate(_levelPrefab) as GameObject);
+		}
+		
+		protected virtual void SetupWithLevelObject(GameObject levelObject) {
+			_level = levelObject;
 			_level.transform.SetParent(_context.transform, worldPositionStays: true);
-			ILevel levelComponent = _level.GetComponent<ILevel>();
-			
-			if (levelComponent == null) {
-				Debug.LogError("LevelSimulationGameSection::InternalSetup - no ILevel component on level prefab!");
-			}
+			_levelInterfaceComponent = _level.GetRequiredComponent<ILevel>();
 			
 			foreach (int playerIndex in Toolbox.GetInstance<IPlayerInputManager>().UsedPlayerIndexes()) {
-				GameObject player = levelComponent.SpawnPlayerFromTemplate(playerIndex, _playerTemplatePrefab);
+				GameObject player = _levelInterfaceComponent.SpawnPlayerFromTemplate(playerIndex, _playerTemplatePrefab);
 				Toolbox.GetInstance<PlayerManager>().SetPlayer(playerIndex, player);
 			}
 		}
