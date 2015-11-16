@@ -7,7 +7,7 @@ using InControl;
 
 namespace DT.GameEngine {
 	public class PlayerRegistrationGameSection : GameSection {
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Public Interface
 		public PlayerRegistrationGameSection(InputControlType registerControlType, 
 																				 InputControlType finishRegistrationControlType) {
 			_registerControlType = registerControlType;

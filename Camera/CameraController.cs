@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DT {
 	public class CameraController : MonoBehaviour {
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Public Interface
 		protected static Dictionary<System.Type, MonoBehaviour> _cachedComponentMap = new Dictionary<System.Type, MonoBehaviour>();
 		public static T Main<T>() where T : class {
 			return Camera.main.gameObject.GetCachedComponent<T>(_cachedComponentMap);

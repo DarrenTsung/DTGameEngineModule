@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace DT.GameEngine {
 	public abstract class GameManager : MonoBehaviour {
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Public Interface
 		public void SwitchToSection<T>() {
 			// NOTE: should we do anything here?
 			this.InternalSwitchToSection<T>();

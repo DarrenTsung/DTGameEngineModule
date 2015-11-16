@@ -12,7 +12,7 @@ namespace DT {
 		protected InputListenerManager() {}
 		
 		
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Public Interface
 		public bool InputDisabled;
 		
 		// note: listeners invoke all callbacks when they begin to be pressed (single time each press, no matter how long)

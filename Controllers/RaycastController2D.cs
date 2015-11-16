@@ -11,7 +11,7 @@ namespace DT.Controllers {
 	}
 
 	public class RaycastController2D : MonoBehaviour {
-		// PRAGMA MARK - Interface 
+		// PRAGMA MARK - Public Interface 
 		/// <summary>
 		/// Helper function that passes Vector2.zero to the absolute ray offset
 		/// </summary>

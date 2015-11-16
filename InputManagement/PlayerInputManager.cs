@@ -18,7 +18,7 @@ namespace DT.GameEngine {
 		protected PlayerInputManager() {}
 		
 		
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Public Interface
 		public bool InputDisabled {
 			get { return _inputDisabled; }
 			set {

@@ -15,7 +15,7 @@ namespace DT.GameEngine {
 		protected LevelSimulationGameSection() {}
 		
 		
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Public Interface
 		public GameObject CurrentLevel {
 			get { return _level; }
 		}

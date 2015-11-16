@@ -7,7 +7,7 @@ namespace DT.GameEngine {
 	public class PlayerManager : MonoBehaviour {
 		protected PlayerManager() {}
 		
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Public Interface
 		public void SetPlayer(int playerIndex, GameObject player) {
 			GameObject previousPlayer = _players.SafeGet(playerIndex, null);
 			if (previousPlayer != null) {

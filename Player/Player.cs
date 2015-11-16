@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace DT.GameEngine {
   public class Player : MonoBehaviour {
-    // PRAGMA MARK - Interface 
+    // PRAGMA MARK - Public Interface 
     public int PlayerIndex {
       set { 
         this.CleanupNotifications();

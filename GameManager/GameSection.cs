@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace DT.GameEngine {
 	public abstract class GameSection {
-		// PRAGMA MARK - Interface
+		// PRAGMA MARK - Public Interface
 		public bool IsActive {
 			get { return _isActive; }
 		}
