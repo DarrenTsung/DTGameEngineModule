@@ -1,6 +1,7 @@
 ﻿using DT;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
@@ -8,6 +9,12 @@ namespace DT.GameEngine {
 		protected PlayerManager() {}
 		
 		// PRAGMA MARK - Public Interface
+		public GameObject[] Players {
+			get {
+				return _players.Values.ToArray();
+			}
+		}
+		
 		public void SetPlayer(int playerIndex, GameObject player) {
 			GameObject previousPlayer = _players.SafeGet(playerIndex, null);
 			if (previousPlayer != null) {

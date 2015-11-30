@@ -39,6 +39,8 @@ namespace DT.GameEngine {
 			}
 			
 			this.SetupWithLevelObject(Object.Instantiate(_levelPrefab) as GameObject);
+			
+			DTGameEngineNotifications.OnLevelSimulationSectionSetup.Invoke();
 		}
 		
 		protected virtual void SetupWithLevelObject(GameObject levelObject) {
@@ -54,6 +56,8 @@ namespace DT.GameEngine {
 		
 		protected override void InternalTeardown() {
 			Object.Destroy(_level);
+			
+			DTGameEngineNotifications.OnLevelSimulationSectionTeardown.Invoke();
 		}
 	}
 }

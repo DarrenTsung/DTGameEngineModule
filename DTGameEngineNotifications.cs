@@ -18,5 +18,8 @@ namespace DT.GameEngine {
     
     // PRAGMA MARK - Game Manager
     public static UnityEvent PlayerRegistrationFinished = new UnityEvent();
+		
+		public static UnityEvent OnLevelSimulationSectionSetup = new UnityEvent();
+		public static UnityEvent OnLevelSimulationSectionTeardown = new UnityEvent();
 	}
 }

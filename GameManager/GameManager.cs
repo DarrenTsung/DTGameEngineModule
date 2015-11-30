@@ -22,10 +22,10 @@ namespace DT.GameEngine {
 		
 		protected virtual void Awake() {
 			_sections = new Dictionary<Type, GameSection>();
+			this.InitializeGameSections();
 		}
 		
 		protected void Start() {
-			this.InitializeGameSections();
 			this.StartGame();
 			this.RegisterNotifications();
 		}
@@ -91,7 +91,7 @@ namespace DT.GameEngine {
 						return subclassSection; 
 					}
 				}
-				Debug.LogError("GetGameSectionForType - invalid section type (" + sectionType + ") to switch to (also no subclasses found)!");
+				Debug.LogError("GetGameSectionForType - section type (" + sectionType + ") not found! (also checked subclasses)!");
 			}
 			return _sections.SafeGet(sectionType);
 		}

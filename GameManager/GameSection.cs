@@ -28,6 +28,7 @@ namespace DT.GameEngine {
 		// optional
 		public virtual void Update() {}
 		
+		
 		// PRAGMA MARK - Internal
 		protected GameManager _context;
 		
