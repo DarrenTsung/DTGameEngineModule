@@ -15,7 +15,12 @@ namespace DT.GameEngine {
     }
     
     public void DisableInputAfterDelay(float delay) {
-      StartCoroutine(this.DisableInputAfterDelayCoroutine(delay));
+      this.DoAfterDelay(delay, () => { this.DisableInput(); });
+    }
+    
+    public void DisableInputForTime(float time) {
+      this.DisableInput();
+      this.EnableInputAfterDelay(time);
     }
     
     public void DisableInput() {
@@ -23,7 +28,7 @@ namespace DT.GameEngine {
     }
     
     public void EnableInputAfterDelay(float delay) {
-      StartCoroutine(this.EnableInputAfterDelayCoroutine(delay));
+      this.DoAfterDelay(delay, () => { this.EnableInput(); });
     }
     
     public void EnableInput() {
@@ -58,16 +63,6 @@ namespace DT.GameEngine {
     
     protected virtual void HandleSecondaryDirection(Vector2 secondaryDirection) {
       // do nothing for now
-    }
-    
-    protected IEnumerator EnableInputAfterDelayCoroutine(float delay) {
-      yield return new WaitForSeconds(delay);
-      this.EnableInput();
-    }
-    
-    protected IEnumerator DisableInputAfterDelayCoroutine(float delay) {
-      yield return new WaitForSeconds(delay);
-      this.DisableInput();
     }
   }
 }
