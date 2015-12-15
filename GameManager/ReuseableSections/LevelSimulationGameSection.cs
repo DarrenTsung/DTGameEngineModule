@@ -45,7 +45,6 @@ namespace DT.GameEngine {
 		
 		protected virtual void SetupWithLevelObject(GameObject levelObject) {
 			_level = levelObject;
-			_level.transform.SetParent(_context.transform, worldPositionStays: true);
 			_levelInterfaceComponent = _level.GetRequiredComponent<ILevel>();
 			
 			foreach (int playerIndex in Toolbox.GetInstance<IPlayerInputManager>().UsedPlayerIndexes()) {
