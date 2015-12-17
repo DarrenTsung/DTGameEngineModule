@@ -221,6 +221,16 @@ namespace DT.GameEngine {
 			}
 		}
 		
+		protected virtual void UpdateInputForButton(ButtonEventGroup eventGroup, PlayerAction buttonAction) {
+			if (buttonAction.WasPressed) {
+				eventGroup.StartPressed.Invoke();
+			} else if (buttonAction.IsPressed) {
+				eventGroup.BeingPressed.Invoke();
+			} else if (buttonAction.WasReleased) {
+				eventGroup.WasReleased.Invoke();
+			}
+		}
+		
 		protected virtual Vector2 GetPrimaryDirection(int playerIndex, TPlayerActions actions) {
 			Vector2 primaryDirection = actions.PrimaryDirection.Value;
 			return primaryDirection;
