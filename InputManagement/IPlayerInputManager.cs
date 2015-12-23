@@ -4,6 +4,7 @@ using UnityEngine;
 
 #if IN_CONTROL
 using InControl;
+#endif
 
 public interface IPlayerInputManager {
 	bool InputDisabled {
@@ -11,8 +12,10 @@ public interface IPlayerInputManager {
 		set;
 	}
 	
+#if IN_CONTROL
 	void BindDeviceToUnusedPlayerIndex(InputDevice device);
 	bool IsDeviceBoundToAPlayerIndex(InputDevice device);
+#endif
 		
 	int[] UsedPlayerIndexes();
 	
@@ -22,4 +25,3 @@ public interface IPlayerInputManager {
 	void SetInputDisabledForPlayer(int playerIndex, bool inputDisabled);
 	bool IsInputDisabledForPlayer(int playerIndex);
 }
-#endif
