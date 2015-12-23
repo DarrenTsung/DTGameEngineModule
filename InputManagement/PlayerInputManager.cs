@@ -11,7 +11,8 @@ using InControl;
 namespace DT.GameEngine {
 	public enum PlayerInputType {
 		MOUSE_AND_KEYBOARD,
-		CONTROLLER
+		CONTROLLER,
+		TOUCH
 	}
 	
 	public class PlayerInputManager<TPlayerActions> : MonoBehaviour, IPlayerInputManager where TPlayerActions : PlayerActions, new() {
