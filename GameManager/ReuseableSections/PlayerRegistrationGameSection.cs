@@ -42,7 +42,7 @@ namespace DT.GameEngine {
 		}
 		
 		protected void HandleDeviceRegisterPressed(InputDevice device) {
-			Toolbox.GetInstance<IPlayerInputManager>().BindDeviceToUnusedPlayerIndex(device);
+			Toolbox.GetInstance<IControllerPlayerInputManager>().BindDeviceToUnusedPlayerIndex(device);
 		}
 		
 		protected void HandleFinishRegistrationPressed(InputDevice device) {

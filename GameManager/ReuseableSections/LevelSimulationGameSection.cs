@@ -47,7 +47,7 @@ namespace DT.GameEngine {
 			_level = levelObject;
 			_levelInterfaceComponent = _level.GetRequiredComponent<ILevel>();
 			
-			foreach (int playerIndex in Toolbox.GetInstance<IPlayerInputManager>().UsedPlayerIndexes()) {
+			foreach (int playerIndex in Toolbox.GetInstance<IControllerPlayerInputManager>().AllPlayerIndexesWithDevices()) {
 				GameObject player = _levelInterfaceComponent.SpawnPlayerFromTemplate(playerIndex, _playerTemplatePrefab);
 				Toolbox.GetInstance<PlayerManager>().SetPlayer(playerIndex, player);
 			}

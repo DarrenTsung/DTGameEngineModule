@@ -6,11 +6,11 @@ using System.Collections;
 using InControl;
 
 namespace DT.GameEngine {
-	public class PlayerActions : PlayerActionSet {
+	public class ControllerPlayerActions : PlayerActionSet {
 		public PlayerTwoAxisAction PrimaryDirection;
 		public PlayerTwoAxisAction SecondaryDirection;
 		
-		public PlayerActions() {
+		public ControllerPlayerActions() {
 			_primaryLeft = this.CreatePlayerAction("Primary Left");
 			_primaryRight = this.CreatePlayerAction("Primary Right");
 			_primaryUp = this.CreatePlayerAction("Primary Up");
@@ -24,26 +24,26 @@ namespace DT.GameEngine {
 			this.SecondaryDirection = this.CreateTwoAxisPlayerAction(_secondaryLeft, _secondaryRight, _secondaryDown, _secondaryUp);
 		}
 
-		public void BindWithInputType(PlayerInputType type) {
+		public void BindWithInputType(ControllerPlayerInputType type) {
 			switch (type) {
-				case PlayerInputType.MOUSE_AND_KEYBOARD:
+				case ControllerPlayerInputType.MOUSE_AND_KEYBOARD:
 					this.BindMouseAndKeyboardType(type);
 					break;
 				
-				case PlayerInputType.CONTROLLER:
+				case ControllerPlayerInputType.CONTROLLER:
 					this.BindControllerType(type);
 					break;
 			}
 		}
 		
-		protected virtual void BindMouseAndKeyboardType(PlayerInputType type) {
+		protected virtual void BindMouseAndKeyboardType(ControllerPlayerInputType type) {
 			_primaryLeft.AddDefaultBinding(Key.A);
 			_primaryRight.AddDefaultBinding(Key.D);
 			_primaryUp.AddDefaultBinding(Key.W);
 			_primaryDown.AddDefaultBinding(Key.S);
 		}
 		
-		protected virtual void BindControllerType(PlayerInputType type) {
+		protected virtual void BindControllerType(ControllerPlayerInputType type) {
 			_primaryLeft.AddDefaultBinding(InputControlType.LeftStickLeft);
 			_primaryRight.AddDefaultBinding(InputControlType.LeftStickRight);
 			_primaryUp.AddDefaultBinding(InputControlType.LeftStickUp);

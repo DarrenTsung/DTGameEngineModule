@@ -12,16 +12,6 @@ public interface IPlayerInputManager {
 		set;
 	}
 	
-#if IN_CONTROL
-	void BindDeviceToUnusedPlayerIndex(InputDevice device);
-	bool IsDeviceBoundToAPlayerIndex(InputDevice device);
-#endif
-		
-	int[] UsedPlayerIndexes();
-	
-	UnityEvents.V2 GetPrimaryDirectionEvent(int playerIndex);
-	UnityEvents.V2 GetSecondaryDirectionEvent(int playerIndex);
-	
 	void SetInputDisabledForPlayer(int playerIndex, bool inputDisabled);
 	bool IsInputDisabledForPlayer(int playerIndex);
 }
