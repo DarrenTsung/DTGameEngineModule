@@ -15,7 +15,7 @@ namespace DT {
 		QUEUED
 	}
 	
-	public class ViewControllerPresentationManager : Singleton<ViewControllerPresentationManager>, IEndDismissSubscriber<IViewController> {
+	public class ViewControllerQueuedPresentationManager : MonoBehaviour, IEndDismissSubscriber<IViewController> {
 		// PRAGMA MARK - Public Interface
 		public void Present(IViewController vc, VCPresentationType presentationType, VCPriority priority = VCPriority.LOW) {
 			switch (presentationType) {
@@ -81,7 +81,7 @@ namespace DT {
 			this._inspectorViewControllerQueue.Clear();
 			
 			foreach (IViewController vc in this._viewControllerQueue) {
-				double priority = 100;
+				double priority = this._viewControllerQueue.DebugGetPriorityForItem(vc);
 				this._inspectorViewControllerQueue.Add(new InspectorDisplayViewController(vc, priority));
 			}
 		}
