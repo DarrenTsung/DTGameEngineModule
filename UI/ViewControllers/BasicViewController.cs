@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace DT {
   // NOTE: this view controller only handles presenting a single view 
@@ -48,18 +49,30 @@ namespace DT {
         GameObject[] canvases = GameObject.FindGameObjectsWithTag("Canvas");
         loadedObject.transform.SetParent(canvases[0].transform);
         
+        IContextContainer contextContainer = this._view as IContextContainer;
+        if (contextContainer == null) {
+          Debug.LogError("InitializeView: view is not an IContextContainer, probably should be!");
+        } else {
+          contextContainer.ProvideContext(this);
+        }
+        
         callback();
       });
     }
     
     
     // PRAGMA MARK - IStartShowSubscriber<IView> implementation
+    protected UnityEvent _onEndShowOnce = new UnityEvent();
+    
     public void OnStartShow(IView view) {
       this._showDismissEvents.InvokeOnStartShow(this);
     }
     
     // PRAGMA MARK - IEndShowSubscriber<IView> implementation
     public void OnEndShow(IView view) {
+      this._onEndShowOnce.Invoke();
+      this._onEndShowOnce.RemoveAllListeners();
+      
       this._showDismissEvents.InvokeOnEndShow(this);
     }
     

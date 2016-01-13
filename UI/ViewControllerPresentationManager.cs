@@ -15,12 +15,11 @@ namespace DT {
 		QUEUED
 	}
 	
-	public class ViewControllerManager : Singleton<ViewControllerManager>, IEndDismissSubscriber<IViewController> {
+	public class ViewControllerPresentationManager : Singleton<ViewControllerPresentationManager>, IEndDismissSubscriber<IViewController> {
 		// PRAGMA MARK - Public Interface
 		public void Present(IViewController vc, VCPresentationType presentationType, VCPriority priority = VCPriority.LOW) {
 			switch (presentationType) {
 				case VCPresentationType.QUEUED:
-				Debug.Log("_showingViewControllers.Count: " + _showingViewControllers.Count);
 					if (_showingViewControllers.Count > 0) {
 						_viewControllerQueue.Enqueue(vc, (double)priority);
 					} else {
