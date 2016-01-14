@@ -6,10 +6,11 @@ using UnityEngine.Events;
 
 namespace DT {
   // NOTE: this view controller only handles presenting a single view 
-  public abstract class BasicViewController : IViewController, IStartShowSubscriber<IView>, 
-                                                               IEndShowSubscriber<IView>,
-                                                               IStartDismissSubscriber<IView>,
-                                                               IEndDismissSubscriber<IView> {
+  public abstract class BasicViewController<TView> : IViewController, IStartShowSubscriber<IView>, 
+                                                                      IEndShowSubscriber<IView>,
+                                                                      IStartDismissSubscriber<IView>,
+                                                                      IEndDismissSubscriber<IView>
+                                                                      where TView : IView {
     // PRAGMA MARK - IViewController implementation
     public void Show() {
       this.InitializeViewIfNeededAndDo(() => {
@@ -26,7 +27,7 @@ namespace DT {
     
     // PRAGMA MARK - Internal
     protected ShowDismissEvents<IViewController> _showDismissEvents = new ShowDismissEvents<IViewController>();
-    protected IView _view;
+    protected TView _view;
     protected string _viewPrefabName;
     
     protected void InitializeViewIfNeededAndDo(Action callback) {
@@ -42,7 +43,7 @@ namespace DT {
     
     protected void InitializeView(Action callback) {
       PrefabLoader.InstantiatePrefab(this._viewPrefabName, (GameObject loadedObject) => {
-        this._view = loadedObject.GetComponent<IView>();
+        this._view = loadedObject.GetComponent<TView>();
         this._view.AddShowDismissEvents(this);
         
         // HACK: make this better Darren
