@@ -47,8 +47,7 @@ namespace DT {
         this._view.AddShowDismissEvents(this);
 
         // HACK: make this better Darren
-        GameObject[] canvases = GameObject.FindGameObjectsWithTag("Canvas");
-        loadedObject.transform.SetParent(canvases[0].transform, false);
+        loadedObject.transform.SetParent(CanvasUtil.MainCanvas.transform, false);
 
         IContextContainer contextContainer = this._view as IContextContainer;
         if (contextContainer == null) {
