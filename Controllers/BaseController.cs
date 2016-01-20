@@ -35,7 +35,7 @@ namespace DT.Controllers {
   public class BaseController2D : RaycastController2D {
   	const float MaxFallVelocity = 10.0f;
   	
-  	public override RaycastHit2D CastRay(Vector2 relativeRayOrigin, Vector2 direction, float rayLength, LayerMask layers, LayerMask blockingLayers) {
+		public override RaycastHit2D CastRay(Vector2 relativeRayOrigin, Vector2 direction, float rayLength, LayerMask layers, LayerMask blockingLayers = default(LayerMask)) {
   		RaycastHit2D hit = base.CastRay(relativeRayOrigin, direction, rayLength, layers, blockingLayers);
   		if (hit.collider && hit.GameObject().IsInLayerMask(_oneWayGeometryLayer)) {
   			if (this.Constraints.FallThroughOneWayPlatforms || Mathf.Sign(direction.y) != -1) {
