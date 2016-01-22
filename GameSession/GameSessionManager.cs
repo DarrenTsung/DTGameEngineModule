@@ -1,28 +1,28 @@
 using DT;
 using UnityEngine;
 
-namespace DT.Game {
-  public class GameSessionManager : MonoBehaviour {
+namespace DT.GameEngine {
+  public class GameSessionManager<T> : MonoBehaviour where T : GameSession<T> {
     // PRAGMA MARK - Public Interface
-    public GameSession ActiveGameSession {
+    public T ActiveGameSession {
       get; private set;
     }
-    
+
     // @return the game session started
-    public GameSession StartNewGameSession() {
+    public T StartNewGameSession() {
       GameObject sessionGameObject = new GameObject("GameSession");
       sessionGameObject.transform.SetParent(this.transform);
-      
-      GameSession newGameSession = sessionGameObject.AddComponent<GameSession>();
+
+      T newGameSession = sessionGameObject.AddComponent<T>();
       newGameSession.OnGameSessionFinished += this.HandleGameSessionFinished;
       this.ActiveGameSession = newGameSession;
-      
+
       return newGameSession;
     }
-    
-    
+
+
     // PRAGMA MARK - Internal
-    protected void HandleGameSessionFinished(GameSession finishedGameSession) {
+    protected void HandleGameSessionFinished(T finishedGameSession) {
       finishedGameSession.OnGameSessionFinished -= this.HandleGameSessionFinished;
       if (finishedGameSession == this.ActiveGameSession) {
         this.ActiveGameSession = null;

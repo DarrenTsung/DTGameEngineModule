@@ -1,10 +1,10 @@
 using DT;
 using UnityEngine;
 
-namespace DT.Game {
-  public class GameSession : MonoBehaviour {
+namespace DT.GameEngine {
+  public abstract class GameSession<T> : MonoBehaviour where T : class {
     // PRAGMA MARK - Public Interface
-    public delegate void HandleGameSessionFinished(GameSession finishedGameSession);
+    public delegate void HandleGameSessionFinished(T finishedGameSession);
     public event HandleGameSessionFinished OnGameSessionFinished = delegate {};
 
     [SerializeField, ReadOnly]
@@ -16,12 +16,19 @@ namespace DT.Game {
       private set {
         this._isFinished = value;
         if (this._isFinished) {
-          this.OnGameSessionFinished.Invoke(this);
+          this.Cleanup();
+          this.OnGameSessionFinished.Invoke(this as T);
         }
       }
     }
 
 
     // PRAGMA MARK - Internal
+    protected void Awake() {
+      this.Initialize();
+    }
+
+    protected abstract void Initialize();
+    protected abstract void Cleanup();
   }
 }
