@@ -78,6 +78,11 @@ namespace DT.GameEngine {
 			return cameraWorldExtents;
 		}
 
+    public Vector2 GetCameraRelativePosition(Vector2 relativePosition) {
+      Rect cameraWorldScreenExtents = this.CameraWorldScreenExtents();
+      return cameraWorldScreenExtents.min + Vector2.Scale(new Vector2(cameraWorldScreenExtents.width, cameraWorldScreenExtents.height), relativePosition);
+    }
+
 		// PRAGMA MARK - Internal
     protected tk2dCamera Camera {
       get {
@@ -87,6 +92,9 @@ namespace DT.GameEngine {
         return this._camera;
       }
     }
+
+    [SerializeField]
+    protected bool _followPlayer;
 
 		protected tk2dCamera _camera;
 		protected Transform _targetTransform;
@@ -102,7 +110,7 @@ namespace DT.GameEngine {
 		}
 
 		protected void LateUpdate() {
-			if (!_targetTransform) {
+			if (!_targetTransform || !this._followPlayer) {
 				return;
 			}
 
