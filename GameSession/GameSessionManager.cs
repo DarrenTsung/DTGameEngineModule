@@ -16,6 +16,7 @@ namespace DT.GameEngine {
       T newGameSession = sessionGameObject.AddComponent<T>();
       newGameSession.OnGameSessionFinished += this.HandleGameSessionFinished;
       this.ActiveGameSession = newGameSession;
+      DTGameEngineNotifications.GameSessionStarted.Invoke(newGameSession);
 
       return newGameSession;
     }
@@ -26,7 +27,12 @@ namespace DT.GameEngine {
       finishedGameSession.OnGameSessionFinished -= this.HandleGameSessionFinished;
       if (finishedGameSession == this.ActiveGameSession) {
         this.ActiveGameSession = null;
+        this.ActiveGameSessionWasFinished(finishedGameSession);
       }
+    }
+
+    protected virtual void ActiveGameSessionWasFinished(T finishedGameSession) {
+      DTGameEngineNotifications.GameSessionFinished.Invoke(finishedGameSession);
     }
   }
 }

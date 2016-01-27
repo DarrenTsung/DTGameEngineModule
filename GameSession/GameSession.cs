@@ -13,9 +13,10 @@ namespace DT.GameEngine {
       get {
         return this._isFinished;
       }
-      private set {
+      protected set {
+        bool oldValue = this._isFinished;
         this._isFinished = value;
-        if (this._isFinished) {
+        if (!oldValue && this._isFinished) {
           this.Cleanup();
           this.OnGameSessionFinished.Invoke(this as T);
         }
