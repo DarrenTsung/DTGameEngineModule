@@ -14,6 +14,12 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Unity Lifecycle
+    protected void OnEnable() {
+      if (this._contextGameObject != null) {
+        this.RegisterNotifications();
+      }
+    }
+
     protected void OnDisable() {
       this.CleanupNotifications();
     }
