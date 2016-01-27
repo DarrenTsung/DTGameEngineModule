@@ -48,6 +48,9 @@ namespace DT {
 
         // HACK: make this better Darren
         loadedObject.transform.SetParent(CanvasUtil.MainCanvas.transform, false);
+        loadedObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        ((RectTransform)loadedObject.transform).offsetMin = new Vector2(0.0f, 0.0f);
+        ((RectTransform)loadedObject.transform).offsetMax = new Vector2(0.0f, 0.0f);
 
         IContextContainer contextContainer = this._view as IContextContainer;
         if (contextContainer == null) {
@@ -62,14 +65,20 @@ namespace DT {
 
 
     // PRAGMA MARK - IStartShowSubscriber<IView> implementation
+    protected UnityEvent _onStartShowOnce = new UnityEvent();
     protected UnityEvent _onEndShowOnce = new UnityEvent();
+    protected UnityEvent _onStartDismissOnce = new UnityEvent();
+    protected UnityEvent _onEndDismissOnce = new UnityEvent();
 
-    public void OnStartShow(IView view) {
+    public virtual void OnStartShow(IView view) {
+      this._onStartShowOnce.Invoke();
+      this._onStartShowOnce.RemoveAllListeners();
+
       this._showDismissEvents.InvokeOnStartShow(this);
     }
 
     // PRAGMA MARK - IEndShowSubscriber<IView> implementation
-    public void OnEndShow(IView view) {
+    public virtual void OnEndShow(IView view) {
       this._onEndShowOnce.Invoke();
       this._onEndShowOnce.RemoveAllListeners();
 
@@ -77,12 +86,18 @@ namespace DT {
     }
 
     // PRAGMA MARK - IStartDismissSubscriber<IView> implementation
-    public void OnStartDismiss(IView view) {
+    public virtual void OnStartDismiss(IView view) {
+      this._onStartDismissOnce.Invoke();
+      this._onStartDismissOnce.RemoveAllListeners();
+
       this._showDismissEvents.InvokeOnStartDismiss(this);
     }
 
     // PRAGMA MARK - IEndDismissSubscriber<IView> implementation
-    public void OnEndDismiss(IView view) {
+    public virtual void OnEndDismiss(IView view) {
+      this._onEndDismissOnce.Invoke();
+      this._onEndDismissOnce.RemoveAllListeners();
+
       this._showDismissEvents.InvokeOnEndDismiss(this);
     }
 
