@@ -5,41 +5,47 @@ using System.Collections;
 namespace DT.GameEngine {
 	public class HealthComponent : MonoBehaviour {
 		// PRAGMA MARK - Public Interface
+    public UnityEvents.B OnInvulnerableStateChange = new UnityEvents.B();
+
 		public int Health {
 			get {
-				return _health;
+				return this._health;
 			}
 		}
 
 		public bool IsFullHealth {
 			get {
-				return _health == _baseHealth;
+				return this._health == this._baseHealth;
 			}
 		}
 
 		public virtual void DealDamage(int damage) {
-			_health -= damage;
-			if (_health <= 0) {
-				_delegate.HandleNoHealth();
+      if (this._invulnerable) {
+        return;
+      }
+
+			this._health -= damage;
+			if (this._health <= 0) {
+				this._delegate.HandleNoHealth();
 			} else {
-				_delegate.HandleDamageDealt(damage);
+				this._delegate.HandleDamageDealt(damage);
 			}
 		}
 
 		public virtual void GiveHealth(int health) {
-			if (_health <= 0) {
+			if (this._health <= 0) {
 				return;
 			}
 
-			if (_health >= _baseHealth) {
+			if (this._health >= this._baseHealth) {
 				return;
 			}
 
-			_health += health;
-			if (_health > _baseHealth) {
-				_health = _baseHealth;
+			this._health += health;
+			if (this._health > this._baseHealth) {
+				this._health = this._baseHealth;
 			}
-			_delegate.HandleHealthGiven(health);
+			this._delegate.HandleHealthGiven(health);
 		}
 
     public int BaseHealth {
@@ -55,6 +61,20 @@ namespace DT.GameEngine {
       }
     }
 
+    public void SetInvulnerableForTime(float time) {
+      this.Invulnerable = true;
+
+      // stop the setting false coroutine if it exists
+      if (this._invulnerableCoroutine != null) {
+        this.StopCoroutine(this._invulnerableCoroutine);
+      }
+
+      this._invulnerableCoroutine = this.DoAfterDelay(time, () => {
+        this.Invulnerable = false;
+        this._invulnerableCoroutine = null;
+      });
+    }
+
 
 		// PRAGMA MARK - Interface
 		[SerializeField]
@@ -62,13 +82,28 @@ namespace DT.GameEngine {
 		[SerializeField, ReadOnly]
 		protected int _health;
 
+    protected bool Invulnerable {
+      get {
+        return this._invulnerable;
+      }
+      set {
+        this._invulnerable = value;
+        this.OnInvulnerableStateChange.Invoke(this._invulnerable);
+      }
+    }
+
+    [SerializeField, ReadOnly]
+    private bool _invulnerable;
+
 		protected IHealthComponentDelegate _delegate;
+
+    private IEnumerator _invulnerableCoroutine;
 
 		protected virtual void Awake() {
       if (this._delegate == null) {
-  			_delegate = this.GetRequiredComponentInParent<IHealthComponentDelegate>();
+  			this._delegate = this.GetRequiredComponentInParent<IHealthComponentDelegate>();
       }
-			_health = _baseHealth;
+			this._health = this._baseHealth;
 		}
 	}
 }
