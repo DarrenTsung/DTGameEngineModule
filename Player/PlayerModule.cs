@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DT.GameEngine {
   public class PlayerModule : MonoBehaviour {
     // PRAGMA MARK - Public Interface
-    public void SetupWithContext(Player context) {
+    public virtual void SetupWithContext(Player context) {
       this._contextPlayerIndex = context.PlayerIndex;
       this._contextGameObject = context.gameObject;
 
