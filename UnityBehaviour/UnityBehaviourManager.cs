@@ -1,6 +1,5 @@
 using DT;
 
-
 namespace DT.GameEngine {
   public class UnityBehaviourManager : Singleton<UnityBehaviourManager> {
     protected UnityBehaviourManager() {}
