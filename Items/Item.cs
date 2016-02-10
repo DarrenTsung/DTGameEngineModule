@@ -3,7 +3,7 @@ using DT;
 
 namespace DT.GameEngine {
   public class Item : IIdObject {
-    // PRAGMA MARK - IIdObject
+    // PRAGMA MARK - IIdObject Implementation
     public int Id {
       get { return this._itemId; }
     }

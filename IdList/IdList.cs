@@ -4,6 +4,7 @@ using System.Collections.Generic;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
+  [CustomExtensionInspector]
   public class IdList<T> : MonoBehaviour, IEnumerable<T> where T : IIdObject {
     // PRAGMA MARK - Public Interface
     public T LoadById(int id) {
@@ -23,16 +24,26 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - Internal
     [SerializeField]
-    private List<T> _data = new List<T>();
+    protected List<T> _data = new List<T>();
+    [SerializeField]
+    private TextAsset _textSource;
     private Dictionary<int, T> _map = new Dictionary<int, T>();
 
     private void Awake() {
-      this.RefreshMap();
+      this.HandleDataUpdated();
     }
 
     private void OnValidate() {
-      this.RefreshMap();
+      this.HandleDataUpdated();
     }
+
+    private void HandleDataUpdated() {
+      this.RefreshMap();
+      this.RefreshCachedMappings();
+    }
+
+    // optional
+    protected virtual void RefreshCachedMappings() {}
 
     private void RefreshMap() {
       this._map.Clear();
@@ -40,6 +51,16 @@ namespace DT.GameEngine {
       foreach (T item in this._data) {
         this._map[item.Id] = item;
       }
+    }
+
+    [MakeButton]
+    private void ReadFromSource() {
+      this._data = JsonSerializable.DeserializeFromTextAsset<List<T>>(this._textSource);
+    }
+
+    [MakeButton]
+    private void WriteToSource() {
+      JsonSerializable.SerializeToTextAsset(this._data, this._textSource);
     }
   }
 }
