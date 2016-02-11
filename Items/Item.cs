@@ -2,17 +2,18 @@ using DT;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
+  [System.Serializable]
   public class Item : IIdObject {
     // PRAGMA MARK - IIdObject Implementation
     public int Id {
-      get { return this._itemId; }
+      get { return this.itemId; }
     }
 
+    public int itemId;
+    public string notes;
 
-    // PRAGMA MARK - Internal
-    [SerializeField]
-    private int _itemId;
-    [SerializeField]
-    private Sprite _displaySprite;
+    [Header("Display")]
+    public string displayName;
+    public Sprite displaySprite;
 	}
 }

@@ -12,7 +12,6 @@ namespace DT.GameEngine {
         lootRewards.Add(new ItemQuantityLootReward(itemQuantity));
       }
 
-      // TODO (darren): look into making sure IEnumerable is the most generic way to pass in a collection
       return lootRewards.ToArray();
     }
   }

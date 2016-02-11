@@ -54,13 +54,13 @@ namespace DT.GameEngine {
     }
 
     [MakeButton]
-    private void ReadFromSource() {
-      this._data = JsonSerializable.DeserializeFromTextAsset<List<T>>(this._textSource);
+    protected void ReadFromSource() {
+      JsonSerializable.OverwriteDeserializeFromTextAsset(this._textSource, this);
     }
 
     [MakeButton]
-    private void WriteToSource() {
-      JsonSerializable.SerializeToTextAsset(this._data, this._textSource);
+    protected void WriteToSource() {
+      JsonSerializable.SerializeToTextAsset(this, this._textSource);
     }
   }
 }
