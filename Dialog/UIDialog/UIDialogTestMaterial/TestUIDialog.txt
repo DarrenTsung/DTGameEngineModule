@@ -1,0 +1,1 @@
+{"keyframes":[{"text":"Bob: Hi Alice, how are you?","characterPrefabName":"BobDialogHead"},{"text":"Alice: I'm good, thanks.","characterPrefabName":"AliceDialogHead"},{"text":"Bob: Want to go on a date sometime?","characterPrefabName":"BobDialogHead"},{"text":"Alice: No.","characterPrefabName":"AliceDialogHead"}]}
