@@ -9,22 +9,23 @@ namespace DT.GameEngine {
     }
 
     // @return the game session started
-    public T StartNewGameSession() {
-      GameObject sessionGameObject = new GameObject("GameSession");
-      sessionGameObject.transform.SetParent(this.transform);
+    public void StartGameSession(T gameSession) {
+      if (gameSession.Started) {
+        Debug.LogWarning("StartGameSession: failed because game session already started!");
+        return;
+      }
 
-      T newGameSession = sessionGameObject.AddComponent<T>();
-      newGameSession.OnGameSessionFinished += this.HandleGameSessionFinished;
-      this.ActiveGameSession = newGameSession;
-      DTGameEngineNotifications.GameSessionStarted.Invoke(newGameSession);
+      gameSession.OnFinished.AddListener(this.HandleGameSessionFinished);
 
-      return newGameSession;
+      this.ActiveGameSession = gameSession;
+      this.ActiveGameSession.Start();
+      DTGameEngineNotifications.GameSessionStarted.Invoke(gameSession);
     }
 
 
     // PRAGMA MARK - Internal
     protected void HandleGameSessionFinished(T finishedGameSession) {
-      finishedGameSession.OnGameSessionFinished -= this.HandleGameSessionFinished;
+      finishedGameSession.OnFinished.RemoveListener(this.HandleGameSessionFinished);
       if (finishedGameSession == this.ActiveGameSession) {
         this.ActiveGameSession = null;
         this.ActiveGameSessionWasFinished(finishedGameSession);

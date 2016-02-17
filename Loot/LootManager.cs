@@ -8,8 +8,13 @@ namespace DT.GameEngine {
     public ILootReward[] SelectRewardsForLootDropGroupId(int lootDropGroupId) {
       List<ILootReward> rewards = new List<ILootReward>();
 
-      LootDrop[] lootDrops = Toolbox.GetInstance<LootDropList>().GetLootDropsForGroupId(lootDropGroupId);
+      IEnumerable<LootDrop> lootDrops = Toolbox.GetInstance<LootDropGroupList>().GetLootDropsForId(lootDropGroupId);
       LootDrop selectedLootDrop = WeightedSelectionUtil.SelectWeightedObject(lootDrops);
+
+      if (selectedLootDrop == null) {
+        Debug.LogError("SelectRewardsForLootDropGroupId: failed to select lootDrop with group id: " + lootDropGroupId);
+        return null;
+      }
 
       foreach (int rewardedLootDropGroupId in selectedLootDrop.RewardedLootDropGroupIds) {
         rewards.AddRange(this.SelectRewardsForLootDropGroupId(rewardedLootDropGroupId));

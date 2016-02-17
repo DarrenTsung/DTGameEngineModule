@@ -1,35 +1,59 @@
 using DT;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DT.GameEngine {
-  public abstract class GameSession<T> : MonoBehaviour where T : class {
-    // PRAGMA MARK - Public Interface
-    public delegate void HandleGameSessionFinished(T finishedGameSession);
-    public event HandleGameSessionFinished OnGameSessionFinished = delegate {};
+  public abstract class GameSession<T> where T : class {
+    public class GameSessionEvent : UnityEvent<T> {}
 
-    [SerializeField, ReadOnly]
-    private bool _isFinished;
-    public bool IsFinished {
-      get {
-        return this._isFinished;
+    // PRAGMA MARK - Public Interface
+    [HideInInspector]
+    public GameSessionEvent OnStarted = new GameSessionEvent();
+    [HideInInspector]
+    public GameSessionEvent OnFinished = new GameSessionEvent();
+
+    public void Start() {
+      if (this.Started) {
+        Debug.LogWarning("GameSession.Start(): called when game session already started!");
+        return;
       }
-      protected set {
-        bool oldValue = this._isFinished;
-        this._isFinished = value;
-        if (!oldValue && this._isFinished) {
-          this.Cleanup();
-          this.OnGameSessionFinished.Invoke(this as T);
-        }
+
+      this._started = true;
+      this.HandleStart();
+      this.OnStarted.Invoke(this as T);
+    }
+
+    public void Finish() {
+      if (this.Finished) {
+        Debug.LogWarning("GameSession.Finish(): called when game session already finished!");
+        return;
+      }
+
+      this._finished = true;
+      this.HandleFinish();
+      this.OnFinished.Invoke(this as T);
+    }
+
+    public bool Started {
+      get {
+        return this._started;
+      }
+    }
+
+    public bool Finished {
+      get {
+        return this._finished;
       }
     }
 
 
     // PRAGMA MARK - Internal
-    protected void Awake() {
-      this.Initialize();
-    }
+    [SerializeField, ReadOnly]
+    private bool _started;
+    [SerializeField, ReadOnly]
+    private bool _finished;
 
-    protected abstract void Initialize();
-    protected abstract void Cleanup();
+    protected abstract void HandleStart();
+    protected abstract void HandleFinish();
   }
 }
