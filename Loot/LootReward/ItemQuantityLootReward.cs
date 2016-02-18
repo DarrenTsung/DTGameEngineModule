@@ -4,12 +4,12 @@ namespace DT.GameEngine {
   public class ItemQuantityLootReward : ILootReward {
     // PRAGMA MARK - Public Interface
     public ItemQuantityLootReward(ItemQuantity itemQuantity) {
-      this._itemQuantity = itemQuantity;
+      this.itemQuantity = itemQuantity;
     }
 
     // PRAGMA MARK - ILootReward Implementation
     public void Apply() {
-      UserItemInventory.Instance.GainItemQuantity(this._itemQuantity);
+      UserItemInventory.Instance.GainItemQuantity(this.itemQuantity);
     }
 
     public ILootRewardType Type {
@@ -18,8 +18,6 @@ namespace DT.GameEngine {
       }
     }
 
-
-    // PRAGMA MARK - Internal
-    private ItemQuantity _itemQuantity;
+    public ItemQuantity itemQuantity;
   }
 }
