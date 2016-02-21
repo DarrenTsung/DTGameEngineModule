@@ -4,7 +4,7 @@ using System.Collections.Generic;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
-  [CustomExtensionInspector]
+  [CustomInspector]
   public class IdList<T> : MonoBehaviour, IEnumerable<T> where T : IIdObject {
     // PRAGMA MARK - Public Interface
     public T LoadById(int id) {

@@ -22,7 +22,7 @@ namespace DT.GameEngine {
     public string text;
   }
 
-  [CustomExtensionInspector]
+  [CustomInspector]
   public class BasicDialog<TDialogModel, TKeyframe> : MonoBehaviour, IDialog where TDialogModel : BasicDialogModel<TKeyframe>
                                                                              where TKeyframe : BasicDialogKeyframe {
     // PRAGMA MARK - IDialog Implementation

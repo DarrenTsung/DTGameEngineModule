@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 namespace DT {
-	[CustomExtensionInspector]
+	[CustomInspector]
 	public class PulseTextWhenChanged : MonoBehaviour {
 		// PRAGMA MARK - Internal
 		[SerializeField]
