@@ -11,13 +11,11 @@ namespace DT.GameEngine {
 
 		public void Setup() {
 			this._isActive = true;
-			Debug.Log("Setup - " + this.GetType().Name);
 			this.InternalSetup();
 		}
 
 		public void Teardown() {
 			this._isActive = false;
-			Debug.Log("Teardown - " + this.GetType().Name);
 			this.InternalTeardown();
 		}
 
