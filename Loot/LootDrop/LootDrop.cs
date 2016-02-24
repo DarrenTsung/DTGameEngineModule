@@ -7,9 +7,11 @@ namespace DT.GameEngine {
   [System.Serializable]
   public class LootDrop : IIdObject, IWeightedObject {
     // PRAGMA MARK - Public Interface
-    public int[] RewardedLootDropGroupIds {
-      get { return this._rewardedLootDropGroupIds; }
-    }
+    public int lootDropId;
+    public string notes;
+    public int weight;
+    public int[] rewardedLootDropGroupIds = new int[0];
+    public ItemQuantity[] rewardedItemQuantities = new ItemQuantity[0];
 
     public ILootReward[] RewardedLootRewards {
       get {
@@ -23,7 +25,7 @@ namespace DT.GameEngine {
     public bool IsValid() {
       HashSet<int> validSet = new HashSet<int>();
       // HashSet.Add returns false if the item was not added (non-unique)
-      bool allLootDropGroupIdsUnique = this._rewardedLootDropGroupIds.All(text => validSet.Add(text));
+      bool allLootDropGroupIdsUnique = this.rewardedLootDropGroupIds.All(text => validSet.Add(text));
       if (!allLootDropGroupIdsUnique) {
         Debug.LogWarning("LootDrop.IsValid(): rewarded loot drop group ids are not unique!");
         return false;
@@ -35,34 +37,23 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - IIdObject Implementation
     public int Id {
-      get { return this._lootDropId; }
+      get { return this.lootDropId; }
     }
 
 
     // PRAGMA MARK - IWeightedObject Implementation
     public int Weight {
-      get { return this._weight; }
+      get { return this.weight; }
     }
 
 
     // PRAGMA MARK - Internal
-    [SerializeField]
-    private int _lootDropId;
-    [SerializeField]
-    private string _notes;
-    [SerializeField]
-    private int[] _rewardedLootDropGroupIds = new int[0];
-    [SerializeField]
-    private ItemQuantity[] _rewardedItemQuantities = new ItemQuantity[0];
-    [SerializeField]
-    private int _weight;
-
     private ILootReward[] _lootRewards;
 
     private void CreateLootRewards() {
       List<ILootReward> lootRewards = new List<ILootReward>();
 
-      lootRewards.AddRange(LootRewardFactory.CreateLootRewardsFrom(this._rewardedItemQuantities));
+      lootRewards.AddRange(LootRewardFactory.CreateLootRewardsFrom(this.rewardedItemQuantities));
 
       this._lootRewards = lootRewards.ToArray();
     }

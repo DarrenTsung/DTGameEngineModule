@@ -16,7 +16,7 @@ namespace DT.GameEngine {
         return null;
       }
 
-      foreach (int rewardedLootDropGroupId in selectedLootDrop.RewardedLootDropGroupIds) {
+      foreach (int rewardedLootDropGroupId in selectedLootDrop.rewardedLootDropGroupIds) {
         rewards.AddRange(this.SelectRewardsForLootDropGroupId(rewardedLootDropGroupId));
       }
 

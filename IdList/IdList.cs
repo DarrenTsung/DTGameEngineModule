@@ -60,7 +60,7 @@ namespace DT.GameEngine {
 
     [MakeButton]
     protected void WriteToSource() {
-      JsonSerializable.SerializeToTextAsset(this, this._textSource);
+      JsonSerializable.SerializeToTextAsset(this, this._textSource, prettyPrint: true);
     }
   }
 }

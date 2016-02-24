@@ -9,7 +9,7 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Public Interface
     public IEnumerable<LootDrop> GetLootDropsForId(int lootDropGroupId) {
       LootDropGroup dropGroup = this.LoadById(lootDropGroupId);
-      return (from lootDropId in dropGroup.LootDropIds select Toolbox.GetInstance<LootDropList>().LoadById(lootDropId));
+      return (from lootDropId in dropGroup.lootDropIds select Toolbox.GetInstance<LootDropList>().LoadById(lootDropId));
     }
 	}
 }

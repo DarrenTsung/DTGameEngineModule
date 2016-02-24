@@ -7,16 +7,15 @@ namespace DT.GameEngine {
   [System.Serializable]
   public class LootDropGroup : IIdObject {
     // PRAGMA MARK - Public Interface
-    public int[] LootDropIds {
-      get {
-        return this._lootDropIds;
-      }
-    }
+    public int lootDropGroupId;
+    public string notes;
+    [LootDropId]
+    public int[] lootDropIds;
 
     public bool IsValid() {
       HashSet<int> validSet = new HashSet<int>();
       // HashSet.Add returns false if the item was not added (non-unique)
-      bool allLootDropIdsUnique = this._lootDropIds.All(id => validSet.Add(id));
+      bool allLootDropIdsUnique = this.lootDropIds.All(id => validSet.Add(id));
       if (!allLootDropIdsUnique) {
         Debug.LogWarning("LootDropGroup.IsValid(): loot drop ids are not unique!");
         return false;
@@ -28,16 +27,7 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - IIdObject Implementation
     public int Id {
-      get { return this._lootDropGroupId; }
+      get { return this.lootDropGroupId; }
     }
-
-
-    // PRAGMA MARK - Internal
-    [SerializeField]
-    private int _lootDropGroupId;
-    [SerializeField]
-    private string _notes;
-    [SerializeField]
-    private int[] _lootDropIds;
   }
 }
