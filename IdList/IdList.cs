@@ -8,6 +8,11 @@ namespace DT.GameEngine {
   public class IdList<T> : MonoBehaviour, IEnumerable<T> where T : IIdObject {
     // PRAGMA MARK - Public Interface
     public T LoadById(int id) {
+      if (!this._initialized) {
+        this.Refresh();
+        this._initialized = true;
+      }
+
       return this._map.SafeGet(id);
     }
 
@@ -29,15 +34,13 @@ namespace DT.GameEngine {
     private TextAsset _textSource;
     private Dictionary<int, T> _map = new Dictionary<int, T>();
 
-    private void Awake() {
-      this.HandleDataUpdated();
-    }
+    private bool _initialized = false;
 
     private void OnValidate() {
-      this.HandleDataUpdated();
+      this._initialized = false;
     }
 
-    private void HandleDataUpdated() {
+    private void Refresh() {
       this.RefreshMap();
       this.RefreshCachedMappings();
     }
