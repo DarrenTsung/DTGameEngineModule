@@ -10,7 +10,7 @@ namespace DT.GameEngine {
     public int itemId;
     public int quantity;
 
-    public ItemQuantity(int itemId, int quantity) {
+    public ItemQuantity(int itemId, int quantity = 1) {
       this.itemId = itemId;
       this.quantity = quantity;
     }
