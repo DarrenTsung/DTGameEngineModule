@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace DT.GameEngine {
-  public class SlideOutDisplay : MonoBehaviour {
+  public class SlideOutDisplay : MonoBehaviour, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Public Interface
     public void DisplayObjects(IEnumerable<GameObject> gameObjects) {
       List<IDisplayDelegate> displayDelegates = new List<IDisplayDelegate>();
@@ -16,6 +16,13 @@ namespace DT.GameEngine {
       this._displayDelegates = displayDelegates.ToArray();
 
       this.SlideOut();
+    }
+
+
+    // PRAGMA MARK - IRecycleCleanupSubscriber Implementation
+    public void OnRecycleCleanup() {
+      this._animator.SetTrigger("Reset");
+      this._objectContainer.transform.DestroyAllChildren();
     }
 
 
