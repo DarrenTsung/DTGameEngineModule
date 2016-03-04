@@ -45,6 +45,10 @@ namespace DT.GameEngine {
       itemQuantity.quantity -= spendQuantity.quantity;
     }
 
+    public int GetCountOfItemId(int itemId) {
+      return this.GetItemQuantityForItemId(itemId).quantity;
+    }
+
 
     // PRAGMA MARK - IEnumerable<ItemQuantity> Implementation
     IEnumerator IEnumerable.GetEnumerator() {

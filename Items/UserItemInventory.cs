@@ -48,6 +48,10 @@ namespace DT.GameEngine {
       this.OnSpentItemQuantity.Invoke(spendQuantity);
     }
 
+    public int GetCountOfItemId(int itemId) {
+      return this._itemInventory.GetCountOfItemId(itemId);
+    }
+
 
     // PRAGMA MARK - Internal
     [SerializeField]
