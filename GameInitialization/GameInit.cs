@@ -13,7 +13,7 @@ namespace DT {
 		}
 
 		protected virtual void InitializeGame() {
-			// do nothing for now
+      CoroutineWrapper.Initialize();
 		}
 
     protected virtual void DelayedInitializeGame() {

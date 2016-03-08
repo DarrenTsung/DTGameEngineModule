@@ -38,7 +38,7 @@ namespace DT.GameEngine {
 
       int userCount = UserItemInventory.Instance.GetCountOfItemId(this._requiredItemQuantity.itemId);
 
-      this._requiredLabel.SetText(string.Format("{0} / {1}", userCount, this._requiredItemQuantity.quantity));
+      this._requiredLabel.text = string.Format("{0} / {1}", userCount, this._requiredItemQuantity.quantity);
     }
   }
 }

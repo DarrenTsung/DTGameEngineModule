@@ -14,7 +14,7 @@ namespace DT.GameEngine {
       itemQuantity.quantity += gainQuantity.quantity;
     }
 
-    public bool CanSpendItemQuantityList(List<ItemQuantity> neededQuantities) {
+    public bool CanSpendItemQuantityList(IEnumerable<ItemQuantity> neededQuantities) {
       foreach (ItemQuantity neededQuantity in neededQuantities) {
         if (!this.CanSpendItemQuantity(neededQuantity)) {
           return false;
@@ -29,7 +29,7 @@ namespace DT.GameEngine {
       return itemQuantity.quantity >= neededQuantity.quantity;
     }
 
-    public void SpendItemQuantityList(List<ItemQuantity> spendQuantities) {
+    public void SpendItemQuantityList(IEnumerable<ItemQuantity> spendQuantities) {
       foreach (ItemQuantity spendQuantity in spendQuantities) {
         this.SpendItemQuantity(spendQuantity);
       }
