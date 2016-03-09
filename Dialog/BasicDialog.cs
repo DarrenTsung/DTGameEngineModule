@@ -62,7 +62,7 @@ namespace DT.GameEngine {
     }
 
     public void LoadDialogModelFromTextSource(TextAsset textSource) {
-      this._dialog = JsonSerializable.DeserializeFromTextAsset<TDialogModel>(textSource);
+      this._dialog = JsonSerialization.DeserializeFromTextAsset<TDialogModel>(textSource);
     }
 
 		// PRAGMA MARK - Internal
