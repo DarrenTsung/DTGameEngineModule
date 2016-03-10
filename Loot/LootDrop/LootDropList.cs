@@ -5,6 +5,6 @@ using System.Linq;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
-  public class LootDropList : IdList<LootDrop> {
+  public class LootDropList : IdList<LootDrop, LootDropList> {
 	}
 }

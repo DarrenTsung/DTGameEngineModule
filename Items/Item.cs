@@ -15,5 +15,7 @@ namespace DT.GameEngine {
     [Header("Display")]
     public string displayName;
     public Sprite displaySprite;
+    public Sprite secondaryDisplaySprite;
+    public int testHello;
 	}
 }

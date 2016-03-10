@@ -5,39 +5,88 @@ using System.Collections.Generic;
 
 namespace DT.GameEngine {
   [CustomInspector]
-  public class IdList<T> : MonoBehaviour, IEnumerable<T> where T : IIdObject {
-    // PRAGMA MARK - Public Interface
-    public T LoadById(int id) {
-      if (!this._initialized) {
-        this.Refresh();
-        this._initialized = true;
-      }
+  public abstract class IdList<TObject, TSingleton> : IIdList<TObject> where TObject : IIdObject
+                                                                       where TSingleton : IIdList<TObject>, new() {
+    // PRAGMA MARK - Static
+    private static TSingleton _instance;
+		private static object _lock = new object();
 
-      return this._map.SafeGet(id);
+    public static TSingleton Instance {
+      get {
+        lock (_lock) {
+          if (_instance == null) {
+            _instance = new TSingleton();
+          }
+
+          return _instance;
+        }
+      }
     }
 
 
-    // PRAGMA MARK - IEnumerable<T> Implementation
+    // Constructor is public if you are in the editor because we want to enforce the constraint
+    // that production code (non-editor) uses the Instance for performance instead of creating
+    // new instances
+#if UNITY_EDITOR
+    public IdList() {
+      this.Initialize();
+    }
+#else
+    private IdList() {
+      this.Initialize();
+    }
+#endif
+
+
+    // PRAGMA MARK - IIdList Implementation
+    public TObject LoadById(int id) {
+      return this._map.SafeGet(id);
+    }
+
+#if UNITY_EDITOR
+    public void Add(TObject newObj) {
+      this._data.Add(newObj);
+    }
+
+    public void RemoveAt(int index) {
+      this._data.RemoveAt(index);
+    }
+
+    public void SaveChanges() {
+      JsonSerialization.SerializeToTextAssetFilename(this, this.Filename);
+    }
+#endif
+
+
+    // PRAGMA MARK - IIdList.IEnumerable<TObject> Implementation
     IEnumerator IEnumerable.GetEnumerator() {
       return this.GetEnumerator();
     }
 
-    public IEnumerator<T> GetEnumerator() {
+    public IEnumerator<TObject> GetEnumerator() {
       return this._data.GetEnumerator();
     }
 
 
     // PRAGMA MARK - Internal
     [SerializeField]
-    protected List<T> _data = new List<T>();
-    [SerializeField]
-    private TextAsset _textSource;
-    private Dictionary<int, T> _map = new Dictionary<int, T>();
+    protected List<TObject> _data = new List<TObject>();
+    private Dictionary<int, TObject> _map = new Dictionary<int, TObject>();
 
-    private bool _initialized = false;
+    private void Initialize() {
+      TextAsset asset = TextAssetUtil.GetOrCreateTextAsset(this.Filename);
+      if (asset == null) {
+        return;
+      }
 
-    private void OnValidate() {
-      this._initialized = false;
+      JsonSerialization.OverwriteDeserializeFromTextAsset(asset, this);
+      this.Refresh();
+    }
+
+    private string Filename {
+      get {
+        return this.GetType().Name;
+      }
     }
 
     private void Refresh() {
@@ -51,19 +100,9 @@ namespace DT.GameEngine {
     private void RefreshMap() {
       this._map.Clear();
 
-      foreach (T item in this._data) {
+      foreach (TObject item in this._data) {
         this._map[item.Id] = item;
       }
-    }
-
-    [MakeButton]
-    protected void ReadFromSource() {
-      JsonSerializable.OverwriteDeserializeFromTextAsset(this._textSource, this);
-    }
-
-    [MakeButton]
-    protected void WriteToSource() {
-      JsonSerializable.SerializeToTextAsset(this, this._textSource, prettyPrint: true);
     }
   }
 }

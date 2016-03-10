@@ -5,7 +5,7 @@ using System.Linq;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
-  public class LootDropGroupList : IdList<LootDropGroup> {
+  public class LootDropGroupList : IdList<LootDropGroup, LootDropGroupList> {
     // PRAGMA MARK - Public Interface
     public IEnumerable<LootDrop> GetLootDropsForId(int lootDropGroupId) {
       LootDropGroup dropGroup = this.LoadById(lootDropGroupId);
