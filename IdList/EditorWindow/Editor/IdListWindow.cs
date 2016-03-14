@@ -127,7 +127,7 @@ namespace DT.GameEngine {
 
     protected virtual void ObjectOnGUI(TIdObject obj, Rect objRect) {
       // Icon + Title
-      IIdListWindowObject windowObject = obj as IIdListWindowObject;
+      IIdListDisplayObject windowObject = obj as IIdListDisplayObject;
       Texture2D iconTexture = null;
       string title = "";
 

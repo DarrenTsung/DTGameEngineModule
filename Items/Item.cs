@@ -3,7 +3,7 @@ using DT;
 
 namespace DT.GameEngine {
   [System.Serializable]
-  public class Item : IIdObject, IIdListWindowObject {
+  public class Item : IIdObject, IIdListDisplayObject {
     // PRAGMA MARK - IIdObject Implementation
     public int Id {
       get { return this.itemId; }
@@ -17,7 +17,7 @@ namespace DT.GameEngine {
     public Sprite displaySprite;
 
 
-    // PRAGMA MARK - IIdListWindowObject Implementation
+    // PRAGMA MARK - IIdListDisplayObject Implementation
     [SerializeField]
     private Texture2D _iconTexture;
 

@@ -2,7 +2,7 @@ using DT;
 using UnityEngine;
 
 namespace DT.GameEngine {
-  public interface IIdListWindowObject {
+  public interface IIdListDisplayObject {
     Texture2D IconTexture {
       get;
     }
