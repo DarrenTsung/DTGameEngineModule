@@ -9,24 +9,24 @@ namespace DT.GameEngine {
       get { return this.itemId; }
     }
 
-
-    // PRAGMA MARK - IIdListWindowObject Implementation
-    public Sprite DisplaySprite {
-      get { return this.displaySprite; }
-    }
-
-    public string DisplayName {
-      get { return this.displayName; }
-    }
-
-
     public int itemId;
     public string notes;
 
     [Header("Display")]
     public string displayName;
     public Sprite displaySprite;
-    public Sprite secondaryDisplaySprite;
-    public int testHello;
+
+
+    // PRAGMA MARK - IIdListWindowObject Implementation
+    [SerializeField]
+    private Texture2D _iconTexture;
+
+    public Texture2D IconTexture {
+      get { return this._iconTexture; }
+    }
+
+    public string Title {
+      get { return this.displayName; }
+    }
 	}
 }

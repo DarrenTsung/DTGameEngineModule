@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   public interface IIdListWindowObject {
-    Sprite DisplaySprite {
+    Texture2D IconTexture {
       get;
     }
 
-    string DisplayName {
+    string Title {
       get;
     }
   }
