@@ -1,6 +1,7 @@
 using DT;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace DT.GameEngine {
           List<string> displayedOptions = new List<string>();
           List<int> optionValues = new List<int>();
           foreach (TIdObject obj in list) {
-            displayedOptions.Add(string.Format("{0} - {1}", obj.Id, this.GetDisplayStringForObject(obj)));
+            displayedOptions.Add(string.Format("{0} - {1}", obj.Id, this.GetTitleForObject(obj)));
             optionValues.Add(obj.Id);
           }
   				property.intValue = EditorGUI.IntPopup(contentRect, property.intValue, displayedOptions.ToArray(), optionValues.ToArray());
@@ -34,6 +35,14 @@ namespace DT.GameEngine {
       EditorGUI.indentLevel++;
 		}
 
-    protected abstract string GetDisplayStringForObject(TIdObject obj);
+    private string GetTitleForObject(TIdObject obj) {
+      IIdListDisplayObject displayObject = obj as IIdListDisplayObject;
+
+      string title = "Not IIdListDisplayObject";
+      if (displayObject != null) {
+        title = Regex.Replace(displayObject.Title, @"\s+", "");
+      }
+      return title;
+    }
 	}
 }

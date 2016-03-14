@@ -7,8 +7,5 @@ using UnityEngine;
 namespace DT.GameEngine {
 	[CustomPropertyDrawer(typeof(ItemIdAttribute))]
 	public class ItemIdDrawer : IdListDrawer<ItemList, Item> {
-    protected override string GetDisplayStringForObject(Item obj) {
-      return obj.displayName;
-    }
 	}
 }
