@@ -172,7 +172,8 @@ namespace DT.GameEngine {
       EditorGUIUtility.labelWidth = kLabelWidth;
 
       SerializedProperty property = serializedObj;
-      while (property.NextVisible(enterChildren: true)) {
+      SerializedProperty endProperty = property.GetEndProperty();
+      while (!SerializedProperty.EqualContents(property, endProperty) && property.NextVisible(enterChildren: true)) {
         EditorGUILayout.PropertyField(property);
       }
       property.Reset();
