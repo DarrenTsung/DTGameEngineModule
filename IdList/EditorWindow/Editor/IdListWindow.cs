@@ -39,8 +39,6 @@ namespace DT.GameEngine {
 
           objIndex++;
         }
-
-        this._serializedList.ApplyModifiedProperties();
       EditorGUILayout.EndHorizontal();
       EditorGUILayout.EndScrollView();
 
@@ -54,15 +52,16 @@ namespace DT.GameEngine {
       // Commit or revert
       EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Commit changes", GUILayout.Height(kButtonHeight))) {
+          this._serializedList.ApplyModifiedProperties();
     			EditorUtility.SetDirty(this._list);
-          foreach (TIdObject obj in this._list) {
-            this.AddInitialValuesForObject(obj);
-          }
+          this.RebuildInitialValues();
         }
 
         if (GUILayout.Button("Revert", GUILayout.Height(kButtonHeight))) {
           IdListUtil<TIdList>.DirtyInstance();
           this._list = IdListUtil<TIdList>.Instance;
+          this.RebuildSerializedCopies();
+          this.RebuildInitialValues();
         }
       EditorGUILayout.EndHorizontal();
 
@@ -73,15 +72,12 @@ namespace DT.GameEngine {
       this._skin = Resources.Load("IdListWindow") as GUISkin;
       string listClassName = typeof(TIdList).Name;
       this.titleContent = new GUIContent(listClassName);
-      this._list = IdListUtil<TIdList>.Instance;
-      this.RebuildSerializedCopies();
 
       this._objFields = typeof(TIdObject).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-      this._objInitialValues = new Dictionary<TIdObject, object[]>();
-      foreach (TIdObject obj in this._list) {
-        this.AddInitialValuesForObject(obj);
-      }
+      this._list = IdListUtil<TIdList>.Instance;
+      this.RebuildSerializedCopies();
+      this.RebuildInitialValues();
     }
 
     // PRAGMA MARK - Internal
@@ -91,8 +87,7 @@ namespace DT.GameEngine {
 
     private FieldInfo[] _objFields;
 
-    private Dictionary<TIdObject, object[]> _objInitialValues;
-    private Dictionary<TIdObject, bool> _objShowPrivateFields = new Dictionary<TIdObject, bool>();
+    private Dictionary<TIdObject, object[]> _objInitialValues = new Dictionary<TIdObject, object[]>();
     private Texture2D[] _columnBackgrounds;
     private Texture2D[] ColumnBackgrounds {
       get {
@@ -114,20 +109,23 @@ namespace DT.GameEngine {
       this._serializedData = this._serializedList.FindProperty("_data");
     }
 
-    private void AddInitialValuesForObject(TIdObject obj) {
-      this._objInitialValues[obj] = (from field in this._objFields select field.GetValue(obj)).ToArray();
+    private void RebuildInitialValues() {
+      this._objInitialValues.Clear();
+      foreach (TIdObject obj in this._list) {
+        this._objInitialValues[obj] = (from field in this._objFields select field.GetValue(obj)).ToArray();
+      }
     }
 
     private bool IsFieldValueForObjectChanged(TIdObject obj, int fieldIndex, object fieldValue) {
       object[] initialFieldValues = this._objInitialValues.SafeGet(obj);
 
       if (initialFieldValues == null) {
-        this.AddInitialValuesForObject(obj);
-        initialFieldValues = this._objInitialValues.SafeGet(obj);
+        Debug.LogError("IsFieldValueForObjectChanged - no initial field value for index: " + fieldIndex);
+        return false;
       }
 
       if (!initialFieldValues.ContainsIndex(fieldIndex)) {
-        Debug.LogError("IsFieldValueForObjectChanged - invalid index!");
+        Debug.LogError("IsFieldValueForObjectChanged - invalid index: " + fieldIndex + "!");
         return false;
       }
 
@@ -173,9 +171,20 @@ namespace DT.GameEngine {
 
       SerializedProperty property = serializedObj;
       SerializedProperty endProperty = property.GetEndProperty();
-      while (!SerializedProperty.EqualContents(property, endProperty) && property.NextVisible(enterChildren: true)) {
+      int fieldIndex = 0;
+
+      while (property.NextVisible(enterChildren: true) && !SerializedProperty.EqualContents(property, endProperty)) {
+        if (this._objFields.ContainsIndex(fieldIndex)) {
+          EditorGUIUtil.SetBoldDefaultFont(this.IsFieldValueForObjectChanged(obj, fieldIndex, property.GetValueAsObject()));
+        } else {
+          Debug.LogWarning("Going out of field index bounds with index: " + fieldIndex);
+        }
+
         EditorGUILayout.PropertyField(property);
+        fieldIndex++;
       }
+
+      EditorGUIUtil.SetBoldDefaultFont(false);
       property.Reset();
 
       EditorGUIUtility.fieldWidth = oldFieldWidth;
