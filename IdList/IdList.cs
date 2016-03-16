@@ -3,19 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 ﻿using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace DT.GameEngine {
-  [CustomInspector]
-  public abstract class IdList<TObject, TSingleton> : IIdList<TObject> where TObject : IIdObject
-                                                                       where TSingleton : IIdList<TObject>, new() {
+  public static class IdListUtil<TIdList> where TIdList : ScriptableObject {
     // PRAGMA MARK - Static
-    private static TSingleton _instance;
+		private const string RESOURCE_PATH = @"Assets/GameSpecific/Resources";
+		private const string IDLIST_FOLDER_NAME = @"IdLists";
+		private const string IDLIST_FILE_EXTENSION = @".asset";
+
+    private static TIdList _instance;
 		private static object _lock = new object();
 
-    public static TSingleton Instance {
+    public static TIdList Instance {
       get {
         lock (_lock) {
           if (_instance == null) {
-            _instance = new TSingleton();
+            _instance = IdListUtil<TIdList>.Load();
           }
 
           return _instance;
@@ -23,21 +29,35 @@ namespace DT.GameEngine {
       }
     }
 
-
-    // Constructor is public if you are in the editor because we want to enforce the constraint
-    // that production code (non-editor) uses the Instance for performance instead of creating
-    // new instances
 #if UNITY_EDITOR
-    public IdList() {
-      this.Initialize();
-    }
-#else
-    private IdList() {
-      this.Initialize();
+    public static void DirtyInstance() {
+      _instance = null;
     }
 #endif
 
+    public static TIdList Load() {
+      string filename = typeof(TIdList).Name;
+			TIdList instance = Resources.Load(IDLIST_FOLDER_NAME + "/" + filename) as TIdList;
+#if UNITY_EDITOR
+			if (instance == null) {
+        string instanceFullPath = RESOURCE_PATH + "/" + IDLIST_FOLDER_NAME + "/" + filename + IDLIST_FILE_EXTENSION;
+				if (!AssetDatabase.IsValidFolder(RESOURCE_PATH + "/" + IDLIST_FOLDER_NAME)) {
+					AssetDatabase.CreateFolder(RESOURCE_PATH, IDLIST_FOLDER_NAME);
+				}
+        Debug.Log("Creating new instance of - " + filename);
+				instance = ScriptableObject.CreateInstance<TIdList>();
+				AssetDatabase.CreateAsset(instance, instanceFullPath);
+				AssetDatabase.SaveAssets();
+				AssetDatabase.Refresh();
+			}
+#endif
+			return instance;
+    }
+  }
 
+
+  [CustomInspector]
+  public abstract class IdList<TObject> : ScriptableObject, IIdList<TObject> where TObject : IIdObject {
     // PRAGMA MARK - IIdList Implementation
     public TObject LoadById(int id) {
       return this._map.SafeGet(id);
@@ -50,10 +70,6 @@ namespace DT.GameEngine {
 
     public void RemoveAt(int index) {
       this._data.RemoveAt(index);
-    }
-
-    public void SaveChanges() {
-      JsonSerialization.SerializeToTextAssetFilename(this, this.Filename);
     }
 #endif
 
@@ -73,22 +89,6 @@ namespace DT.GameEngine {
     protected List<TObject> _data = new List<TObject>();
     private Dictionary<int, TObject> _map = new Dictionary<int, TObject>();
 
-    private void Initialize() {
-      TextAsset asset = TextAssetUtil.GetOrCreateTextAsset(this.Filename);
-      if (asset == null) {
-        return;
-      }
-
-      JsonSerialization.OverwriteDeserializeFromTextAsset(asset, this);
-      this.Refresh();
-    }
-
-    private string Filename {
-      get {
-        return this.GetType().Name;
-      }
-    }
-
     private void Refresh() {
       this.RefreshMap();
       this.RefreshCachedMappings();
@@ -101,6 +101,10 @@ namespace DT.GameEngine {
       this._map.Clear();
 
       foreach (TObject item in this._data) {
+        if (item == null) {
+          continue;
+        }
+
         this._map[item.Id] = item;
       }
     }

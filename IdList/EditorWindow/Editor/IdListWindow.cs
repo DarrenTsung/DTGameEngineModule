@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 
 namespace DT.GameEngine {
-  public abstract class IdListWindow<TIdList, TIdObject> : EditorWindow where TIdList : IIdList<TIdObject>, new()
+  public abstract class IdListWindow<TIdList, TIdObject> : EditorWindow where TIdList : IdList<TIdObject>
                                                                         where TIdObject : IIdObject, new() {
     // PRAGMA MARK - Static
     private const float kLabelWidth = 150.0f;
@@ -29,14 +29,18 @@ namespace DT.GameEngine {
       EditorGUILayout.BeginHorizontal();
         int objIndex = 0;
         foreach (TIdObject obj in this._list) {
+          SerializedProperty serializedObj = this._serializedData.GetArrayElementAtIndex(objIndex);
+
           GUIStyle columnStyle = new GUIStyle();
-          columnStyle.normal.background = this._columnBackgrounds[objIndex % this._columnBackgrounds.Length];
+          columnStyle.normal.background = this.ColumnBackgrounds[objIndex % this.ColumnBackgrounds.Length];
           Rect objRect = EditorGUILayout.BeginVertical(columnStyle, GUILayout.Width(kLabelWidth + kFieldWidth));
-            this.ObjectOnGUI(obj, objRect);
+            this.ObjectOnGUI(obj, serializedObj, objRect);
           EditorGUILayout.EndVertical();
 
           objIndex++;
         }
+
+        this._serializedList.ApplyModifiedProperties();
       EditorGUILayout.EndHorizontal();
       EditorGUILayout.EndScrollView();
 
@@ -44,19 +48,21 @@ namespace DT.GameEngine {
       if (GUILayout.Button("Add", GUILayout.Height(kButtonHeight))) {
         TIdObject newObj = new TIdObject();
         this._list.Add(newObj);
+        this.RebuildSerializedCopies();
       }
 
       // Commit or revert
       EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Commit changes", GUILayout.Height(kButtonHeight))) {
-          this._list.SaveChanges();
+    			EditorUtility.SetDirty(this._list);
           foreach (TIdObject obj in this._list) {
             this.AddInitialValuesForObject(obj);
           }
         }
 
         if (GUILayout.Button("Revert", GUILayout.Height(kButtonHeight))) {
-          this._list = new TIdList();
+          IdListUtil<TIdList>.DirtyInstance();
+          this._list = IdListUtil<TIdList>.Instance;
         }
       EditorGUILayout.EndHorizontal();
 
@@ -67,37 +73,46 @@ namespace DT.GameEngine {
       this._skin = Resources.Load("IdListWindow") as GUISkin;
       string listClassName = typeof(TIdList).Name;
       this.titleContent = new GUIContent(listClassName);
-      this._list = new TIdList();
+      this._list = IdListUtil<TIdList>.Instance;
+      this.RebuildSerializedCopies();
 
       this._objFields = typeof(TIdObject).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-      this._objPublicFields = (from field in this._objFields where !field.IsPrivate select field).ToArray();
-      this._objPrivateFields = (from field in this._objFields where field.IsPrivate select field).ToArray();
 
       this._objInitialValues = new Dictionary<TIdObject, object[]>();
       foreach (TIdObject obj in this._list) {
         this.AddInitialValuesForObject(obj);
       }
-
-      this._columnBackgrounds = new Texture2D[] {
-        Texture2DUtil.CreateTextureWithColor(ColorExtensions.HexStringToColor("#ADADAD")),
-        Texture2DUtil.CreateTextureWithColor(ColorExtensions.HexStringToColor("#C2C2C2"))
-      };
     }
 
     // PRAGMA MARK - Internal
     private TIdList _list;
+    private SerializedObject _serializedList;
+    private SerializedProperty _serializedData;
 
     private FieldInfo[] _objFields;
-
-    private FieldInfo[] _objPublicFields;
-    private FieldInfo[] _objPrivateFields;
 
     private Dictionary<TIdObject, object[]> _objInitialValues;
     private Dictionary<TIdObject, bool> _objShowPrivateFields = new Dictionary<TIdObject, bool>();
     private Texture2D[] _columnBackgrounds;
+    private Texture2D[] ColumnBackgrounds {
+      get {
+        if (this._columnBackgrounds == null || this._columnBackgrounds.Length == 0) {
+          this._columnBackgrounds = new Texture2D[] {
+            Texture2DUtil.CreateTextureWithColor(ColorExtensions.HexStringToColor("#ADADAD")),
+            Texture2DUtil.CreateTextureWithColor(ColorExtensions.HexStringToColor("#C2C2C2"))
+          };
+        }
+        return this._columnBackgrounds;
+      }
+    }
 
     private Vector2 _currentScrollPosition;
     private GUISkin _skin;
+
+    private void RebuildSerializedCopies() {
+      this._serializedList = new SerializedObject(this._list);
+      this._serializedData = this._serializedList.FindProperty("_data");
+    }
 
     private void AddInitialValuesForObject(TIdObject obj) {
       this._objInitialValues[obj] = (from field in this._objFields select field.GetValue(obj)).ToArray();
@@ -125,7 +140,7 @@ namespace DT.GameEngine {
       return !initialValue.Equals(fieldValue);
     }
 
-    protected virtual void ObjectOnGUI(TIdObject obj, Rect objRect) {
+    protected virtual void ObjectOnGUI(TIdObject obj, SerializedProperty serializedObj, Rect objRect) {
       // Icon + Title
       IIdListDisplayObject windowObject = obj as IIdListDisplayObject;
       Texture2D iconTexture = null;
@@ -156,54 +171,14 @@ namespace DT.GameEngine {
       EditorGUIUtility.fieldWidth = kFieldWidth;
       EditorGUIUtility.labelWidth = kLabelWidth;
 
-      int fieldIndex = 0;
-      foreach (FieldInfo field in this._objPublicFields) {
-        this.DrawField(obj, field, fieldIndex);
-        fieldIndex++;
+      SerializedProperty property = serializedObj;
+      while (property.NextVisible(enterChildren: true)) {
+        EditorGUILayout.PropertyField(property);
       }
-
-      this._objShowPrivateFields[obj] = EditorGUILayout.Foldout(this._objShowPrivateFields.SafeGet(obj, defaultValue: false), "Private Fields");
-      if (this._objShowPrivateFields[obj]) {
-        EditorGUI.indentLevel++;
-        foreach (FieldInfo field in this._objPrivateFields) {
-          this.DrawField(obj, field, fieldIndex);
-          fieldIndex++;
-        }
-        EditorGUI.indentLevel--;
-      }
+      property.Reset();
 
       EditorGUIUtility.fieldWidth = oldFieldWidth;
       EditorGUIUtility.labelWidth = 0;
-    }
-
-    private void DrawField(TIdObject obj, FieldInfo field, int fieldIndex) {
-      EditorGUILayout.BeginHorizontal();
-
-      float fieldWidth = EditorGUIUtility.fieldWidth;
-
-      GUIStyle fieldStyle = new GUIStyle(GUI.skin.textField);
-      GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
-
-      object fieldValue = field.GetValue(obj);
-      bool changed = this.IsFieldValueForObjectChanged(obj, fieldIndex, fieldValue);
-      if (changed) {
-        fieldStyle.font = EditorStyles.boldFont;
-        labelStyle.font = EditorStyles.boldFont;
-      }
-
-      string parsedFieldName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(Regex.Replace(field.Name, "(\\B[A-Z])", " $1"));
-      EditorGUILayout.PrefixLabel(parsedFieldName + ":", fieldStyle, labelStyle);
-      if (field.FieldType == typeof(int)) {
-        field.SetValue(obj, EditorGUILayout.IntField((int)fieldValue, fieldStyle, GUILayout.Width(fieldWidth)));
-      } else if (field.FieldType == typeof(float)) {
-        field.SetValue(obj, EditorGUILayout.FloatField((float)fieldValue, fieldStyle, GUILayout.Width(fieldWidth)));
-      } else if (field.FieldType == typeof(string)) {
-        field.SetValue(obj, EditorGUILayout.TextField((string)fieldValue, fieldStyle, GUILayout.Width(fieldWidth)));
-      } else if (!field.FieldType.IsInstanceOfType(typeof(UnityEngine.Object))) {
-        field.SetValue(obj, EditorGUILayout.ObjectField((UnityEngine.Object)fieldValue, field.FieldType, false, GUILayout.Width(fieldWidth), GUILayout.Height(40.0f)));
-      }
-
-      EditorGUILayout.EndHorizontal();
     }
   }
 }

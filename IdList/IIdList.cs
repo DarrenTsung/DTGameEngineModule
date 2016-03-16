@@ -10,7 +10,6 @@ namespace DT.GameEngine {
 #if UNITY_EDITOR
     void Add(TObject newObj);
     void RemoveAt(int index);
-    void SaveChanges();
 #endif
   }
 }
