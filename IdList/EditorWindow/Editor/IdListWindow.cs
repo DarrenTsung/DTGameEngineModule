@@ -173,22 +173,51 @@ namespace DT.GameEngine {
       SerializedProperty endProperty = property.GetEndProperty();
       int fieldIndex = 0;
 
-      while (property.NextVisible(enterChildren: true) && !SerializedProperty.EqualContents(property, endProperty)) {
+      // go into the children of the property
+      property.NextVisible(enterChildren: true);
+
+      do {
         if (this._objFields.ContainsIndex(fieldIndex)) {
-          EditorGUIUtil.SetBoldDefaultFont(this.IsFieldValueForObjectChanged(obj, fieldIndex, property.GetValueAsObject()));
+          bool changed = false;
+          try {
+            changed = this.IsFieldValueForObjectChanged(obj, fieldIndex, property.GetValueAsObject());
+          } catch (NotImplementedException) {}
+          EditorGUIUtil.SetBoldDefaultFont(changed);
         } else {
           Debug.LogWarning("Going out of field index bounds with index: " + fieldIndex);
         }
 
         EditorGUILayout.PropertyField(property);
         fieldIndex++;
-      }
+
+        if (property.hasVisibleChildren && property.isExpanded) {
+          this.DrawPropertyChildrenRecursive(property.Copy());
+        }
+      } while (property.NextVisible(enterChildren: false) && !SerializedProperty.EqualContents(property, endProperty));
 
       EditorGUIUtil.SetBoldDefaultFont(false);
       property.Reset();
 
       EditorGUIUtility.fieldWidth = oldFieldWidth;
       EditorGUIUtility.labelWidth = 0;
+    }
+
+    private void DrawPropertyChildrenRecursive(SerializedProperty property) {
+      SerializedProperty endProperty = property.GetEndProperty();
+
+      // go into the children of the property
+      property.NextVisible(enterChildren: true);
+
+      EditorGUI.indentLevel++;
+      do {
+        EditorGUILayout.PropertyField(property);
+
+        if (property.hasVisibleChildren && property.isExpanded) {
+          this.DrawPropertyChildrenRecursive(property.Copy());
+        }
+      } while (property.NextVisible(enterChildren: false) && !SerializedProperty.EqualContents(property, endProperty));
+
+      EditorGUI.indentLevel--;
     }
   }
 }
