@@ -30,11 +30,15 @@ namespace DT.GameEngine {
         int objIndex = 0;
         foreach (TIdObject obj in this._list) {
           SerializedProperty serializedObj = this._serializedData.GetArrayElementAtIndex(objIndex);
+          SerializedProperty serializedObjReference = null;
+          if (objIndex < this._serializedDataReference.arraySize) {
+           serializedObjReference = this._serializedDataReference.GetArrayElementAtIndex(objIndex);
+          }
 
           GUIStyle columnStyle = new GUIStyle();
           columnStyle.normal.background = this.ColumnBackgrounds[objIndex % this.ColumnBackgrounds.Length];
           Rect objRect = EditorGUILayout.BeginVertical(columnStyle, GUILayout.Width(kLabelWidth + kFieldWidth));
-            this.ObjectOnGUI(obj, serializedObj, objRect);
+            this.ObjectOnGUI(obj, serializedObj, serializedObjReference, objRect);
           EditorGUILayout.EndVertical();
 
           objIndex++;
@@ -46,22 +50,21 @@ namespace DT.GameEngine {
       if (GUILayout.Button("Add", GUILayout.Height(kButtonHeight))) {
         TIdObject newObj = new TIdObject();
         this._list.Add(newObj);
-        this.RebuildSerializedCopies();
+        this.RebuildSerializedCopies(refreshReference: false);
       }
 
       // Commit or revert
       EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Commit changes", GUILayout.Height(kButtonHeight))) {
-          this._serializedList.ApplyModifiedProperties();
+          this._serializedData.serializedObject.ApplyModifiedProperties();
     			EditorUtility.SetDirty(this._list);
-          this.RebuildInitialValues();
+          this.RebuildSerializedCopies(refreshReference: true);
         }
 
         if (GUILayout.Button("Revert", GUILayout.Height(kButtonHeight))) {
           IdListUtil<TIdList>.DirtyInstance();
           this._list = IdListUtil<TIdList>.Instance;
-          this.RebuildSerializedCopies();
-          this.RebuildInitialValues();
+          this.RebuildSerializedCopies(refreshReference: true);
         }
       EditorGUILayout.EndHorizontal();
 
@@ -73,21 +76,15 @@ namespace DT.GameEngine {
       string listClassName = typeof(TIdList).Name;
       this.titleContent = new GUIContent(listClassName);
 
-      this._objFields = typeof(TIdObject).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
       this._list = IdListUtil<TIdList>.Instance;
-      this.RebuildSerializedCopies();
-      this.RebuildInitialValues();
+      this.RebuildSerializedCopies(refreshReference: true);
     }
 
     // PRAGMA MARK - Internal
     private TIdList _list;
-    private SerializedObject _serializedList;
     private SerializedProperty _serializedData;
+    private SerializedProperty _serializedDataReference;
 
-    private FieldInfo[] _objFields;
-
-    private Dictionary<TIdObject, object[]> _objInitialValues = new Dictionary<TIdObject, object[]>();
     private Texture2D[] _columnBackgrounds;
     private Texture2D[] ColumnBackgrounds {
       get {
@@ -104,41 +101,37 @@ namespace DT.GameEngine {
     private Vector2 _currentScrollPosition;
     private GUISkin _skin;
 
-    private void RebuildSerializedCopies() {
-      this._serializedList = new SerializedObject(this._list);
-      this._serializedData = this._serializedList.FindProperty("_data");
-    }
-
-    private void RebuildInitialValues() {
-      this._objInitialValues.Clear();
-      foreach (TIdObject obj in this._list) {
-        this._objInitialValues[obj] = (from field in this._objFields select field.GetValue(obj)).ToArray();
+    private void RebuildSerializedCopies(bool refreshReference) {
+      this._serializedData = new SerializedObject(this._list).FindProperty("_data");
+      if (refreshReference) {
+        this._serializedDataReference = new SerializedObject(this._list).FindProperty("_data");
       }
     }
 
-    private bool IsFieldValueForObjectChanged(TIdObject obj, int fieldIndex, object fieldValue) {
-      object[] initialFieldValues = this._objInitialValues.SafeGet(obj);
+    private bool ArePropertyValuesChanged(SerializedProperty property, SerializedProperty propertyReference) {
+      if (propertyReference == null) {
+        return true;
+      }
 
-      if (initialFieldValues == null) {
-        Debug.LogError("IsFieldValueForObjectChanged - no initial field value for index: " + fieldIndex);
+      object propertyValue;
+      object propertyReferenceValue;
+      try {
+        propertyValue = property.GetValueAsObject();
+        propertyReferenceValue = propertyReference.GetValueAsObject();
+      } catch (NotImplementedException) {
         return false;
       }
 
-      if (!initialFieldValues.ContainsIndex(fieldIndex)) {
-        Debug.LogError("IsFieldValueForObjectChanged - invalid index: " + fieldIndex + "!");
-        return false;
+      if (propertyReferenceValue == null) {
+        return propertyValue != null;
+      } else if (propertyValue == null) {
+        return propertyReferenceValue != null;
       }
 
-      object initialValue = initialFieldValues[fieldIndex];
-
-      if (initialValue == null) {
-        return fieldValue != null;
-      }
-
-      return !initialValue.Equals(fieldValue);
+      return !propertyReferenceValue.Equals(propertyValue);
     }
 
-    protected virtual void ObjectOnGUI(TIdObject obj, SerializedProperty serializedObj, Rect objRect) {
+    protected virtual void ObjectOnGUI(TIdObject obj, SerializedProperty serializedObj, SerializedProperty serializedObjReference, Rect objRect) {
       // Icon + Title
       IIdListDisplayObject windowObject = obj as IIdListDisplayObject;
       Texture2D iconTexture = null;
@@ -170,30 +163,28 @@ namespace DT.GameEngine {
       EditorGUIUtility.labelWidth = kLabelWidth;
 
       SerializedProperty property = serializedObj;
+      SerializedProperty propertyReference = serializedObjReference;
       SerializedProperty endProperty = property.GetEndProperty();
+      SerializedProperty endReferenceProperty = (propertyReference != null) ? propertyReference.GetEndProperty() : null;
       int fieldIndex = 0;
 
       // go into the children of the property
       property.NextVisible(enterChildren: true);
+      if (propertyReference != null) {
+        propertyReference.NextVisible(enterChildren: true);
+      }
 
       do {
-        if (this._objFields.ContainsIndex(fieldIndex)) {
-          bool changed = false;
-          try {
-            changed = this.IsFieldValueForObjectChanged(obj, fieldIndex, property.GetValueAsObject());
-          } catch (NotImplementedException) {}
-          EditorGUIUtil.SetBoldDefaultFont(changed);
-        } else {
-          Debug.LogWarning("Going out of field index bounds with index: " + fieldIndex);
-        }
+        bool changed = this.ArePropertyValuesChanged(property, propertyReference);
+        EditorGUIUtil.SetBoldDefaultFont(changed);
 
         EditorGUILayout.PropertyField(property);
         fieldIndex++;
 
         if (property.hasVisibleChildren && property.isExpanded) {
-          this.DrawPropertyChildrenRecursive(property.Copy());
+          this.DrawPropertyChildrenRecursive(property.Copy(), (propertyReference != null) ? propertyReference.Copy() : null);
         }
-      } while (property.NextVisible(enterChildren: false) && !SerializedProperty.EqualContents(property, endProperty));
+      } while (this.EnterNextVisibleForProperties(property, ref propertyReference, endReferenceProperty, enterChildren: false) && !SerializedProperty.EqualContents(property, endProperty));
 
       EditorGUIUtil.SetBoldDefaultFont(false);
       property.Reset();
@@ -202,22 +193,43 @@ namespace DT.GameEngine {
       EditorGUIUtility.labelWidth = 0;
     }
 
-    private void DrawPropertyChildrenRecursive(SerializedProperty property) {
+    private void DrawPropertyChildrenRecursive(SerializedProperty property, SerializedProperty propertyReference) {
       SerializedProperty endProperty = property.GetEndProperty();
+      SerializedProperty endReferenceProperty = (propertyReference != null) ? propertyReference.GetEndProperty() : null;
 
       // go into the children of the property
       property.NextVisible(enterChildren: true);
+      if (propertyReference != null) {
+        propertyReference.NextVisible(enterChildren: true);
+      }
 
       EditorGUI.indentLevel++;
       do {
+        bool changed = this.ArePropertyValuesChanged(property, propertyReference);
+        EditorGUIUtil.SetBoldDefaultFont(changed);
+
         EditorGUILayout.PropertyField(property);
 
         if (property.hasVisibleChildren && property.isExpanded) {
-          this.DrawPropertyChildrenRecursive(property.Copy());
+          this.DrawPropertyChildrenRecursive(property.Copy(), (propertyReference != null) ? propertyReference.Copy() : null);
         }
-      } while (property.NextVisible(enterChildren: false) && !SerializedProperty.EqualContents(property, endProperty));
+      } while (this.EnterNextVisibleForProperties(property, ref propertyReference, endReferenceProperty, enterChildren: false) && !SerializedProperty.EqualContents(property, endProperty));
 
       EditorGUI.indentLevel--;
+    }
+
+    private bool EnterNextVisibleForProperties(SerializedProperty property, ref SerializedProperty propertyReference, SerializedProperty endReferenceProperty, bool enterChildren) {
+      property.NextVisible(enterChildren);
+      if (propertyReference != null) {
+        bool succeeded = propertyReference.NextVisible(enterChildren);
+        // if we can't enter the next visible for propertyReference, then it is new
+        // and we should null out propertyReference so that the comparison shows that the value is changed
+        if (!succeeded || SerializedProperty.EqualContents(propertyReference, endReferenceProperty)) {
+          propertyReference = null;
+        }
+      }
+
+      return true;
     }
   }
 }
