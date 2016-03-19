@@ -6,8 +6,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace DT.GameEngine {
-	public abstract class IdListDrawer<TList, TEntity> : PropertyDrawer where TList : IdList<TEntity>
-                                                                        where TEntity : DTEntity, new() {
+	public abstract class IdListDrawer<TEntity> : PropertyDrawer where TEntity : DTEntity, new() {
     private const int kIdFieldWidth = 100;
     private const int kPadding = 5;
 
@@ -17,9 +16,9 @@ namespace DT.GameEngine {
 
       EditorGUI.indentLevel--;
 			if (property.propertyType == SerializedPropertyType.Integer) {
-        TList list = IdListUtil<TList>.Instance;
+        IdList<TEntity> list = IdList<TEntity>.Instance;
         if (list == null) {
-          EditorGUI.LabelField(contentRect, typeof(TList).Name + " instance not found!");
+          EditorGUI.LabelField(contentRect, IdList<TEntity>.ListName() + " instance not found!");
         } else {
           List<string> displayedOptions = new List<string>();
           List<int> optionValues = new List<int>();

@@ -6,6 +6,6 @@ using UnityEngine;
 
 namespace DT.GameEngine {
 	[CustomPropertyDrawer(typeof(ItemIdAttribute))]
-	public class ItemIdDrawer : IdListDrawer<ItemList, Item> {
+	public class ItemIdDrawer : IdListDrawer<Item> {
 	}
 }

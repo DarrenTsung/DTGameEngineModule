@@ -6,6 +6,6 @@ using UnityEngine;
 
 namespace DT.GameEngine {
 	[CustomPropertyDrawer(typeof(LootDropGroupIdAttribute))]
-	public class LootDropGroupIdDrawer : IdListDrawer<LootDropGroupList, LootDropGroup> {
+	public class LootDropGroupIdDrawer : IdListDrawer<LootDropGroup> {
 	}
 }

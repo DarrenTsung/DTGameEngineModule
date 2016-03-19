@@ -10,8 +10,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 
 namespace DT.GameEngine {
-  public abstract class IdListWindow<TIdList, TEntity> : EditorWindow where TIdList : IdList<TEntity>
-                                                                        where TEntity : DTEntity, new() {
+  public abstract class IdListWindow<TEntity> : EditorWindow where TEntity : DTEntity, new() {
     // PRAGMA MARK - Static
     private const float kLabelWidth = 150.0f;
     private const float kFieldWidth = 110.0f;
@@ -61,8 +60,8 @@ namespace DT.GameEngine {
         }
 
         if (GUILayout.Button("Revert", GUILayout.Height(kButtonHeight))) {
-          IdListUtil<TIdList>.DirtyInstance();
-          this._list = IdListUtil<TIdList>.Instance;
+          IdList<TEntity>.DirtyInstance();
+          this._list = IdList<TEntity>.Instance;
           this.RebuildSerializedCopies(refreshReference: true);
         }
       EditorGUILayout.EndHorizontal();
@@ -72,15 +71,14 @@ namespace DT.GameEngine {
 
     private void OnEnable() {
       this._skin = Resources.Load("IdListWindow") as GUISkin;
-      string listClassName = typeof(TIdList).Name;
-      this.titleContent = new GUIContent(listClassName);
+      this.titleContent = new GUIContent(IdList<TEntity>.ListName());
 
-      this._list = IdListUtil<TIdList>.Instance;
+      this._list = IdList<TEntity>.Instance;
       this.RebuildSerializedCopies(refreshReference: true);
     }
 
     // PRAGMA MARK - Internal
-    private TIdList _list;
+    private IdList<TEntity> _list;
     private SerializedProperty _serializedData;
     private SerializedProperty _serializedDataReference;
 

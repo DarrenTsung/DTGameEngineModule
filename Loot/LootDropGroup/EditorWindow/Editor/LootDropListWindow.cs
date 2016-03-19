@@ -4,7 +4,7 @@ using UnityEditor;
 using System.Collections;
 
 namespace DT.GameEngine {
-  public class LootDropGroupListWindow: IdListWindow<LootDropGroupList, LootDropGroup> {
+  public class LootDropGroupListWindow: IdListWindow<LootDropGroup> {
     // PRAGMA MARK - Static
     [MenuItem("DarrenTsung/DataSources/LootDropGroupList")]
     public static void ShowWindow() {
