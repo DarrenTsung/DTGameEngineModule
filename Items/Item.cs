@@ -3,13 +3,9 @@ using DT;
 
 namespace DT.GameEngine {
   [System.Serializable]
-  public class Item : IIdObject, IIdListDisplayObject {
-    // PRAGMA MARK - IIdObject Implementation
-    public int Id {
-      get { return this.itemId; }
-    }
+  public class Item : DTEntity, IIdListDisplayObject {
+    public IdComponent idComponent;
 
-    public int itemId;
     public string notes;
 
     [Header("Display")]

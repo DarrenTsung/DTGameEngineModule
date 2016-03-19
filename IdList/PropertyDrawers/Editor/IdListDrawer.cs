@@ -6,8 +6,8 @@ using UnityEditor;
 using UnityEngine;
 
 namespace DT.GameEngine {
-	public abstract class IdListDrawer<TList, TIdObject> : PropertyDrawer where TList : IdList<TIdObject>
-                                                                        where TIdObject : IIdObject {
+	public abstract class IdListDrawer<TList, TEntity> : PropertyDrawer where TList : IdList<TEntity>
+                                                                        where TEntity : DTEntity, new() {
     private const int kIdFieldWidth = 100;
     private const int kPadding = 5;
 
@@ -23,9 +23,11 @@ namespace DT.GameEngine {
         } else {
           List<string> displayedOptions = new List<string>();
           List<int> optionValues = new List<int>();
-          foreach (TIdObject obj in list) {
-            displayedOptions.Add(string.Format("{0} - {1}", obj.Id, this.GetTitleForObject(obj)));
-            optionValues.Add(obj.Id);
+          foreach (TEntity obj in list) {
+            IdComponent idComponent = obj.GetComponent<IdComponent>();
+
+            displayedOptions.Add(string.Format("{0} - {1}", idComponent.id, this.GetTitleForObject(obj)));
+            optionValues.Add(idComponent.id);
           }
   				property.intValue = EditorGUI.IntPopup(contentRect, property.intValue, displayedOptions.ToArray(), optionValues.ToArray());
         }
@@ -35,7 +37,7 @@ namespace DT.GameEngine {
       EditorGUI.indentLevel++;
 		}
 
-    private string GetTitleForObject(TIdObject obj) {
+    private string GetTitleForObject(TEntity obj) {
       IIdListDisplayObject displayObject = obj as IIdListDisplayObject;
 
       string title = "Not IIdListDisplayObject";

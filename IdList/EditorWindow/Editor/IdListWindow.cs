@@ -10,8 +10,8 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 
 namespace DT.GameEngine {
-  public abstract class IdListWindow<TIdList, TIdObject> : EditorWindow where TIdList : IdList<TIdObject>
-                                                                        where TIdObject : IIdObject, new() {
+  public abstract class IdListWindow<TIdList, TEntity> : EditorWindow where TIdList : IdList<TEntity>
+                                                                        where TEntity : DTEntity, new() {
     // PRAGMA MARK - Static
     private const float kLabelWidth = 150.0f;
     private const float kFieldWidth = 110.0f;
@@ -28,7 +28,7 @@ namespace DT.GameEngine {
       this._currentScrollPosition = EditorGUILayout.BeginScrollView(this._currentScrollPosition);
       EditorGUILayout.BeginHorizontal();
         int objIndex = 0;
-        foreach (TIdObject obj in this._list) {
+        foreach (TEntity obj in this._list) {
           SerializedProperty serializedObj = this._serializedData.GetArrayElementAtIndex(objIndex);
           SerializedProperty serializedObjReference = null;
           if (objIndex < this._serializedDataReference.arraySize) {
@@ -48,8 +48,7 @@ namespace DT.GameEngine {
 
       // Add Button
       if (GUILayout.Button("Add", GUILayout.Height(kButtonHeight))) {
-        TIdObject newObj = new TIdObject();
-        this._list.Add(newObj);
+        this._list.AddNew();
         this.RebuildSerializedCopies(refreshReference: false);
       }
 
@@ -131,7 +130,7 @@ namespace DT.GameEngine {
       return !propertyReferenceValue.Equals(propertyValue);
     }
 
-    protected virtual void ObjectOnGUI(TIdObject obj, SerializedProperty serializedObj, SerializedProperty serializedObjReference, Rect objRect) {
+    protected virtual void ObjectOnGUI(TEntity obj, SerializedProperty serializedObj, SerializedProperty serializedObjReference, Rect objRect) {
       // Icon + Title
       IIdListDisplayObject windowObject = obj as IIdListDisplayObject;
       Texture2D iconTexture = null;

@@ -5,9 +5,10 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   [System.Serializable]
-  public class LootDropGroup : IIdObject {
+  public class LootDropGroup : DTEntity {
     // PRAGMA MARK - Public Interface
-    public int lootDropGroupId;
+    public IdComponent idComponent;
+
     public string notes;
     [LootDropId]
     public int[] lootDropIds;
@@ -22,12 +23,6 @@ namespace DT.GameEngine {
       }
 
       return true;
-    }
-
-
-    // PRAGMA MARK - IIdObject Implementation
-    public int Id {
-      get { return this.lootDropGroupId; }
     }
   }
 }

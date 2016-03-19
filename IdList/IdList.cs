@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 namespace DT.GameEngine {
-  public static class IdListUtil<TIdList> where TIdList : ScriptableObject {
+  public static class IdListUtil<TIdList> where TIdList : ScriptableObject, IInitializable {
     // PRAGMA MARK - Static
 		private const string RESOURCE_PATH = @"Assets/GameSpecific/Resources";
 		private const string IDLIST_FOLDER_NAME = @"IdLists";
@@ -51,20 +51,24 @@ namespace DT.GameEngine {
 				AssetDatabase.Refresh();
 			}
 #endif
+
+      instance.Initialize();
+
 			return instance;
     }
   }
 
 
   [CustomInspector]
-  public abstract class IdList<TObject> : ScriptableObject, IIdList<TObject> where TObject : IIdObject {
+  public abstract class IdList<TEntity> : ScriptableObject, IInitializable, IIdList<TEntity> where TEntity : DTEntity, new() {
     // PRAGMA MARK - IIdList Implementation
-    public TObject LoadById(int id) {
+    public TEntity LoadById(int id) {
       return this._map.SafeGet(id);
     }
 
 #if UNITY_EDITOR
-    public void Add(TObject newObj) {
+    public void AddNew() {
+      TEntity newObj = new TEntity();
       this._data.Add(newObj);
     }
 
@@ -74,38 +78,48 @@ namespace DT.GameEngine {
 #endif
 
 
-    // PRAGMA MARK - IIdList.IEnumerable<TObject> Implementation
+    // PRAGMA MARK - IIdList.IEnumerable<TEntity> Implementation
     IEnumerator IEnumerable.GetEnumerator() {
       return this.GetEnumerator();
     }
 
-    public IEnumerator<TObject> GetEnumerator() {
+    public IEnumerator<TEntity> GetEnumerator() {
       return this._data.GetEnumerator();
+    }
+
+
+    // PRAGMA MARK - IInitializable Implementation
+    public void Initialize() {
+      this.CreateMap();
+      this.CreateCachedMappings();
     }
 
 
     // PRAGMA MARK - Internal
     [SerializeField]
-    protected List<TObject> _data = new List<TObject>();
-    private Dictionary<int, TObject> _map = new Dictionary<int, TObject>();
-
-    private void Refresh() {
-      this.RefreshMap();
-      this.RefreshCachedMappings();
-    }
+    protected List<TEntity> _data = new List<TEntity>();
+    private Dictionary<int, TEntity> _map = new Dictionary<int, TEntity>();
 
     // optional
-    protected virtual void RefreshCachedMappings() {}
+    protected virtual void CreateCachedMappings() {}
 
-    private void RefreshMap() {
+    private void CreateMap() {
       this._map.Clear();
 
-      foreach (TObject item in this._data) {
-        if (item == null) {
+      foreach (TEntity entity in this._data) {
+        if (entity == null) {
           continue;
         }
 
-        this._map[item.Id] = item;
+        DTEntityInitializer.Initialize<TEntity>(entity);
+
+        IdComponent idComponent = entity.GetComponent<IdComponent>();
+        if (idComponent == null) {
+          Debug.LogError("IdList - entity does not have IdComponent!");
+          continue;
+        }
+
+        this._map[idComponent.id] = entity;
       }
     }
   }

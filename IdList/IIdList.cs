@@ -4,11 +4,11 @@ using System.Collections.Generic;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
-  public interface IIdList<TObject> : IEnumerable<TObject> where TObject : IIdObject {
-    TObject LoadById(int id);
+  public interface IIdList<TEntity> : IEnumerable<TEntity> where TEntity : DTEntity {
+    TEntity LoadById(int id);
 
 #if UNITY_EDITOR
-    void Add(TObject newObj);
+    void AddNew();
     void RemoveAt(int index);
 #endif
   }
