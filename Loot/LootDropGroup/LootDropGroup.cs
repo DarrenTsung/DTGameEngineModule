@@ -10,7 +10,7 @@ namespace DT.GameEngine {
     public IdComponent idComponent;
 
     public string notes;
-    [LootDropId]
+    [Id(typeof(LootDrop))]
     public int[] lootDropIds;
 
     public bool IsValid() {

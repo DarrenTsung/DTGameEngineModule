@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DT.GameEngine {
   [System.Serializable]
   public class ItemQuantity {
-    [ItemId]
+    [Id(typeof(Item))]
     public int itemId;
     public int quantity;
 
