@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 namespace DT.GameEngine {
-  public abstract partial class IdList<TEntity> : ScriptableObject, IIdList<TEntity> where TEntity : DTEntity, new() {
+  public partial class IdList<TEntity> : ScriptableObject, IEnumerable<TEntity>, IIdList where TEntity : DTEntity, new() {
     private static class IdListUtil {
       // PRAGMA MARK - Static
   		private const string RESOURCE_PATH = @"Assets/GameSpecific/Resources";
@@ -46,10 +46,12 @@ namespace DT.GameEngine {
   					AssetDatabase.CreateFolder(RESOURCE_PATH, IDLIST_FOLDER_NAME);
   				}
           Debug.Log("Creating new instance of - " + filename);
-  				instance = ScriptableObject.CreateInstance<IdList<TEntity>>();
-  				AssetDatabase.CreateAsset(instance, instanceFullPath);
+  				ScriptableObject scriptableObject = ScriptableObject.CreateInstance(filename);
+  				AssetDatabase.CreateAsset(scriptableObject, instanceFullPath);
   				AssetDatabase.SaveAssets();
   				AssetDatabase.Refresh();
+
+    			instance = Resources.Load(IDLIST_FOLDER_NAME + "/" + filename) as IdList<TEntity>;
   			}
   #endif
 

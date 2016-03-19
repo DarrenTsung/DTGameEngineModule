@@ -37,11 +37,11 @@ namespace DT.GameEngine {
 		}
 
     private string GetTitleForObject(TEntity obj) {
-      IIdListDisplayObject displayObject = obj as IIdListDisplayObject;
+      WindowDisplayComponent windowDisplayObject = obj.GetComponent<WindowDisplayComponent>();
 
-      string title = "Not IIdListDisplayObject";
-      if (displayObject != null) {
-        title = Regex.Replace(displayObject.Title, @"\s+", "");
+      string title = "No WindowDisplayComponent";
+      if (windowDisplayObject != null) {
+        title = Regex.Replace(windowDisplayObject.title, @"\s+", "");
       }
       return title;
     }

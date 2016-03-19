@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 namespace DT.GameEngine {
-  public abstract partial class IdList<TEntity> : ScriptableObject, IIdList<TEntity> where TEntity : DTEntity, new() {
+  public partial class IdList<TEntity> : ScriptableObject, IEnumerable<TEntity>, IIdList where TEntity : DTEntity, new() {
     // PRAGMA MARK - Static
     public static string ListName() {
       return typeof(TEntity).Name + "List";
@@ -27,24 +27,13 @@ namespace DT.GameEngine {
 #endif
 
 
-    // PRAGMA MARK - IIdList Implementation
+    // PRAGMA MARK - Public Interface
     public TEntity LoadById(int id) {
       return this._map.SafeGet(id);
     }
 
-#if UNITY_EDITOR
-    public void AddNew() {
-      TEntity newObj = new TEntity();
-      this._data.Add(newObj);
-    }
 
-    public void RemoveAt(int index) {
-      this._data.RemoveAt(index);
-    }
-#endif
-
-
-    // PRAGMA MARK - IIdList.IEnumerable<TEntity> Implementation
+    // PRAGMA MARK - IEnumerable<TEntity> Implementation
     IEnumerator IEnumerable.GetEnumerator() {
       return this.GetEnumerator();
     }
@@ -52,6 +41,20 @@ namespace DT.GameEngine {
     public IEnumerator<TEntity> GetEnumerator() {
       return this._data.GetEnumerator();
     }
+
+
+    // PRAGMA MARK - IIdList Implementation
+#if UNITY_EDITOR
+    public void AddNew() {
+      TEntity newEntity = new TEntity();
+      DTEntityInitializer.Initialize<TEntity>(newEntity);
+      this._data.Add(newEntity);
+    }
+
+    public void RemoveAt(int index) {
+      this._data.RemoveAt(index);
+    }
+#endif
 
 
     // PRAGMA MARK - Internal

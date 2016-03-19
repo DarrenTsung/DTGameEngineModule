@@ -5,6 +5,7 @@ namespace DT.GameEngine {
   [System.Serializable]
   public class Item : DTEntity, IIdListDisplayObject {
     public IdComponent idComponent;
+    public WindowDisplayComponent windowDisplayComponent;
 
     public string notes;
 
