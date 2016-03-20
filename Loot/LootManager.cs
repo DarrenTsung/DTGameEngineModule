@@ -8,7 +8,7 @@ namespace DT.GameEngine {
     public ILootReward[] SelectRewardsForLootDropGroupId(int lootDropGroupId) {
       List<ILootReward> rewards = new List<ILootReward>();
 
-      IEnumerable<LootDrop> lootDrops = Toolbox.GetInstance<LootDropGroupList>().GetLootDropsForId(lootDropGroupId);
+      List<LootDrop> lootDrops = LootDropGroupList.GetLootDropsForId(lootDropGroupId);
       LootDrop selectedLootDrop = WeightedSelectionUtil.SelectWeightedObject(lootDrops);
 
       if (selectedLootDrop == null) {

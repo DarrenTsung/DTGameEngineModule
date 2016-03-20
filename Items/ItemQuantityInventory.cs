@@ -82,7 +82,7 @@ namespace DT.GameEngine {
       }
 
       if (!this._itemMap.ContainsKey(itemId)) {
-        Item item = Toolbox.GetInstance<ItemList>().LoadById(itemId);
+        Item item = ItemList.Instance.LoadById(itemId);
         if (item == null) {
           Debug.LogWarning("GetItemQuantityForItemId - called with invalid item id: " + itemId + "!");
           return null;

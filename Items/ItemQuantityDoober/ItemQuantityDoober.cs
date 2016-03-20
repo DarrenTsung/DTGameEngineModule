@@ -9,7 +9,7 @@ namespace DT.GameEngine {
     public void SetupWithItemQuantity(ItemQuantity itemQuantity) {
       this._itemQuantity = itemQuantity;
 
-      Item item = Toolbox.GetInstance<ItemList>().LoadById(this._itemQuantity.itemId);
+      Item item = ItemList.Instance.LoadById(this._itemQuantity.itemId);
       this._renderer.sprite = item.displaySprite;
 
       this._autoTapCoroutine = CoroutineWrapper.StartCoroutine(this.AutoTapCoroutine());

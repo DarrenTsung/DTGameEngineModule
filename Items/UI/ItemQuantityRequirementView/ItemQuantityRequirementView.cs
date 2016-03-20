@@ -8,7 +8,7 @@ namespace DT.GameEngine {
   public class ItemQuantityRequirementView : MonoBehaviour {
     // PRAGMA MARK - Public Interface
     public void SetupWithRequiredItemQuantity(ItemQuantity requiredItemQuantity) {
-      Item item = Toolbox.GetInstance<ItemList>().LoadById(requiredItemQuantity.itemId);
+      Item item = ItemList.Instance.LoadById(requiredItemQuantity.itemId);
       this._requiredItemImage.sprite = item.displaySprite;
 
       this._requiredItemQuantity = requiredItemQuantity;
