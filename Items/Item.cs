@@ -4,8 +4,8 @@ using DT;
 namespace DT.GameEngine {
   [System.Serializable]
   public class Item : DTEntity, IIdListDisplayObject {
-    public IdComponent idComponent;
-    public WindowDisplayComponent windowDisplayComponent;
+    public IdComponent idComponent = new IdComponent();
+    public WindowDisplayComponent windowDisplayComponent = new WindowDisplayComponent();
 
     public string notes;
 

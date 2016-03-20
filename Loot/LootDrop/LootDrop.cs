@@ -7,7 +7,7 @@ namespace DT.GameEngine {
   [System.Serializable]
   public class LootDrop : DTEntity, IWeightedObject {
     // PRAGMA MARK - Public Interface
-    public IdComponent idComponent;
+    public IdComponent idComponent = new IdComponent();
 
     public string notes;
     public int weight;

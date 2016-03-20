@@ -7,7 +7,7 @@ namespace DT.GameEngine {
   [System.Serializable]
   public class LootDropGroup : DTEntity {
     // PRAGMA MARK - Public Interface
-    public IdComponent idComponent;
+    public IdComponent idComponent = new IdComponent();
 
     public string notes;
     [Id(typeof(LootDrop))]
