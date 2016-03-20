@@ -32,6 +32,7 @@ namespace DT.GameEngine {
 
   #if UNITY_EDITOR
       public static void DirtyInstance() {
+        Resources.UnloadAsset(_instance);
         _instance = null;
       }
   #endif
