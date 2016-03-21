@@ -5,7 +5,9 @@ namespace DT.GameEngine {
   [System.Serializable]
   public class Item : DTEntity, IIdListDisplayObject {
     public IdComponent idComponent = new IdComponent();
-    public WindowDisplayComponent windowDisplayComponent = new WindowDisplayComponent();
+#if UNITY_EDITOR
+    public EditorDisplayComponent editorDisplayComponent = new EditorDisplayComponent();
+#endif
 
     public string notes;
 

@@ -132,10 +132,12 @@ namespace DT.GameEngine {
         Texture2D iconTexture = null;
         string title = "Default";
 
-        WindowDisplayComponent displayComponent = entity.GetComponent<WindowDisplayComponent>();
+        EditorDisplayComponent displayComponent = entity.GetComponent<EditorDisplayComponent>();
         if (displayComponent != null) {
           iconTexture = displayComponent.iconTexture;
-          title = Regex.Replace(displayComponent.title, @"\s+", "");
+          if (!displayComponent.title.IsNullOrEmpty()) {
+            title = Regex.Replace(displayComponent.title, @"\s+", "");
+          }
         }
 
         iconTexture = iconTexture ?? Texture2DUtil.CreateTextureWithColor(Color.blue, kIconEdgeSize, kIconEdgeSize);

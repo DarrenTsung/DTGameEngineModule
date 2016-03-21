@@ -85,11 +85,11 @@ namespace DT.GameEngine {
       }
 
       private static string GetTitleForObject(TEntity obj) {
-        WindowDisplayComponent windowDisplayObject = obj.GetComponent<WindowDisplayComponent>();
+        EditorDisplayComponent editorDisplayComponent = obj.GetComponent<EditorDisplayComponent>();
 
-        string title = "No WindowDisplayComponent";
-        if (windowDisplayObject != null) {
-          title = Regex.Replace(windowDisplayObject.title, @"\s+", "");
+        string title = "No EditorDisplayComponent";
+        if (editorDisplayComponent != null) {
+          title = Regex.Replace(editorDisplayComponent.title, @"\s+", "");
         }
         return title;
       }
