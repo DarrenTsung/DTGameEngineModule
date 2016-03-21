@@ -5,12 +5,17 @@ using System.Collections;
 using TMPro;
 
 namespace DT.GameEngine {
-  public class ItemQuantityView : MonoBehaviour {
+  public class IdQuantityView : MonoBehaviour {
     // PRAGMA MARK - Public Interface
-    public void SetupWithItemQuantity(ItemQuantity itemQuantity) {
-      Item item = ItemList.Instance.LoadById(itemQuantity.itemId);
-      this._image.sprite = item.displaySprite;
-      this._text.SetText(string.Format("x{0}", itemQuantity.quantity));
+    public void SetupWithViewIdQuantity<TEntity>(IdQuantity<TEntity> idQuantity) where TEntity : DTEntity, new() {
+      IViewIdQuantity viewIdQuantity = new ViewIdQuantity<TEntity>(idQuantity);
+
+      DTEntity entity = viewIdQuantity.Entity;
+      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
+      if (displayComponent != null) {
+        this._image.sprite = displayComponent.displaySprite;
+      }
+      this._text.SetText(string.Format("x{0}", viewIdQuantity.Quantity));
     }
 
 

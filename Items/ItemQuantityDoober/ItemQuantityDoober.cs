@@ -4,13 +4,16 @@ using System.Collections;
 using UnityEngine;
 
 namespace DT.GameEngine {
-  public class ItemQuantityDoober : MonoBehaviour {
+  public class IdQuantityDoober : MonoBehaviour {
     // PRAGMA MARK - Public Interface
-    public void SetupWithItemQuantity(ItemQuantity itemQuantity) {
-      this._itemQuantity = itemQuantity;
+    public void SetupWithViewIdQuantity(IViewIdQuantity viewIdQuantity) {
+      this._viewIdQuantity = viewIdQuantity;
 
-      Item item = ItemList.Instance.LoadById(this._itemQuantity.itemId);
-      this._renderer.sprite = item.displaySprite;
+      DTEntity entity = this._viewIdQuantity.Entity;
+      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
+      if (displayComponent != null) {
+        this._renderer.sprite = displayComponent.displaySprite;
+      }
 
       this._autoTapCoroutine = CoroutineWrapper.StartCoroutine(this.AutoTapCoroutine());
     }
@@ -21,7 +24,7 @@ namespace DT.GameEngine {
     [SerializeField]
     private SpriteRenderer _renderer;
 
-    private ItemQuantity _itemQuantity;
+    private IViewIdQuantity _viewIdQuantity;
     private CoroutineWrapper _autoTapCoroutine;
 
     private IEnumerator AutoTapCoroutine() {

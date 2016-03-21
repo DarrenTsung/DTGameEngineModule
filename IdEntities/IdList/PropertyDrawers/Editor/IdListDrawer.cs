@@ -15,16 +15,37 @@ namespace DT.GameEngine {
     private const int kPadding = 5;
 
     private MethodInfo _drawListFieldMethod = null;
-    private MethodInfo DrawListFieldMethod {
-      get {
-        if (this._drawListFieldMethod == null) {
-          IdAttribute idAttribute = attribute as IdAttribute;
+    private MethodInfo GetDrawListFieldMethod() {
+      if (this._drawListFieldMethod == null) {
+        IdAttribute idAttribute = attribute as IdAttribute;
 
-          Type utilType = typeof(IdListDrawer.IdListDrawerUtil<>).MakeGenericType(idAttribute.type);
-          this._drawListFieldMethod = utilType.GetMethod("DrawListField", BindingFlags.NonPublic | BindingFlags.Static);
+        Type entityType = idAttribute.type;
+        if (entityType == null) {
+          Type classType = this.fieldInfo.ReflectedType;
+          Type[] classGenericTypes = classType.GetGenericArguments();
+          if (classGenericTypes.Length > 0) {
+            for (int i = 0; i < classGenericTypes.Length; ++i) {
+              Type genericType = classGenericTypes[i];
+              if (genericType.IsSubclassOf(typeof(DTEntity))) {
+                entityType = genericType;
+                break;
+              }
+            }
+
+            if (entityType == null) {
+              Debug.LogError("Attempting to reflect entity parameter type, but failed to find subclass of DTEntity in generic type arguments!");
+              return null;
+            }
+          } else {
+            Debug.LogError("Attempting to reflect entity parameter type, but no generic type arguments!");
+            return null;
+          }
         }
-        return this._drawListFieldMethod;
+
+        Type utilType = typeof(IdListDrawer.IdListDrawerUtil<>).MakeGenericType(entityType);
+        this._drawListFieldMethod = utilType.GetMethod("DrawListField", BindingFlags.NonPublic | BindingFlags.Static);
       }
+      return this._drawListFieldMethod;
     }
 
 
@@ -35,7 +56,10 @@ namespace DT.GameEngine {
 
       EditorGUI.indentLevel--;
 			if (property.propertyType == SerializedPropertyType.Integer) {
-        this.DrawListFieldMethod.Invoke(null, new object[] { contentRect, property });
+        MethodInfo drawListMethod = this.GetDrawListFieldMethod();
+        if (drawListMethod != null) {
+          drawListMethod.Invoke(null, new object[] { contentRect, property });
+        }
 			} else {
         EditorGUI.LabelField(contentRect, "Use IdListDrawer with int types!");
       }

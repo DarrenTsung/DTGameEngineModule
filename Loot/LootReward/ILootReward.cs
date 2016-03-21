@@ -2,7 +2,7 @@ using DT;
 
 namespace DT.GameEngine {
   public enum ILootRewardType {
-    ITEM_QUANTITY
+    ID_QUANTITY
   }
 
   public interface ILootReward {

@@ -5,13 +5,18 @@ using System.Collections;
 using TMPro;
 
 namespace DT.GameEngine {
-  public class ItemQuantityRequirementView : MonoBehaviour {
+  public class IdQuantityRequirementView : MonoBehaviour {
     // PRAGMA MARK - Public Interface
-    public void SetupWithRequiredItemQuantity(ItemQuantity requiredItemQuantity) {
-      Item item = ItemList.Instance.LoadById(requiredItemQuantity.itemId);
-      this._requiredItemImage.sprite = item.displaySprite;
+    public void SetupWithRequiredIdQuantity<TEntity>(IdQuantity<TEntity> requiredIdQuantity) where TEntity : DTEntity, new() {
+      IViewIdQuantity requiredViewIdQuantity = new ViewIdQuantity<TEntity>(requiredIdQuantity);
 
-      this._requiredItemQuantity = requiredItemQuantity;
+      this._requiredViewIdQuantity = requiredViewIdQuantity;
+
+      DTEntity entity = this._requiredViewIdQuantity.Entity;
+      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
+      if (displayComponent != null) {
+        this._requiredItemImage.sprite = displayComponent.displaySprite;
+      }
 
       this.UpdateUserCount();
     }
@@ -24,21 +29,20 @@ namespace DT.GameEngine {
     [SerializeField]
     private TMP_Text _requiredLabel;
 
-    private ItemQuantity _requiredItemQuantity;
+    private IViewIdQuantity _requiredViewIdQuantity;
 
+    // TODO (darren): hook this up
     private void HandleUserItemsUpdated() {
       this.UpdateUserCount();
     }
 
     private void UpdateUserCount() {
-      if (this._requiredItemQuantity == null) {
-        Debug.LogWarning("UpdateUserCount - called when required item quantity is null!");
+      if (this._requiredViewIdQuantity == null) {
+        Debug.LogWarning("UpdateUserCount - called when required view item quantity is null!");
         return;
       }
 
-      int userCount = UserItemInventory.Instance.GetCountOfItemId(this._requiredItemQuantity.itemId);
-
-      this._requiredLabel.text = string.Format("{0} / {1}", userCount, this._requiredItemQuantity.quantity);
+      this._requiredLabel.text = string.Format("{0} / {1}", this._requiredViewIdQuantity.UserQuantity, this._requiredViewIdQuantity.Quantity);
     }
   }
 }

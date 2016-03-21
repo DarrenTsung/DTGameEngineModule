@@ -5,11 +5,11 @@ using System.Collections.Generic;
 namespace DT.GameEngine {
   public static class LootRewardFactory {
     // PRAGMA MARK - Static
-    public static ILootReward[] CreateLootRewardsFrom(IEnumerable<ItemQuantity> itemQuantityCollection) {
+    public static ILootReward[] CreateLootRewardsFrom<TEntity>(IEnumerable<IdQuantity<TEntity>> idQuantityCollection) where TEntity : DTEntity, new() {
       List<ILootReward> lootRewards = new List<ILootReward>();
 
-      foreach (ItemQuantity itemQuantity in itemQuantityCollection) {
-        lootRewards.Add(new ItemQuantityLootReward(itemQuantity));
+      foreach (IdQuantity<TEntity> idQuantity in idQuantityCollection) {
+        lootRewards.Add(new IdQuantityLootReward<TEntity>(idQuantity));
       }
 
       return lootRewards.ToArray();

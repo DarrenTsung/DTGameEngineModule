@@ -1,23 +1,23 @@
 using DT;
 
 namespace DT.GameEngine {
-  public class ItemQuantityLootReward : ILootReward {
+  public class IdQuantityLootReward<TEntity> : ILootReward where TEntity : DTEntity, new() {
     // PRAGMA MARK - Public Interface
-    public ItemQuantityLootReward(ItemQuantity itemQuantity) {
-      this.itemQuantity = itemQuantity;
+    public IdQuantityLootReward(IdQuantity<TEntity> idQuantity) {
+      this.idQuantity = idQuantity;
     }
 
     // PRAGMA MARK - ILootReward Implementation
     public void Apply() {
-      UserItemInventory.Instance.GainItemQuantity(this.itemQuantity);
+      UserIdInventory<TEntity>.Instance.GainIdQuantity(this.idQuantity);
     }
 
     public ILootRewardType Type {
       get {
-        return ILootRewardType.ITEM_QUANTITY;
+        return ILootRewardType.ID_QUANTITY;
       }
     }
 
-    public ItemQuantity itemQuantity;
+    public IdQuantity<TEntity> idQuantity;
   }
 }

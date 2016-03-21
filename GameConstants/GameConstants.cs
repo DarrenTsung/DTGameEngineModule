@@ -10,7 +10,7 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
-    [Header("ItemQuantityDoober Properties")]
+    [Header("IdQuantityDoober Properties")]
     [SerializeField]
     private int _dooberAutoTapDelay;
   }
