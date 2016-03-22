@@ -9,14 +9,14 @@ namespace DT.GameEngine {
   [Serializable]
   public class IdQuantityInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity, new() {
     // PRAGMA MARK - Public Interface
-    public void GainIdQuantity(IdQuantity<TEntity> gainQuantity) {
-      IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(gainQuantity.id);
-      idQuantity.quantity += gainQuantity.quantity;
+    public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
+      IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(addQuantity.id);
+      idQuantity.quantity += addQuantity.quantity;
     }
 
-    public bool CanSpendIdQuantityList(IEnumerable<IdQuantity<TEntity>> neededQuantities) {
-      foreach (IdQuantity<TEntity> neededQuantity in neededQuantities) {
-        if (!this.CanSpendIdQuantity(neededQuantity)) {
+    public bool CanRemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
+      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
+        if (!this.CanRemoveIdQuantity(removeQuantity)) {
           return false;
         }
       }
@@ -24,25 +24,25 @@ namespace DT.GameEngine {
       return true;
     }
 
-    public bool CanSpendIdQuantity(IdQuantity<TEntity> neededQuantity) {
-      IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(neededQuantity.id);
-      return idQuantity.quantity >= neededQuantity.quantity;
+    public bool CanRemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
+      IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(removeQuantity.id);
+      return idQuantity.quantity >= removeQuantity.quantity;
     }
 
-    public void SpendIdQuantityList(IEnumerable<IdQuantity<TEntity>> spendQuantities) {
-      foreach (IdQuantity<TEntity> spendQuantity in spendQuantities) {
-        this.SpendIdQuantity(spendQuantity);
+    public void RemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
+      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
+        this.RemoveIdQuantity(removeQuantity);
       }
     }
 
-    public void SpendIdQuantity(IdQuantity<TEntity> spendQuantity) {
-      IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(spendQuantity.id);
-      if (idQuantity.quantity < spendQuantity.quantity) {
-        Debug.LogWarning("SpendIdQuantity: Can't spend " + spendQuantity.quantity + " of " + typeof(TEntity).Name + " id: " + spendQuantity.id + "!");
+    public void RemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
+      IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(removeQuantity.id);
+      if (idQuantity.quantity < removeQuantity.quantity) {
+        Debug.LogWarning("RemoveIdQuantity: Can't remove " + removeQuantity.quantity + " of " + typeof(TEntity).Name + " id: " + removeQuantity.id + "!");
         return;
       }
 
-      idQuantity.quantity -= spendQuantity.quantity;
+      idQuantity.quantity -= removeQuantity.quantity;
     }
 
     public int GetCountOfId(int id) {

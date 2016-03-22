@@ -9,7 +9,7 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - ILootReward Implementation
     public void Apply() {
-      UserIdInventory<TEntity>.Instance.GainIdQuantity(this.idQuantity);
+      UserIdInventory<TEntity>.Instance.AddIdQuantity(this.idQuantity);
     }
 
     public ILootRewardType Type {

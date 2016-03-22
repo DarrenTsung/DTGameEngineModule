@@ -26,18 +26,18 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - Public Interface
     public Action OnInventoryUpdated = delegate {};
-    public Action<IdQuantity<TEntity>> OnGainedIdQuantity = delegate {};
-    public Action<IdQuantity<TEntity>> OnSpentIdQuantity = delegate {};
+    public Action<IdQuantity<TEntity>> OnAddedIdQuantity = delegate {};
+    public Action<IdQuantity<TEntity>> OnRemovedIdQuantity = delegate {};
 
-    public void GainIdQuantity(IdQuantity<TEntity> gainQuantity) {
-      this._idQuantityInventory.GainIdQuantity(gainQuantity);
+    public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
+      this._idQuantityInventory.AddIdQuantity(addQuantity);
       this.OnInventoryUpdated.Invoke();
-      this.OnGainedIdQuantity.Invoke(gainQuantity);
+      this.OnAddedIdQuantity.Invoke(addQuantity);
     }
 
-    public bool CanSpendIdQuantityList(IEnumerable<IdQuantity<TEntity>> neededQuantities) {
-      foreach (IdQuantity<TEntity> neededQuantity in neededQuantities) {
-        if (!this.CanSpendIdQuantity(neededQuantity)) {
+    public bool CanRemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
+      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
+        if (!this.CanRemoveIdQuantity(removeQuantity)) {
           return false;
         }
       }
@@ -45,20 +45,20 @@ namespace DT.GameEngine {
       return true;
     }
 
-    public bool CanSpendIdQuantity(IdQuantity<TEntity> neededQuantity) {
-      return this._idQuantityInventory.CanSpendIdQuantity(neededQuantity);
+    public bool CanRemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
+      return this._idQuantityInventory.CanRemoveIdQuantity(removeQuantity);
     }
 
-    public void SpendIdQuantityList(IEnumerable<IdQuantity<TEntity>> spendQuantities) {
-      foreach (IdQuantity<TEntity> spendQuantity in spendQuantities) {
-        this.SpendIdQuantity(spendQuantity);
+    public void RemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
+      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
+        this.RemoveIdQuantity(removeQuantity);
       }
     }
 
-    public void SpendIdQuantity(IdQuantity<TEntity> spendQuantity) {
-      this._idQuantityInventory.SpendIdQuantity(spendQuantity);
+    public void RemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
+      this._idQuantityInventory.RemoveIdQuantity(removeQuantity);
       this.OnInventoryUpdated.Invoke();
-      this.OnSpentIdQuantity.Invoke(spendQuantity);
+      this.OnRemovedIdQuantity.Invoke(removeQuantity);
     }
 
     public int GetCountOfId(int id) {
