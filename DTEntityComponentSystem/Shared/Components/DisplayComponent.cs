@@ -6,5 +6,6 @@ namespace DT.GameEngine {
   public class DisplayComponent : IDTComponent {
     // PRAGMA MARK - Public Interface
     public Sprite displaySprite;
+    public string displayName;
 	}
 }
