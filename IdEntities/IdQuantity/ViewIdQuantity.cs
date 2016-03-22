@@ -16,7 +16,7 @@ namespace DT.GameEngine {
     }
 
     public int Quantity {
-      get { return this._idQuantity.id; }
+      get { return this._idQuantity.quantity; }
     }
 
     public int UserQuantity {
