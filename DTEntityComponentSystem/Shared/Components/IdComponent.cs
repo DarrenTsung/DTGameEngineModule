@@ -1,8 +1,9 @@
 using DT;
 ﻿using UnityEngine;
+using System;
 
 namespace DT.GameEngine {
-  [System.Serializable]
+  [Serializable]
   public class IdComponent : IDTComponent {
     // PRAGMA MARK - Public Interface
     public int id;

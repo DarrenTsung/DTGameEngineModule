@@ -45,12 +45,35 @@ namespace DT.GameEngine {
             columnStyle.normal.background = this.ColumnBackgrounds[objIndex % this.ColumnBackgrounds.Length];
             Rect objRect = EditorGUILayout.BeginVertical(columnStyle, GUILayout.Width(kLabelWidth + kFieldWidth));
               this.ObjectOnGUI(entity, serializedObj, serializedObjReference, objRect);
+              if (GUILayout.Button("X", GUILayout.Width(70))) {
+                if (EditorUtility.DisplayDialog("Remove Element?",
+                  "Are you sure you want to remove this element?",
+                  "Remove",
+                  "Cancel")) {
+                  this._arrayIndexesToRemove.Add(objIndex);
+                  break;
+                }
+              }
             EditorGUILayout.EndVertical();
 
             objIndex++;
           }
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.EndScrollView();
+
+        // Remove any objects in array at this state
+        if (this._arrayIndexesToRemove.Count > 0) {
+          foreach (int index in this._arrayIndexesToRemove) {
+            this._list.RemoveAt(index);
+            this._serializedData.DeleteArrayElementAtIndex(index);
+            if (index < this._serializedDataReference.arraySize) {
+              this._serializedDataReference.DeleteArrayElementAtIndex(index);
+            }
+          }
+          this.RebuildSerializedCopies(refreshReference: false);
+          this._arrayIndexesToRemove.Clear();
+        }
+
 
         // Add Button
         if (GUILayout.Button("Add", GUILayout.Height(kButtonHeight))) {
@@ -63,6 +86,7 @@ namespace DT.GameEngine {
           if (GUILayout.Button("Commit changes", GUILayout.Height(kButtonHeight))) {
             this._serializedData.serializedObject.ApplyModifiedProperties();
       			EditorUtility.SetDirty(this._list);
+            AssetDatabase.SaveAssets();
             this.RebuildSerializedCopies(refreshReference: true);
           }
 
@@ -78,6 +102,7 @@ namespace DT.GameEngine {
       private IdList<TEntity> _list;
       private SerializedProperty _serializedData;
       private SerializedProperty _serializedDataReference;
+      private List<int> _arrayIndexesToRemove = new List<int>();
 
       private Texture2D[] _columnBackgrounds;
       private Texture2D[] ColumnBackgrounds {

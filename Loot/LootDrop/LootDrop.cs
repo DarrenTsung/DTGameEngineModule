@@ -8,6 +8,9 @@ namespace DT.GameEngine {
   public class LootDrop : DTEntity, IWeightedObject {
     // PRAGMA MARK - Public Interface
     public IdComponent idComponent = new IdComponent();
+#if UNITY_EDITOR
+    public EditorDisplayComponent editorDisplayComponent = new EditorDisplayComponent();
+#endif
 
     public string notes;
     public int weight;
@@ -15,7 +18,6 @@ namespace DT.GameEngine {
     // TODO (darren): remake this with a hook or provider to get rewards?
     // Need to figure out how we can reward App specific stuff
     public ItemQuantity[] rewardedItemQuantities = new ItemQuantity[0];
-    public int test;
 
     public ILootReward[] RewardedLootRewards {
       get {

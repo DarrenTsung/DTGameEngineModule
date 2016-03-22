@@ -8,6 +8,9 @@ namespace DT.GameEngine {
   public class LootDropGroup : DTEntity {
     // PRAGMA MARK - Public Interface
     public IdComponent idComponent = new IdComponent();
+#if UNITY_EDITOR
+    public EditorDisplayComponent editorDisplayComponent = new EditorDisplayComponent();
+#endif
 
     public string notes;
     [Id(typeof(LootDrop))]
