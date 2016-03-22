@@ -89,7 +89,11 @@ namespace DT.GameEngine {
 
         string title = "No EditorDisplayComponent";
         if (editorDisplayComponent != null) {
-          title = Regex.Replace(editorDisplayComponent.title, @"\s+", "");
+          if (!editorDisplayComponent.title.IsNullOrEmpty()) {
+            title = Regex.Replace(editorDisplayComponent.title, @"\s+", "");
+          } else {
+            title = "Empty Title";
+          }
         }
         return title;
       }
