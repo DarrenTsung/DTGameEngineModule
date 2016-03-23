@@ -12,7 +12,7 @@ using System.Globalization;
 namespace DT.GameEngine {
   public partial class IdListWindow : EditorWindow {
     private interface IListDrawer {
-      void OnGUI();
+      void OnGUI(float width);
     }
 
     private class ListDrawer<TEntity> : IListDrawer where TEntity : DTEntity, new() {
@@ -30,8 +30,11 @@ namespace DT.GameEngine {
         this.RebuildSerializedCopies(refreshReference: true);
       }
 
-      public void OnGUI() {
+      public void OnGUI(float width) {
+        EditorGUILayout.BeginVertical(GUILayout.Width(width));
+
         // Objects
+        this._currentScrollPosition = EditorGUILayout.BeginScrollView(this._currentScrollPosition);
         EditorGUILayout.BeginHorizontal();
           int objIndex = 0;
           foreach (TEntity entity in this._list) {
@@ -96,6 +99,8 @@ namespace DT.GameEngine {
             this.RebuildSerializedCopies(refreshReference: true);
           }
         EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.EndVertical();
       }
 
       // PRAGMA MARK - Internal

@@ -23,14 +23,15 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - Unity Methods
     public void OnGUI() {
-      EditorGUILayout.BeginVertical();
-      this._currentScrollPosition = EditorGUILayout.BeginScrollView(this._currentScrollPosition);
-      Rect selectionRect = EditorGUILayout.BeginHorizontal(GUILayout.Width(1000), GUILayout.Height(kSelectionButtonHeight));
+      EditorGUILayout.BeginHorizontal();
+
+      this._currentListSelectionScrollPosition = EditorGUILayout.BeginScrollView(this._currentListSelectionScrollPosition);
+      Rect selectionRect = EditorGUILayout.BeginVertical(GUILayout.MinWidth(kSelectionButtonWidth), GUILayout.MaxWidth(kSelectionButtonWidth));
         int typeIndex = 0;
         foreach (Type entitySubclassType in DTEntityUtil.EntitySubclasses) {
           bool selected = this._selectedEntityType == entitySubclassType;
 
-          Rect buttonPos = new Rect(selectionRect.x + kSelectionButtonWidth * typeIndex, selectionRect.y, kSelectionButtonWidth, kSelectionButtonHeight);
+          Rect buttonPos = new Rect(selectionRect.x, selectionRect.y + kSelectionButtonHeight * typeIndex, kSelectionButtonWidth, kSelectionButtonHeight);
           if (GUI.Toggle(buttonPos, selected, entitySubclassType.Name, GUI.skin.button)) {
             // only select type if wasn't selected before
             if (selected == false) {
@@ -40,15 +41,15 @@ namespace DT.GameEngine {
           typeIndex++;
         }
 
-        EditorGUILayout.LabelField("", GUILayout.Width(typeIndex * kSelectionButtonWidth), GUILayout.Height(kSelectionButtonHeight));
-      EditorGUILayout.EndHorizontal();
-
+        EditorGUILayout.LabelField("", GUILayout.Width(kSelectionButtonWidth), GUILayout.Height(typeIndex * kSelectionButtonHeight));
+      EditorGUILayout.EndVertical();
+      EditorGUILayout.EndScrollView();
 
       if (this._currentListDrawer != null) {
-        this._currentListDrawer.OnGUI();
+        this._currentListDrawer.OnGUI(width : this.position.width - kSelectionButtonWidth - 10.0f);
       }
 
-      EditorGUILayout.EndVertical();
+      EditorGUILayout.EndHorizontal();
     }
 
     private void OnEnable() {
@@ -60,7 +61,7 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Internal
     private Type _selectedEntityType;
 
-    private Vector2 _currentScrollPosition;
+    private Vector2 _currentListSelectionScrollPosition;
     private Dictionary<Type, IListDrawer> _listDrawerMap = new Dictionary<Type, IListDrawer>();
     private IListDrawer _currentListDrawer;
 
