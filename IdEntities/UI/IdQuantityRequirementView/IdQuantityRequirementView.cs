@@ -15,7 +15,7 @@ namespace DT.GameEngine {
       DTEntity entity = this._requiredViewIdQuantity.Entity;
       DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
       if (displayComponent != null) {
-        this._requiredItemImage.sprite = displayComponent.displaySprite;
+        this._requiredImage.sprite = displayComponent.displaySprite;
       }
 
       this.UpdateUserCount();
@@ -25,14 +25,14 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Internal
     [Header("Outlets")]
     [SerializeField]
-    private Image _requiredItemImage;
+    private Image _requiredImage;
     [SerializeField]
     private TMP_Text _requiredLabel;
 
     private IViewIdQuantity _requiredViewIdQuantity;
 
     // TODO (darren): hook this up
-    private void HandleUserItemsUpdated() {
+    private void HandleUserQuantityUpdated() {
       this.UpdateUserCount();
     }
 

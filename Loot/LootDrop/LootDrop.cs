@@ -15,9 +15,6 @@ namespace DT.GameEngine {
     public string notes;
     public int weight;
     public int[] rewardedLootDropGroupIds = new int[0];
-    // TODO (darren): remake this with a hook or provider to get rewards?
-    // Need to figure out how we can reward App specific stuff
-    public ItemQuantity[] rewardedItemQuantities = new ItemQuantity[0];
 
     public ILootReward[] RewardedLootRewards {
       get {
@@ -52,8 +49,6 @@ namespace DT.GameEngine {
 
     private void CreateLootRewards() {
       List<ILootReward> lootRewards = new List<ILootReward>();
-
-      // lootRewards.AddRange(LootRewardFactory.CreateLootRewardsFrom(this.rewardedItemQuantities));
 
       this._lootRewards = lootRewards.ToArray();
     }
