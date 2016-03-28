@@ -15,7 +15,7 @@ namespace DT.GameEngine {
       void OnGUI(float width);
     }
 
-    private class ListDrawer<TEntity> : IListDrawer where TEntity : DTEntity, new() {
+    private class ListDrawer<TEntity> : IListDrawer where TEntity : DTEntity {
       // PRAGMA MARK - Static
       private const float kLabelWidth = 150.0f;
       private const float kFieldWidth = 110.0f;
@@ -80,8 +80,8 @@ namespace DT.GameEngine {
 
         // Add Button
         if (GUILayout.Button("Add", GUILayout.Height(kButtonHeight))) {
-          this._list.AddNew();
-          this.RebuildSerializedCopies(refreshReference: false);
+          this._serializedData.arraySize++;
+          this._serializedData.serializedObject.ApplyModifiedProperties();
         }
 
         // Commit or revert

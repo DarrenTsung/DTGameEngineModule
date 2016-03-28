@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace DT.GameEngine {
   [Serializable]
-  public class IdQuantityInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity, new() {
+  public class IdQuantityInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity {
     // PRAGMA MARK - Public Interface
     public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
       IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(addQuantity.id);

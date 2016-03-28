@@ -7,6 +7,10 @@ namespace DT.GameEngine {
   public class DTEntity {
     // PRAGMA MARK - Public Interface
     public DTEntity() {
+#if UNITY_EDITOR
+      // only do this expensive initialization if we're being created in the unity editor
+      DTEntityInitializer.Initialize(this.GetType(), this);
+#endif
     }
 
     public bool Initialized {

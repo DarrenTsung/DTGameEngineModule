@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 namespace DT.GameEngine {
-  public partial class IdList<TEntity> : ScriptableObject, IIdList<TEntity> where TEntity : DTEntity, new() {
+  public partial class IdList<TEntity> : ScriptableObject, IIdList<TEntity> where TEntity : DTEntity {
     // PRAGMA MARK - Static
     public static string ListName() {
       return typeof(TEntity).Name + "List";
@@ -33,12 +33,6 @@ namespace DT.GameEngine {
     }
 
 #if UNITY_EDITOR
-    public void AddNew() {
-      TEntity newEntity = new TEntity();
-      DTEntityInitializer.Initialize<TEntity>(newEntity);
-      this._data.Add(newEntity);
-    }
-
     public void RemoveAt(int index) {
       this._data.RemoveAt(index);
     }

@@ -1,7 +1,7 @@
 using DT;
 
 namespace DT.GameEngine {
-  public class IdQuantityLootReward<TEntity> : ILootReward where TEntity : DTEntity, new() {
+  public class IdQuantityLootReward<TEntity> : ILootReward where TEntity : DTEntity {
     // PRAGMA MARK - Public Interface
     public IdQuantityLootReward(IdQuantity<TEntity> idQuantity) {
       this.idQuantity = idQuantity;

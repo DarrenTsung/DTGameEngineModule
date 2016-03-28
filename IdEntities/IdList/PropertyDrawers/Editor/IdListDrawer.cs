@@ -66,7 +66,7 @@ namespace DT.GameEngine {
       EditorGUI.indentLevel++;
 		}
 
-    private class IdListDrawerUtil<TEntity> where TEntity : DTEntity, new() {
+    private class IdListDrawerUtil<TEntity> where TEntity : DTEntity {
       private static void DrawListField(Rect contentRect, SerializedProperty property) {
         IIdList<TEntity> list = ListFactory<TEntity>.Instance.GetList();
         if (list == null) {

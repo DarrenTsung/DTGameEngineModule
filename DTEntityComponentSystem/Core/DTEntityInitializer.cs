@@ -9,12 +9,15 @@ namespace DT.GameEngine {
   public static class DTEntityInitializer {
     // PRAGMA MARK - Static
     public static void Initialize<TEntity>(TEntity entity) where TEntity : DTEntity {
+      DTEntityInitializer.Initialize(typeof(TEntity), entity);
+    }
+
+    public static void Initialize(Type entityType, DTEntity entity) {
       if (entity.Initialized) {
-        Debug.LogWarning("Initialize - called on an entity that is already initialized!");
         return;
       }
 
-      FieldInfo[] componentFields = DTEntityInitializer.GetComponentFields<TEntity>();
+      FieldInfo[] componentFields = DTEntityInitializer.GetComponentFields(entityType);
       foreach (FieldInfo componentField in componentFields) {
         object component = componentField.GetValue(entity);
         entity.AddComponent(componentField.FieldType, component);
@@ -27,8 +30,7 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Static Internal
     private static Dictionary<Type, FieldInfo[]> _classComponentMap = new Dictionary<Type, FieldInfo[]>();
 
-    private static FieldInfo[] GetComponentFields<TEntity>() {
-      Type entityType = typeof(TEntity);
+    private static FieldInfo[] GetComponentFields(Type entityType) {
       if (!DTEntityInitializer._classComponentMap.ContainsKey(entityType)) {
         FieldInfo[] fields = entityType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 

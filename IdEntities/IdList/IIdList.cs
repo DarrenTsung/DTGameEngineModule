@@ -8,7 +8,6 @@ namespace DT.GameEngine {
     TEntity LoadById(int id);
 
 #if UNITY_EDITOR
-    void AddNew();
     void RemoveAt(int index);
 #endif
   }

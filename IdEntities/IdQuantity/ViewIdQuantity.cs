@@ -4,7 +4,7 @@ using System.Collections.Generic;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
-  public class ViewIdQuantity<TEntity> : IViewIdQuantity where TEntity : DTEntity, new() {
+  public class ViewIdQuantity<TEntity> : IViewIdQuantity where TEntity : DTEntity {
     public ViewIdQuantity(IdQuantity<TEntity> idQuantity) {
       this._idQuantity = idQuantity;
     }

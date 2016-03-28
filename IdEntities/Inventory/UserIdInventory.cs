@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.GameEngine {
-  public class UserIdInventory<TEntity> where TEntity : DTEntity, new() {
+  public class UserIdInventory<TEntity> where TEntity : DTEntity {
     // PRAGMA MARK - Static
     private static UserIdInventory<TEntity> _instance;
 		private static object _lock = new object();

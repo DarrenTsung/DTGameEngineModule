@@ -7,7 +7,7 @@ using TMPro;
 namespace DT.GameEngine {
   public class IdQuantityView : MonoBehaviour {
     // PRAGMA MARK - Public Interface
-    public void SetupWithViewIdQuantity<TEntity>(IdQuantity<TEntity> idQuantity) where TEntity : DTEntity, new() {
+    public void SetupWithViewIdQuantity<TEntity>(IdQuantity<TEntity> idQuantity) where TEntity : DTEntity {
       IViewIdQuantity viewIdQuantity = new ViewIdQuantity<TEntity>(idQuantity);
 
       DTEntity entity = viewIdQuantity.Entity;
