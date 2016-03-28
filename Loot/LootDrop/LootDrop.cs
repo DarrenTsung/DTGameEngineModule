@@ -21,7 +21,7 @@ namespace DT.GameEngine {
     public ILootReward[] RewardedLootRewards {
       get {
         if (this._lootRewards == null) {
-          this.CreateLootRewards();
+          this._lootRewards = this.CreateLootRewards();
         }
         return this._lootRewards;
       }
@@ -49,10 +49,6 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Internal
     private ILootReward[] _lootRewards;
 
-    private void CreateLootRewards() {
-      List<ILootReward> lootRewards = new List<ILootReward>();
-
-      this._lootRewards = lootRewards.ToArray();
-    }
+    protected abstract ILootReward[] CreateLootRewards();
   }
 }
