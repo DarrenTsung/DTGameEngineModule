@@ -1,19 +1,21 @@
 using DT;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace DT.GameEngine {
-  [System.Serializable]
-  public class LootDrop : DTEntity, IWeightedObject {
+  [Serializable]
+  public abstract class LootDrop : DTEntity, IWeightedObject {
     // PRAGMA MARK - Public Interface
     public IdComponent idComponent = new IdComponent();
+    public WeightComponent weightComponent = new WeightComponent();
+
 #if UNITY_EDITOR
     public EditorDisplayComponent editorDisplayComponent = new EditorDisplayComponent();
 #endif
 
-    public string notes;
-    public int weight;
+    [Id(typeof(LootDropGroup))]
     public int[] rewardedLootDropGroupIds = new int[0];
 
     public ILootReward[] RewardedLootRewards {
@@ -40,7 +42,7 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - IWeightedObject Implementation
     public int Weight {
-      get { return this.weight; }
+      get { return this.weightComponent.weight; }
     }
 
 

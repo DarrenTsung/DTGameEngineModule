@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 namespace DT.GameEngine {
-  public partial class IdList<TEntity> : ScriptableObject, IEnumerable<TEntity>, IIdList where TEntity : DTEntity, new() {
+  public partial class IdList<TEntity> : ScriptableObject, IEnumerable<TEntity>, IIdList<TEntity> where TEntity : DTEntity, new() {
     private static class IdListUtil {
       // PRAGMA MARK - Static
   		private const string RESOURCE_PATH = @"Assets/GameSpecific/Resources";

@@ -10,7 +10,7 @@ namespace DT.GameEngine {
       DTEntityUtil._entitySubclasses =
         (from assembly in AppDomain.CurrentDomain.GetAssemblies()
             from type in assembly.GetTypes()
-            where type.IsSubclassOf(typeof(DTEntity))
+            where type != typeof(DTEntity) && typeof(DTEntity).IsAssignableFrom(type) && !type.IsAbstract
             select type).ToArray();
     }
 

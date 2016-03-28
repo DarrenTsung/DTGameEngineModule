@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 namespace DT.GameEngine {
-  public partial class IdList<TEntity> : ScriptableObject, IEnumerable<TEntity>, IIdList where TEntity : DTEntity, new() {
+  public partial class IdList<TEntity> : ScriptableObject, IIdList<TEntity> where TEntity : DTEntity, new() {
     // PRAGMA MARK - Static
     public static string ListName() {
       return typeof(TEntity).Name + "List";
@@ -27,23 +27,11 @@ namespace DT.GameEngine {
 #endif
 
 
-    // PRAGMA MARK - Public Interface
+    // PRAGMA MARK - IIdList<TEntity> Implementation
     public TEntity LoadById(int id) {
       return this._map.SafeGet(id);
     }
 
-
-    // PRAGMA MARK - IEnumerable<TEntity> Implementation
-    IEnumerator IEnumerable.GetEnumerator() {
-      return this.GetEnumerator();
-    }
-
-    public IEnumerator<TEntity> GetEnumerator() {
-      return this._data.GetEnumerator();
-    }
-
-
-    // PRAGMA MARK - IIdList Implementation
 #if UNITY_EDITOR
     public void AddNew() {
       TEntity newEntity = new TEntity();
@@ -55,6 +43,16 @@ namespace DT.GameEngine {
       this._data.RemoveAt(index);
     }
 #endif
+
+
+    // PRAGMA MARK - IIdList<TEntity>.IEnumerable<TEntity> Implementation
+    IEnumerator IEnumerable.GetEnumerator() {
+      return this.GetEnumerator();
+    }
+
+    public IEnumerator<TEntity> GetEnumerator() {
+      return this._data.GetEnumerator();
+    }
 
 
     // PRAGMA MARK - Internal

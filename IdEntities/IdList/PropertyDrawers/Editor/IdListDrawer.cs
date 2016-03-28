@@ -68,7 +68,11 @@ namespace DT.GameEngine {
 
     private class IdListDrawerUtil<TEntity> where TEntity : DTEntity, new() {
       private static void DrawListField(Rect contentRect, SerializedProperty property) {
-        IdList<TEntity> list = IdList<TEntity>.Instance;
+        IIdList<TEntity> list = ListFactory<TEntity>.Instance.GetList();
+        if (list == null) {
+          list = IdList<TEntity>.Instance;
+        }
+
         if (list == null) {
           EditorGUI.LabelField(contentRect, IdList<TEntity>.ListName() + " instance not found!");
         } else {
