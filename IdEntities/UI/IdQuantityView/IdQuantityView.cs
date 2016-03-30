@@ -15,16 +15,32 @@ namespace DT.GameEngine {
       if (displayComponent != null) {
         this._image.sprite = displayComponent.displaySprite;
       }
-      this._text.SetText(string.Format("x{0}", viewIdQuantity.Quantity));
+
+      if (viewIdQuantity.Quantity > 1) {
+        this._textContainer.SetActive(true);
+        this._text.SetText(string.Format("x{0}", viewIdQuantity.Quantity));
+      } else {
+        this._textContainer.SetActive(false);
+      }
+    }
+
+    public void SetSize(Vector2 size) {
+      this._containerTransform.sizeDelta = size;
     }
 
 
     // PRAGMA MARK - Internal
     [Header("Outlets")]
     [SerializeField]
+    private RectTransform _containerTransform;
+
+    [SerializeField]
     private Image _image;
+
     [SerializeField]
     private TMP_Text _text;
+    [SerializeField]
+    private GameObject _textContainer;
   }
 }
 #endif
