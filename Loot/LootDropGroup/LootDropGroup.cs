@@ -12,6 +12,7 @@ namespace DT.GameEngine {
     public EditorDisplayComponent editorDisplayComponent = new EditorDisplayComponent();
 #endif
 
+    [Multiline]
     public string notes;
     [Id(typeof(LootDrop))]
     public int[] lootDropIds;
