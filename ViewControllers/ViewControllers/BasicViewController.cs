@@ -59,6 +59,8 @@ namespace DT {
           contextContainer.ProvideContext(this);
         }
 
+        this.OnViewInitialized();
+
         callback();
       });
     }
@@ -109,6 +111,12 @@ namespace DT {
 
     public void RemoveShowDismissEvents(object subscriber) {
       this._showDismissEvents.RemoveShowDismissEvents(subscriber);
+    }
+
+
+    // PRAGMA MARK - Internal
+    // optional
+    protected virtual void OnViewInitialized() {
     }
   }
 }
