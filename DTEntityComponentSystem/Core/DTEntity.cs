@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace DT.GameEngine {
+  [Serializable]
   public class DTEntity {
     // PRAGMA MARK - Public Interface
     public DTEntity() {

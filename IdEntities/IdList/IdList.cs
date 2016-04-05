@@ -1,4 +1,5 @@
 using DT;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 ﻿using UnityEngine;
@@ -8,12 +9,15 @@ using UnityEditor;
 #endif
 
 namespace DT.GameEngine {
+  [Serializable]
   public partial class IdList<TEntity> : ScriptableObject, IIdList<TEntity> where TEntity : DTEntity {
     // PRAGMA MARK - Static
     public static string ListName() {
       return typeof(TEntity).Name + "List";
     }
 
+
+    // PRAGMA MARK - Resource Instance
     public static IdList<TEntity> Instance {
       get {
         return IdList<TEntity>.IdListUtil.Instance;
@@ -25,6 +29,20 @@ namespace DT.GameEngine {
       IdList<TEntity>.IdListUtil.DirtyInstance();
     }
 #endif
+
+
+
+    // PRAGMA MARK - User Instance
+    public static IdList<TEntity> UserInstance {
+      get {
+        return IdList<TEntity>.UserIdListUtil.UserInstance;
+      }
+    }
+
+    public static void DirtyUserInstance() {
+      IdList<TEntity>.UserIdListUtil.DirtyUserInstance();
+    }
+
 
 
     // PRAGMA MARK - IIdList<TEntity> Implementation
