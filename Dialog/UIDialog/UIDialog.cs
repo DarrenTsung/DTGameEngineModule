@@ -44,7 +44,7 @@ namespace DT.GameEngine {
 
     private void Cleanup() {
       if (this._characterPrefab != null) {
-        Toolbox.GetInstance<ObjectPoolManager>().Recycle(this._characterPrefab);
+        ObjectPoolManager.Instance.Recycle(this._characterPrefab);
       }
       this._dialogText.text = "";
 
@@ -55,7 +55,7 @@ namespace DT.GameEngine {
       this._container.SetActive(true);
 
       UIDialogKeyframe currentKeyframe = this.GetCurrentKeyframe();
-      this._characterPrefab = Toolbox.GetInstance<ObjectPoolManager>().Instantiate(currentKeyframe.characterPrefabName, parent : this._container, worldPositionStays : false);
+      this._characterPrefab = ObjectPoolManager.Instance.Instantiate(currentKeyframe.characterPrefabName, parent : this._container, worldPositionStays : false);
 
       this.StopAllCoroutines();
       this.DoEveryFrameForDuration(this._textCharacterAnimationSpeed * currentKeyframe.text.Length, (float time, float duration) => {
