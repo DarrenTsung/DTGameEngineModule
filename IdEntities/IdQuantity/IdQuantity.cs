@@ -1,10 +1,11 @@
 using DT;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
-  [System.Serializable]
+  [Serializable]
   public class IdQuantity<TEntity> where TEntity : DTEntity {
     [Id]
     public int id;

@@ -1,8 +1,9 @@
 using DT;
+using System;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
-  [System.Serializable]
+  [Serializable]
   public class DisplayComponent : IDTComponent {
     // PRAGMA MARK - Public Interface
     public Sprite displaySprite;

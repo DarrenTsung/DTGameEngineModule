@@ -2,36 +2,31 @@ using DT;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.GameEngine {
-  public class UserIdInventory<TEntity> where TEntity : DTEntity {
+  [Serializable]
+  public partial class UserIdInventory<TEntity> where TEntity : DTEntity {
     // PRAGMA MARK - Static
-    private static UserIdInventory<TEntity> _instance;
-		private static object _lock = new object();
-
     public static UserIdInventory<TEntity> Instance {
-      get {
-        lock (_lock) {
-          if (_instance == null) {
-            _instance = new UserIdInventory<TEntity>();
-          }
-
-          return _instance;
-        }
-      }
+      get { return InstanceUtil.Instance; }
     }
 
 
     // PRAGMA MARK - Public Interface
+    [field: NonSerialized]
     public Action OnInventoryUpdated = delegate {};
+    [field: NonSerialized]
     public Action<IdQuantity<TEntity>> OnAddedIdQuantity = delegate {};
+    [field: NonSerialized]
     public Action<IdQuantity<TEntity>> OnRemovedIdQuantity = delegate {};
 
     public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
       this._idQuantityInventory.AddIdQuantity(addQuantity);
       this.OnInventoryUpdated.Invoke();
+      InstanceUtil.DirtyInstance();
       this.OnAddedIdQuantity.Invoke(addQuantity);
     }
 
@@ -58,6 +53,7 @@ namespace DT.GameEngine {
     public void RemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
       this._idQuantityInventory.RemoveIdQuantity(removeQuantity);
       this.OnInventoryUpdated.Invoke();
+      InstanceUtil.DirtyInstance();
       this.OnRemovedIdQuantity.Invoke(removeQuantity);
     }
 
@@ -67,6 +63,16 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
+    [SerializeField]
     private IdQuantityInventory<TEntity> _idQuantityInventory = new IdQuantityInventory<TEntity>();
+
+    // after deserialization from formatter, we want to re-initialize any fields
+    // that have the [NonSerialized] attribute
+    [OnDeserializing]
+    private void CreateEventsOnDeserialization(StreamingContext context) {
+      this.OnInventoryUpdated = delegate {};
+      this.OnAddedIdQuantity = delegate {};
+      this.OnRemovedIdQuantity = delegate {};
+    }
   }
 }
