@@ -114,8 +114,8 @@ namespace DT.GameEngine {
         get {
           if (this._columnBackgrounds == null || this._columnBackgrounds.Length == 0) {
             this._columnBackgrounds = new Texture2D[] {
-              Texture2DUtil.CreateTextureWithColor(ColorExtensions.HexStringToColor("#ADADAD")),
-              Texture2DUtil.CreateTextureWithColor(ColorExtensions.HexStringToColor("#C2C2C2"))
+              Texture2DUtil.CreateTextureWithColor(ColorUtil.HexStringToColor("#ADADAD")),
+              Texture2DUtil.CreateTextureWithColor(ColorUtil.HexStringToColor("#C2C2C2"))
             };
           }
           return this._columnBackgrounds;
