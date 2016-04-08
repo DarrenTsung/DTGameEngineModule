@@ -15,12 +15,18 @@ namespace DT.GameEngine {
       private static UserIdInventory<TEntity> _instance;
   		private static object _lock = new object();
       private static bool _instanceDirtied;
+      private static bool _defaultInstanceCreated;
 
       public static UserIdInventory<TEntity> Instance {
         get {
           lock (_lock) {
             if (_instance == null) {
               _instance = InstanceUtil.Load();
+            }
+
+            if (InstanceUtil._defaultInstanceCreated) {
+              InstanceUtil._defaultInstanceCreated = false;
+              UserIdInventory<TEntity>.OnUserInventoryFirstCreated.Invoke(_instance);
             }
 
             return _instance;
@@ -58,6 +64,7 @@ namespace DT.GameEngine {
       }
 
       private static UserIdInventory<TEntity> CreateDefaultInstance() {
+        InstanceUtil._defaultInstanceCreated = true;
         return new UserIdInventory<TEntity>();
       }
     }

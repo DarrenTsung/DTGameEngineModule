@@ -10,6 +10,8 @@ namespace DT.GameEngine {
   [Serializable]
   public partial class UserIdInventory<TEntity> where TEntity : DTEntity {
     // PRAGMA MARK - Static
+    public static Action<UserIdInventory<TEntity>> OnUserInventoryFirstCreated = delegate {};
+
     public static UserIdInventory<TEntity> Instance {
       get { return InstanceUtil.Instance; }
     }
