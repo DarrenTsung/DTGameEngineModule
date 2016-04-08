@@ -62,63 +62,30 @@ namespace DT.GameEngine {
       }
 
       private static void Save() {
-        UserIdListUtil.CreateDirectoryIfNecessary();
-
-        BinaryFormatter bf = new BinaryFormatter();
-        string filepath = UserIdListUtil.Filepath();
-
-        IdList<TEntity> userInstance = UserIdListUtil.UserInstance;
-        UserIdListData listData = new UserIdListData(userInstance);
-
-        FileStream file = File.Create(filepath);
-        Debug.Log("Saving user instance of - " + IdList<TEntity>.ListName() + "!");
-        bf.Serialize(file, listData);
-        file.Close();
+        UserIdListData listData = new UserIdListData(UserIdListUtil._userInstance);
+        PersistentDataUtil.Save(UserIdListUtil.DirectoryPath(), UserIdListUtil.Filename(), listData);
       }
 
       private static IdList<TEntity> Load() {
-        UserIdListUtil.CreateDirectoryIfNecessary();
+        UserIdListData listData = PersistentDataUtil.Load<UserIdListData>(UserIdListUtil.DirectoryPath(), UserIdListUtil.Filename(), UserIdListUtil.CreateDefaultInstance);
 
-        BinaryFormatter bf = new BinaryFormatter();
-        string filepath = UserIdListUtil.Filepath();
-
-        if (!File.Exists(filepath)) {
-          FileStream file = File.Create(filepath);
-
-          Debug.Log("Creating user instace of - " + IdList<TEntity>.ListName() + " - from resource list by default!");
-          IdList<TEntity> defaultedList = IdList<TEntity>.Instance;
-          UserIdListData listData = new UserIdListData(defaultedList);
-
-          bf.Serialize(file, listData);
-          file.Close();
-        }
-
-        FileStream openedFile = File.Open(filepath, FileMode.Open);
-        UserIdListData openedListData = (UserIdListData)bf.Deserialize(openedFile);
 				IdList<TEntity> userInstance = (IdList<TEntity>)ScriptableObject.CreateInstance(IdList<TEntity>.ListName());
-        openedFile.Close();
+        userInstance.InitializeWithUserIdListData(listData);
 
-        userInstance.InitializeWithUserIdListData(openedListData);
-
-  			return userInstance;
+        return userInstance;
       }
 
-      private static string Filepath() {
-        string filename = IdList<TEntity>.ListName();
-        return UserIdListUtil.DirectoryPath() + "/" + filename + USER_ID_LIST_FILE_EXTENSION;
+      private static string Filename() {
+        return IdList<TEntity>.ListName() + USER_ID_LIST_FILE_EXTENSION;
       }
 
       private static string DirectoryPath() {
-        return Application.persistentDataPath + "/" + USER_ID_LIST_FOLDER_NAME;
+        return USER_ID_LIST_FOLDER_NAME;
       }
 
-      private static void CreateDirectoryIfNecessary() {
-        string directoryPath = UserIdListUtil.DirectoryPath();
-        if (Directory.Exists(directoryPath)) {
-          return;
-        }
-
-        Directory.CreateDirectory(directoryPath);
+      private static UserIdListData CreateDefaultInstance() {
+        IdList<TEntity> defaultedList = IdList<TEntity>.Instance;
+        return new UserIdListData(defaultedList);
       }
     }
   }
