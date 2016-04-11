@@ -1,10 +1,11 @@
 using DT;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DT.GameEngine {
-  [System.Serializable]
+  [Serializable]
   public class BasicDialogModel<TKeyframe> where TKeyframe : BasicDialogKeyframe {
     public TKeyframe[] keyframes;
 
@@ -22,7 +23,6 @@ namespace DT.GameEngine {
     public string text;
   }
 
-  [CustomInspector]
   public class BasicDialog<TDialogModel, TKeyframe> : MonoBehaviour, IDialog where TDialogModel : BasicDialogModel<TKeyframe>
                                                                              where TKeyframe : BasicDialogKeyframe {
     // PRAGMA MARK - IDialog Implementation
