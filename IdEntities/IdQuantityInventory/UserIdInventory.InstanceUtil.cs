@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.GameEngine {
-  public partial class UserIdInventory<TEntity> where TEntity : DTEntity {
+  public partial class UserIdInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity {
     // PRAGMA MARK - Static
     private static class InstanceUtil {
   		private const string USER_ID_INVENTORY_FOLDER_NAME = @"UserIdInventories";

@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 namespace DT.GameEngine {
   [Serializable]
-  public partial class UserIdInventory<TEntity> where TEntity : DTEntity {
+  public partial class UserIdInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity {
     // PRAGMA MARK - Static
     public static Action<UserIdInventory<TEntity>> OnUserInventoryFirstCreated = delegate {};
 
