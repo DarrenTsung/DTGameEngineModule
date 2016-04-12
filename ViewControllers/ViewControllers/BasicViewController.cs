@@ -33,37 +33,32 @@ namespace DT {
     protected void InitializeViewIfNeededAndDo(Action callback) {
       // load the view if uninitialized
       if (this._view == null) {
-        this.InitializeView(() => {
-          callback();
-        });
-      } else {
-        callback();
+        this.InitializeView();
       }
+
+      callback();
     }
 
-    protected void InitializeView(Action callback) {
-      // TODO (darren): kill prefab loader.
-      PrefabLoader.InstantiatePrefab(this._viewPrefabName, (GameObject loadedObject) => {
-        this._view = loadedObject.GetComponent<TView>();
-        this._view.AddShowDismissEvents(this);
+    protected void InitializeView() {
+      GameObject loadedObject = ObjectPoolManager.Instantiate(this._viewPrefabName);
 
-        // HACK: make this better Darren
-        loadedObject.transform.SetParent(CanvasUtil.ScreenSpaceMainCanvas.transform, false);
-        loadedObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        ((RectTransform)loadedObject.transform).offsetMin = new Vector2(0.0f, 0.0f);
-        ((RectTransform)loadedObject.transform).offsetMax = new Vector2(0.0f, 0.0f);
+      this._view = loadedObject.GetComponent<TView>();
+      this._view.AddShowDismissEvents(this);
 
-        IContextContainer contextContainer = this._view as IContextContainer;
-        if (contextContainer == null) {
-          Debug.LogError("InitializeView: view is not an IContextContainer, probably should be!");
-        } else {
-          contextContainer.ProvideContext(this);
-        }
+      // HACK: make this better Darren
+      loadedObject.transform.SetParent(CanvasUtil.ScreenSpaceMainCanvas.transform, false);
+      loadedObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+      ((RectTransform)loadedObject.transform).offsetMin = new Vector2(0.0f, 0.0f);
+      ((RectTransform)loadedObject.transform).offsetMax = new Vector2(0.0f, 0.0f);
 
-        this.OnViewInitialized();
+      IContextContainer contextContainer = this._view as IContextContainer;
+      if (contextContainer == null) {
+        Debug.LogError("InitializeView: view is not an IContextContainer, probably should be!");
+      } else {
+        contextContainer.ProvideContext(this);
+      }
 
-        callback();
-      });
+      this.OnViewInitialized();
     }
 
 
