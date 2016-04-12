@@ -42,6 +42,7 @@ namespace DT {
     }
 
     protected void InitializeView(Action callback) {
+      // TODO (darren): kill prefab loader.
       PrefabLoader.InstantiatePrefab(this._viewPrefabName, (GameObject loadedObject) => {
         this._view = loadedObject.GetComponent<TView>();
         this._view.AddShowDismissEvents(this);
