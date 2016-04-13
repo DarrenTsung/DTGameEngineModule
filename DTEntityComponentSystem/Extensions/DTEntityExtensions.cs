@@ -8,6 +8,7 @@ namespace DT.GameEngine {
       DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
       if (displayComponent == null) {
         Debug.LogError("PopulateSpriteRenderer - failed to get display component!");
+        return;
       }
 
       spriteRenderer.sprite = displayComponent.displaySprite;
