@@ -49,6 +49,11 @@ namespace DT.GameEngine {
       return this.GetIdQuantityForId(id).quantity;
     }
 
+    public void Clear() {
+      this._idList.Clear();
+      this._idMap.Clear();
+    }
+
 
     // PRAGMA MARK - IEnumerable<IdQuantity<TEntity>> Implementation
     IEnumerator IEnumerable.GetEnumerator() {
