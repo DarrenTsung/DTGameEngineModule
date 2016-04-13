@@ -4,7 +4,7 @@ using System;
 
 namespace DT.GameEngine {
   [Serializable]
-  public class CostComponent : IDTComponent {
+  public class RewardComponent : IDTComponent {
     // PRAGMA MARK - Public Interface
 	}
 }
