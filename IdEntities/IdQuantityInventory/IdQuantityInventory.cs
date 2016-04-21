@@ -2,6 +2,7 @@ using DT;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,9 +10,19 @@ namespace DT.GameEngine {
   [Serializable]
   public class IdQuantityInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity {
     // PRAGMA MARK - Public Interface
+    [field: NonSerialized]
+    public Action OnInventoryUpdated = delegate {};
+    [field: NonSerialized]
+    public Action<IdQuantity<TEntity>> OnAddedIdQuantity = delegate {};
+    [field: NonSerialized]
+    public Action<IdQuantity<TEntity>> OnRemovedIdQuantity = delegate {};
+
     public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
       IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(addQuantity.id);
       idQuantity.quantity += addQuantity.quantity;
+
+      this.OnInventoryUpdated.Invoke();
+      this.OnAddedIdQuantity.Invoke(addQuantity);
     }
 
     public bool CanRemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
@@ -29,20 +40,32 @@ namespace DT.GameEngine {
       return idQuantity.quantity >= removeQuantity.quantity;
     }
 
-    public void RemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
-      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
-        this.RemoveIdQuantity(removeQuantity);
+    public bool RemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
+      if (!this.CanRemoveIdQuantityList(removeQuantities)) {
+        Debug.LogWarning("RemoveIdQuantityList - don't have enough to remove!");
+        return false;
       }
+
+      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
+        this.RemoveIdQuantity(removeQuantity, silenceInventoryUpdatedEvent: true);
+      }
+      this.OnInventoryUpdated.Invoke();
+      return true;
     }
 
-    public void RemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
+    public bool RemoveIdQuantity(IdQuantity<TEntity> removeQuantity, bool silenceInventoryUpdatedEvent = false) {
       IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(removeQuantity.id);
       if (idQuantity.quantity < removeQuantity.quantity) {
         Debug.LogWarning("RemoveIdQuantity: Can't remove " + removeQuantity.quantity + " of " + typeof(TEntity).Name + " id: " + removeQuantity.id + "!");
-        return;
+        return false;
       }
 
       idQuantity.quantity -= removeQuantity.quantity;
+      this.OnRemovedIdQuantity.Invoke(removeQuantity);
+      if (!silenceInventoryUpdatedEvent) {
+        this.OnInventoryUpdated.Invoke();
+      }
+      return true;
     }
 
     public int GetCountOfId(int id) {
@@ -99,6 +122,15 @@ namespace DT.GameEngine {
       }
 
       return this._idMap[id];
+    }
+
+    // after deserialization from formatter, we want to re-initialize any fields
+    // that have the [NonSerialized] attribute
+    [OnDeserializing]
+    private void CreateEventsOnDeserialization(StreamingContext context) {
+      this.OnInventoryUpdated = delegate {};
+      this.OnAddedIdQuantity = delegate {};
+      this.OnRemovedIdQuantity = delegate {};
     }
   }
 }

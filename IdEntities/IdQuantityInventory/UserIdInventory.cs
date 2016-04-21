@@ -27,9 +27,6 @@ namespace DT.GameEngine {
 
     public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
       this._idQuantityInventory.AddIdQuantity(addQuantity);
-      this.OnInventoryUpdated.Invoke();
-      InstanceUtil.DirtyInstance();
-      this.OnAddedIdQuantity.Invoke(addQuantity);
     }
 
     public bool CanRemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
@@ -46,21 +43,23 @@ namespace DT.GameEngine {
       return this._idQuantityInventory.CanRemoveIdQuantity(removeQuantity);
     }
 
-    public void RemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
-      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
-        this.RemoveIdQuantity(removeQuantity);
-      }
+    public bool RemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
+      return this._idQuantityInventory.RemoveIdQuantityList(removeQuantities);
     }
 
-    public void RemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
-      this._idQuantityInventory.RemoveIdQuantity(removeQuantity);
-      this.OnInventoryUpdated.Invoke();
-      InstanceUtil.DirtyInstance();
-      this.OnRemovedIdQuantity.Invoke(removeQuantity);
+    public bool RemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
+      return this._idQuantityInventory.RemoveIdQuantity(removeQuantity);
     }
 
     public int GetCountOfId(int id) {
       return this._idQuantityInventory.GetCountOfId(id);
+    }
+
+
+    public UserIdInventory() {
+      this._idQuantityInventory.OnInventoryUpdated += this.HandleInventoryUpdated;
+      this._idQuantityInventory.OnAddedIdQuantity += this.HandleAddedIdQuantity;
+      this._idQuantityInventory.OnRemovedIdQuantity += this.HandleRemovedIdQuantity;
     }
 
 
@@ -75,6 +74,19 @@ namespace DT.GameEngine {
       this.OnInventoryUpdated = delegate {};
       this.OnAddedIdQuantity = delegate {};
       this.OnRemovedIdQuantity = delegate {};
+    }
+
+    private void HandleInventoryUpdated() {
+      InstanceUtil.DirtyInstance();
+      this.OnInventoryUpdated.Invoke();
+    }
+
+    private void HandleAddedIdQuantity(IdQuantity<TEntity> addQuantity) {
+      this.OnAddedIdQuantity.Invoke(addQuantity);
+    }
+
+    private void HandleRemovedIdQuantity(IdQuantity<TEntity> removeQuantity) {
+      this.OnRemovedIdQuantity.Invoke(removeQuantity);
     }
   }
 }
