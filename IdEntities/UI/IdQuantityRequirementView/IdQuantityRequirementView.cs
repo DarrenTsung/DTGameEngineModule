@@ -21,6 +21,10 @@ namespace DT.GameEngine {
       this.UpdateUserCount();
     }
 
+    public void SetSize(Vector2 size) {
+      this._containerTransform.sizeDelta = size;
+    }
+
 
     // PRAGMA MARK - Internal
     [Header("Outlets")]
@@ -28,6 +32,8 @@ namespace DT.GameEngine {
     private Image _requiredImage;
     [SerializeField]
     private TMP_Text _requiredLabel;
+    [SerializeField]
+    private RectTransform _containerTransform;
 
     private IViewIdQuantity _requiredViewIdQuantity;
 
