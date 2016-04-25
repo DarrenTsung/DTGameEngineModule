@@ -76,6 +76,13 @@ namespace DT.GameEngine {
       this.OnRemovedIdQuantity = delegate {};
     }
 
+    [OnDeserialized]
+    private void ListenToEventsAfterDeserialization(StreamingContext context) {
+      this._idQuantityInventory.OnInventoryUpdated += this.HandleInventoryUpdated;
+      this._idQuantityInventory.OnAddedIdQuantity += this.HandleAddedIdQuantity;
+      this._idQuantityInventory.OnRemovedIdQuantity += this.HandleRemovedIdQuantity;
+    }
+
     private void HandleInventoryUpdated() {
       InstanceUtil.DirtyInstance();
       this.OnInventoryUpdated.Invoke();
