@@ -7,7 +7,7 @@ using TMPro;
 namespace DT.GameEngine {
   public class IdQuantityView : MonoBehaviour {
     // PRAGMA MARK - Public Interface
-    public void SetupWithViewIdQuantity<TEntity>(IdQuantity<TEntity> idQuantity) where TEntity : DTEntity {
+    public void SetupWithIdQuantity<TEntity>(IdQuantity<TEntity> idQuantity) where TEntity : DTEntity {
       IViewIdQuantity viewIdQuantity = new ViewIdQuantity<TEntity>(idQuantity);
 
       DTEntity entity = viewIdQuantity.Entity;
@@ -26,6 +26,10 @@ namespace DT.GameEngine {
 
     public void SetSize(Vector2 size) {
       this._containerTransform.sizeDelta = size;
+    }
+
+    public void SetImageScale(Vector2 scale) {
+      this._image.transform.localScale = scale;
     }
 
 
