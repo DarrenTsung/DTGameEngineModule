@@ -5,7 +5,7 @@ using System.Collections;
 using TMPro;
 
 namespace DT.GameEngine {
-  public class IdQuantityView : MonoBehaviour {
+  public class IdQuantityView : MonoBehaviour, IRecycleSetupSubscriber, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Public Interface
     public void SetupWithIdQuantity<TEntity>(IdQuantity<TEntity> idQuantity) where TEntity : DTEntity {
       IViewIdQuantity viewIdQuantity = new ViewIdQuantity<TEntity>(idQuantity);
@@ -14,6 +14,10 @@ namespace DT.GameEngine {
       DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
       if (displayComponent != null) {
         this._image.sprite = displayComponent.displaySprite;
+      }
+
+      if (viewIdQuantity.Quantity <= 0) {
+        Debug.LogWarning("IdQuantityView - don't know how to show a quantity less than or equal to zero!");
       }
 
       if (viewIdQuantity.Quantity > 1) {
@@ -33,6 +37,20 @@ namespace DT.GameEngine {
     }
 
 
+    // PRAGMA MARK - IRecycleSetupSubscriber Implementation
+    public void OnRecycleSetup() {
+      this._oldSize = this._containerTransform.sizeDelta;
+      this._oldImageScale = this._image.transform.localScale;
+    }
+
+
+    // PRAGMA MARK - IRecycleCleanupSubscriber Implementation
+    public void OnRecycleCleanup() {
+      this._containerTransform.sizeDelta = this._oldSize;
+      this._image.transform.localScale = this._oldImageScale;
+    }
+
+
     // PRAGMA MARK - Internal
     [Header("Outlets")]
     [SerializeField]
@@ -45,6 +63,9 @@ namespace DT.GameEngine {
     private TMP_Text _text;
     [SerializeField]
     private GameObject _textContainer;
+
+    private Vector2 _oldSize;
+    private Vector2 _oldImageScale;
   }
 }
 #endif
