@@ -36,11 +36,16 @@ namespace DT.GameEngine {
       this._image.transform.localScale = scale;
     }
 
+    public void SetFontSize(float fontSize) {
+      this._text.fontSize = fontSize;
+    }
+
 
     // PRAGMA MARK - IRecycleSetupSubscriber Implementation
     public void OnRecycleSetup() {
       this._oldSize = this._containerTransform.sizeDelta;
       this._oldImageScale = this._image.transform.localScale;
+      this._oldFontSize = this._text.fontSize;
     }
 
 
@@ -48,6 +53,7 @@ namespace DT.GameEngine {
     public void OnRecycleCleanup() {
       this._containerTransform.sizeDelta = this._oldSize;
       this._image.transform.localScale = this._oldImageScale;
+      this._text.fontSize = this._oldFontSize;
     }
 
 
@@ -66,6 +72,7 @@ namespace DT.GameEngine {
 
     private Vector2 _oldSize;
     private Vector2 _oldImageScale;
+    private float _oldFontSize;
   }
 }
 #endif
