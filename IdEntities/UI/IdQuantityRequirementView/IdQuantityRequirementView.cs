@@ -1,3 +1,4 @@
+using DT;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -5,12 +6,13 @@ using System.Collections;
 using TMPro;
 
 namespace DT.GameEngine {
-  public class IdQuantityRequirementView : MonoBehaviour {
+  public class IdQuantityRequirementView : MonoBehaviour, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Public Interface
     public void SetupWithRequiredIdQuantity<TEntity>(IdQuantity<TEntity> requiredIdQuantity) where TEntity : DTEntity {
       IViewIdQuantity requiredViewIdQuantity = new ViewIdQuantity<TEntity>(requiredIdQuantity);
 
       this._requiredViewIdQuantity = requiredViewIdQuantity;
+      this._requiredViewIdQuantity.OnUserInventoryUpdated += this.HandleInventoryUpdated;
 
       DTEntity entity = this._requiredViewIdQuantity.Entity;
       DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
@@ -26,6 +28,15 @@ namespace DT.GameEngine {
     }
 
 
+    // PRAGMA MARK - IRecycleCleanupSubscriber Implementation
+    public void OnRecycleCleanup() {
+      if (this._requiredViewIdQuantity != null) {
+        this._requiredViewIdQuantity.OnUserInventoryUpdated -= this.HandleInventoryUpdated;
+        this._requiredViewIdQuantity = null;
+      }
+    }
+
+
     // PRAGMA MARK - Internal
     [Header("Outlets")]
     [SerializeField]
@@ -37,8 +48,7 @@ namespace DT.GameEngine {
 
     private IViewIdQuantity _requiredViewIdQuantity;
 
-    // TODO (darren): hook this up
-    private void HandleUserQuantityUpdated() {
+    private void HandleInventoryUpdated() {
       this.UpdateUserCount();
     }
 
