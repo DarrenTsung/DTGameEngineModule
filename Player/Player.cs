@@ -1,5 +1,6 @@
 ﻿using DT;
 using System.Collections;
+using System.Collections.Generic;
 ﻿using UnityEngine;
 
 namespace DT.GameEngine {
@@ -39,13 +40,21 @@ namespace DT.GameEngine {
     [SerializeField, ReadOnly]
     protected int _playerIndex = 0;
 
+    protected List<PlayerModule> _playerModules = new List<PlayerModule>();
+
     protected virtual void Awake() {
-      // do nothing
+      this.AwakeSetupModules();
+
+      foreach (PlayerModule module in this._playerModules) {
+        module.InitializeAfterAllModulesAdded();
+      }
     }
 
     protected void OnDisable() {
       this.CleanupNotifications();
     }
+
+    protected virtual void AwakeSetupModules() {}
 
     protected T CreateModule<T>() where T : PlayerModule {
       GameObject moduleObject = new GameObject();
@@ -54,6 +63,9 @@ namespace DT.GameEngine {
 
       T moduleComponent = moduleObject.AddComponent<T>();
       moduleComponent.SetupWithContext(this);
+
+      this._playerModules.Add(moduleComponent);
+
       return moduleComponent;
     }
 

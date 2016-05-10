@@ -12,6 +12,8 @@ namespace DT.GameEngine {
       this.InitializeAfterContext();
     }
 
+    public virtual void InitializeAfterAllModulesAdded() {}
+
 
     // PRAGMA MARK - Unity Lifecycle
     protected void OnEnable() {
@@ -29,6 +31,7 @@ namespace DT.GameEngine {
     protected int _contextPlayerIndex;
     protected GameObject _contextGameObject;
 
+    // TODO (darren): remove and call SetupWithContext after all modules have been added
     protected virtual void InitializeAfterContext() {
       this.RegisterNotifications();
     }
