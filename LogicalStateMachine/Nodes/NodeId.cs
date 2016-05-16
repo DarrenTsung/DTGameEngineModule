@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace DT.GameEngine {
   [Serializable]
-  public class NodeId {
+  public class NodeId : IComparable<NodeId> {
     // PRAGMA MARK - Static
     public static implicit operator NodeId(int value) {
       return new NodeId(value);
@@ -24,6 +24,12 @@ namespace DT.GameEngine {
 
     public override string ToString() {
       return this.intValue.ToString();
+    }
+
+
+    // PRAGMA MARK - IComparable<NodeId> Implementation
+    public int CompareTo(NodeId other) {
+      return this.intValue.CompareTo(other.intValue);
     }
   }
 }
