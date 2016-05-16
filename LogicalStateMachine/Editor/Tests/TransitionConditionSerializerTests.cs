@@ -48,7 +48,7 @@ namespace DT.GameEngine {
     [TestCase("Key", false, false)]
     [TestCase("NotKey", true, false)]
     [TestCase("NotKey", false, false)]
-    public void BoolTransitionCondition_TakenWhenMatching_NotTakenWhenNotMatching(string key, bool targetValue, bool expectedEntered) {
+    public void BoolTransitionCondition_MatchesOtherTests_AfterSerializingAndDeserializing(string key, bool targetValue, bool expectedEntered) {
       Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
 
       Node nodeA = graph.MakeNode();
@@ -83,7 +83,7 @@ namespace DT.GameEngine {
 
     [TestCase("Key", true)]
     [TestCase("NotKey", false)]
-    public void TriggerTransitionCondition_TakenWhenMatching_NotTakenWhenNotMatching(string key, bool expectedEntered) {
+    public void TriggerTransitionCondition_MatchesOtherTests_AfterSerializingAndDeserializing(string key, bool expectedEntered) {
       Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
 
       Node nodeA = graph.MakeNode();
