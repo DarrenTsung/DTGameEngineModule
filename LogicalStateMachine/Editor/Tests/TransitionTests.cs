@@ -72,6 +72,42 @@ namespace DT.GameEngine {
       Assert.AreEqual(expectedEntered, entered);
     }
 
+    [Test]
+    public void IntTransitionCondition_TakesCorrectTransition() {
+      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+
+      Node nodeA = graph.MakeNode();
+      Node nodeB = graph.MakeNode();
+      Node nodeC = graph.MakeNode();
+
+      Transition bTransition = new Transition();
+      bTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
+      NodeTransition bNodeTransition = new NodeTransition { target = nodeB.Id, transition = bTransition };
+      graph.AddOutgoingTransitionForNode(nodeA, bNodeTransition);
+
+      Transition cTransition = new Transition();
+      cTransition.AddTransitionCondition(new IntTransitionCondition("Key", 10));
+      NodeTransition cNodeTransition = new NodeTransition { target = nodeC.Id, transition = cTransition };
+      graph.AddOutgoingTransitionForNode(nodeA, cNodeTransition);
+
+      IGraphContext stubContext = Substitute.For<IGraphContext>();
+      stubContext.HasIntParameterKey(Arg.Is("Key")).Returns(true);
+      stubContext.GetInt(Arg.Is("Key")).Returns(10);
+
+      IGraphContextFactory stubFactory = Substitute.For<IGraphContextFactory>();
+      stubFactory.MakeContext().Returns(stubContext);
+      GraphContextFactoryLocator.Provide(stubFactory);
+
+      bool bEntered = false;
+      nodeB.OnEnter += () => { bEntered = true; };
+      bool cEntered = false;
+      nodeC.OnEnter += () => { cEntered = true; };
+
+      graph.Start();
+      Assert.IsFalse(bEntered);
+      Assert.IsTrue(cEntered);
+    }
+
     [TestCase("Key", 5)]
     [TestCase("Key", 0)]
     [TestCase("NotKey", 5)]
