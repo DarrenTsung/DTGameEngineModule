@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   [Serializable]
+  [CreateAssetMenu]
   public class Graph : ScriptableObject, IGraph {
     // PRAGMA MARK - IGraph Implementation
     public void Start() {
