@@ -8,7 +8,7 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Public Interface
     public event Action OnEnter = delegate {};
     public event Action OnExit = delegate {};
-    public event Action OnManualExit = delegate {};
+    public event Action<Node> OnManualExit = delegate {};
 
     public Node(NodeId id) {
       this.Id = id;
@@ -25,16 +25,18 @@ namespace DT.GameEngine {
     }
 
     public void HandleEnter() {
+      this.IsManuallyExited = false;
       this.OnEnter.Invoke();
     }
 
     public void HandleExit() {
+      this.IsManuallyExited = false;
       this.OnExit.Invoke();
     }
 
     public void TriggerManualExit() {
       this.IsManuallyExited = true;
-      this.OnManualExit.Invoke();
+      this.OnManualExit.Invoke(this);
     }
 
 

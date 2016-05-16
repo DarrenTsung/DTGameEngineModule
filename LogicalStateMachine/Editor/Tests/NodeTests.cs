@@ -41,7 +41,7 @@ namespace DT.GameEngine {
       Node node = new Node(1);
 
       bool onManualExitCalled = false;
-      node.OnManualExit += () => { onManualExitCalled = true; };
+      node.OnManualExit += (Node sameNode) => { onManualExitCalled = true; };
 
       node.TriggerManualExit();
 
@@ -55,6 +55,21 @@ namespace DT.GameEngine {
       Assert.IsFalse(node.IsManuallyExited);
       node.TriggerManualExit();
       Assert.IsTrue(node.IsManuallyExited);
+    }
+
+    [Test]
+    public void IsManuallyExited_False_AfterExitingOrEnteringNode() {
+      Node node = new Node(1);
+
+      node.TriggerManualExit();
+      Assert.IsTrue(node.IsManuallyExited);
+      node.HandleEnter();
+      Assert.IsFalse(node.IsManuallyExited);
+
+      node.TriggerManualExit();
+      Assert.IsTrue(node.IsManuallyExited);
+      node.HandleExit();
+      Assert.IsFalse(node.IsManuallyExited);
     }
   }
 }
