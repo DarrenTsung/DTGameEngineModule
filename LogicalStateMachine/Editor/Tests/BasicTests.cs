@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace DT.GameEngine {
-  public class BasicLogicalStateMachineTests {
+  public class BasicTests {
     [Test]
     public void AfterStartingGraph_StartingNodeEntered() {
       Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;

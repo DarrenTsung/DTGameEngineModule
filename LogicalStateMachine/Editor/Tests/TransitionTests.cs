@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace DT.GameEngine {
-  public class LogicalStateMachineTransitionTests {
+  public class TransitionTests {
     [Test]
     public void NoTransitionConditions_TakenImmediately() {
       Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
