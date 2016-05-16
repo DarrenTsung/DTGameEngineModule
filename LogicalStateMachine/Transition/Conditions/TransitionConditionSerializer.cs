@@ -36,13 +36,8 @@ namespace DT.GameEngine {
       }
 
       Type type = Type.GetType(serializedConditionWrapper.typeName);
-      ITransitionCondition condition = Activator.CreateInstance(type) as ITransitionCondition;
-      if (condition == null) {
-        Debug.LogError("TransitionConditionSerializer - Deserialize failed to cast as ITransitionCondition!");
-        return null;
-      }
 
-      MethodInfo genericMethod = typeof(TransitionConditionSerializer).GetMethod("DeserializeConditon", BindingFlags.Static | BindingFlags.NonPublic);
+      MethodInfo genericMethod = typeof(TransitionConditionSerializer).GetMethod("DeserializeCondition", BindingFlags.Static | BindingFlags.NonPublic);
       MethodInfo method = genericMethod.MakeGenericMethod(type);
 
       return method.Invoke(null, new object[] { serializedConditionWrapper.serializedClass }) as ITransitionCondition;
