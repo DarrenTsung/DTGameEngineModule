@@ -10,8 +10,8 @@ namespace DT.GameEngine {
     public event Action OnExit = delegate {};
     public event Action OnManualExit = delegate {};
 
-    public Node(int id) {
-      this.Id = new NodeId(id);
+    public Node(NodeId id) {
+      this.Id = id;
     }
 
 
