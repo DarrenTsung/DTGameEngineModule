@@ -60,7 +60,9 @@ namespace DT.GameEngine {
     }
 
     public Node MakeNode() {
-      return this._graphData.MakeNode();
+      Node node = this._graphData.MakeNode();
+      node.OnManualExit += this.HandleNodeManualExitTriggered;
+      return node;
     }
 
     public void AddOutgoingTransitionForNode(Node node, NodeTransition nodeTransition) {
@@ -98,6 +100,15 @@ namespace DT.GameEngine {
 
     private HashSet<Node> _activeNodes = new HashSet<Node>();
     private CountMap<Node> _activeNodeChangeMap = new CountMap<Node>();
+
+    private void HandleNodeManualExitTriggered(Node node) {
+      if (!this.IsNodeActive(node)) {
+        Debug.LogWarning("HandleNodeManualExitTriggered - node that is not active manually exited!");
+        return;
+      }
+
+      this.CheckTransitions(node);
+    }
 
     private void CheckActiveNodesTransitions() {
       foreach (Node node in this._activeNodes) {
