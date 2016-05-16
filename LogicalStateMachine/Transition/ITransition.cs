@@ -5,10 +5,11 @@ using System.Collections;
 namespace DT.GameEngine {
   public interface ITransition {
     void ConfigureWithContext(TransitionContext context);
+    bool HasContext();
 
     bool AreConditionsMet();
     void HandleTransitionUsed();
 
-    void AddTransition(ITransitionCondition condition);
+    void AddTransitionCondition(ITransitionCondition condition);
   }
 }

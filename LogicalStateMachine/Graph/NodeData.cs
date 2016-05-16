@@ -14,10 +14,4 @@ namespace DT.GameEngine {
       this.outgoingTransitions = new List<NodeTransition>();
     }
   }
-
-  [Serializable]
-  public class NodeTransition {
-    public NodeId target;
-    public Transition transition;
-  }
 }

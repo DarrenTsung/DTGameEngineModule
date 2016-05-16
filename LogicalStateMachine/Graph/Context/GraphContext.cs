@@ -9,9 +9,13 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Public Interface
     public event Action OnContextUpdated = delegate {};
 
+    public bool HasIntParameterKey(string key) {
+      return this._intValues.ContainsKey(key);
+    }
+
     public int GetInt(string key) {
-      if (!this._intValues.ContainsKey(key)) {
-        Debug.LogError("GraphContext - GetInt called with invalid key: " + key);
+      if (!this.HasIntParameterKey(key)) {
+        Debug.LogError("GraphContext - GetInt called with invalid parameter key: " + key);
         return 0;
       }
 
@@ -19,13 +23,22 @@ namespace DT.GameEngine {
     }
 
     public void SetInt(string key, int val) {
+      if (!this.HasIntParameterKey(key)) {
+        Debug.LogError("GraphContext - SetInt called with invalid parameter key: " + key);
+        return;
+      }
+
       this._intValues[key] = val;
       this.OnContextUpdated.Invoke();
     }
 
+    public bool HasBoolParameterKey(string key) {
+      return this._boolValues.ContainsKey(key);
+    }
+
     public bool GetBool(string key) {
-      if (!this._boolValues.ContainsKey(key)) {
-        Debug.LogError("GraphContext - GetBool called with invalid key: " + key);
+      if (!this.HasBoolParameterKey(key)) {
+        Debug.LogError("GraphContext - GetBool called with invalid parameter key: " + key);
         return false;
       }
 
@@ -33,13 +46,22 @@ namespace DT.GameEngine {
     }
 
     public void SetBool(string key, bool val) {
+      if (!this.HasBoolParameterKey(key)) {
+        Debug.LogError("GraphContext - SetBool called with invalid parameter key: " + key);
+        return;
+      }
+
       this._boolValues[key] = val;
       this.OnContextUpdated.Invoke();
     }
 
+    public bool HasTriggerParameterKey(string key) {
+      return this._triggerValues.ContainsKey(key);
+    }
+
     public bool HasTrigger(string key) {
-      if (!this._triggerValues.ContainsKey(key)) {
-        Debug.LogError("GraphContext - HasTrigger called with invalid key: " + key);
+      if (!this.HasTriggerParameterKey(key)) {
+        Debug.LogError("GraphContext - HasTrigger called with invalid parameter key: " + key);
         return false;
       }
 
@@ -47,11 +69,21 @@ namespace DT.GameEngine {
     }
 
     public void SetTrigger(string key) {
+      if (!this.HasTriggerParameterKey(key)) {
+        Debug.LogError("GraphContext - SetTrigger called with invalid parameter key: " + key);
+        return;
+      }
+
       this._triggerValues[key] = true;
       this.OnContextUpdated.Invoke();
     }
 
     public void ResetTrigger(string key) {
+      if (!this.HasTriggerParameterKey(key)) {
+        Debug.LogError("GraphContext - ResetTrigger called with invalid parameter key: " + key);
+        return;
+      }
+
       this._triggerValues[key] = false;
       this.OnContextUpdated.Invoke();
     }

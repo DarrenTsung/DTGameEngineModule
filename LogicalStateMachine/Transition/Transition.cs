@@ -12,6 +12,10 @@ namespace DT.GameEngine {
       this._context = context;
     }
 
+    public bool HasContext() {
+      return this._context != null;
+    }
+
     public bool AreConditionsMet() {
       if (!this.CheckConfigured()) {
         return false;
@@ -40,8 +44,12 @@ namespace DT.GameEngine {
       }
     }
 
-    public void AddTransition(ITransitionCondition condition) {
+    public void AddTransitionCondition(ITransitionCondition condition) {
       this._conditions.Add(condition);
+    }
+
+    public Transition(bool waitForManualExit = false) {
+      this._waitForManualExit = waitForManualExit;
     }
 
 

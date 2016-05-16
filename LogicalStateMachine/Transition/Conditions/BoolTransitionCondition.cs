@@ -8,7 +8,16 @@ namespace DT.GameEngine {
   public class BoolTransitionCondition : TransitionCondition {
     // PRAGMA MARK - ITransitionCondition Implementation
     public override bool IsConditionMet(TransitionContext context) {
+      if (!context.graphContext.HasBoolParameterKey(this._key)) {
+        return false;
+      }
+
       return this._targetValue == context.graphContext.GetBool(this._key);
+    }
+
+    public BoolTransitionCondition(string key, bool targetValue) {
+      this._key = key;
+      this._targetValue = targetValue;
     }
 
 

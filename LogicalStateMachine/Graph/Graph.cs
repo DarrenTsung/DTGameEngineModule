@@ -55,6 +55,10 @@ namespace DT.GameEngine {
       this._graphData.SetStartingNodes(nodes);
     }
 
+    public void AddStartingContextParameter(GraphContextParameter contextParameter) {
+      this._startingContextParameters.Add(contextParameter);
+    }
+
     public Node MakeNode() {
       return this._graphData.MakeNode();
     }
@@ -103,7 +107,7 @@ namespace DT.GameEngine {
     }
 
     private void CheckTransitions(Node node) {
-      IList<NodeTransition> nodeTransitions = this._graphData.GetOutgoingTransitionsForNode(node);
+      IList<NodeTransition> nodeTransitions = this.GetOutgoingTransitionsForNode(node);
       foreach (NodeTransition nodeTransition in nodeTransitions) {
         if (!nodeTransition.transition.AreConditionsMet()) {
           continue;
@@ -172,6 +176,24 @@ namespace DT.GameEngine {
       this._context = GraphContextFactoryLocator.MakeContext();
       this._context.OnContextUpdated += this.CheckActiveNodesTransitions;
       this._context.PopulateStartingContextParameters(this._startingContextParameters);
+    }
+
+    private IList<NodeTransition> GetOutgoingTransitionsForNode(Node node) {
+      IList<NodeTransition> nodeTransitions = this._graphData.GetOutgoingTransitionsForNode(node);
+
+      foreach (NodeTransition nodeTransition in nodeTransitions) {
+        Transition transition = nodeTransition.transition;
+        if (!transition.HasContext()) {
+          TransitionContext transitionContext = new TransitionContext {
+            graphContext = this._context,
+            nodeContext = new GraphNodeContext(this, node)
+          };
+
+          transition.ConfigureWithContext(transitionContext);
+        }
+      }
+
+      return nodeTransitions;
     }
   }
 }

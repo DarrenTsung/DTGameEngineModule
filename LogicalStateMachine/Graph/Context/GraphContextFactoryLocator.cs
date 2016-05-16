@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 namespace DT.GameEngine {
-  public class GraphContextFactoryLocator {
+  public static class GraphContextFactoryLocator {
     // PRAGMA MARK - Static
     private static IGraphContextFactory _factory;
     public static void Provide(IGraphContextFactory factory) {
