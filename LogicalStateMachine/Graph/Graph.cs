@@ -6,8 +6,7 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   [Serializable]
-  [CreateAssetMenu]
-  public class Graph : ScriptableObject, IGraph {
+  public class Graph : IGraph {
     // PRAGMA MARK - IGraph Implementation
     public void Start() {
       if (this._isActive) {
@@ -51,6 +50,10 @@ namespace DT.GameEngine {
       this.ResetContext();
     }
 
+
+    public IList<Node> GetAllNodes() {
+      return this._graphData.GetAllNodes();
+    }
 
     public void SetStartingNodes(IList<Node> nodes) {
       this._graphData.SetStartingNodes(nodes);

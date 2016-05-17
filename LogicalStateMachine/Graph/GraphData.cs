@@ -18,6 +18,10 @@ namespace DT.GameEngine {
       return this.CachedNodeDataMapping[id].node;
     }
 
+    public IList<Node> GetAllNodes() {
+      return this.CachedAllNodes;
+    }
+
     public Node[] GetStartingNodes() {
       if (this._startingNodeIds == null) {
         return null;
@@ -110,9 +114,20 @@ namespace DT.GameEngine {
       }
     }
 
+    private List<Node> _cachedAllNodes;
+    private List<Node> CachedAllNodes {
+      get {
+        if (this._cachedAllNodes == null) {
+          this._cachedAllNodes = this._nodeDatas.Select(data => data.node).ToList();
+        }
+        return this._cachedAllNodes;
+      }
+    }
+
     private void ClearCached() {
       this._cachedNodeDataMapping = null;
       this._cachedHighestNodeId = null;
+      this._cachedAllNodes = null;
     }
 
     private bool HasNodeWithId(NodeId id) {

@@ -10,7 +10,7 @@ namespace DT.GameEngine {
   public class MultipleActiveNodesGraphTests {
     [Test]
     public void MultipleStartingNodes_EnteredCorrectly() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
       Node nodeC = graph.MakeNode();
@@ -32,7 +32,7 @@ namespace DT.GameEngine {
 
     [Test]
     public void Entering_AlreadyActiveNode_WillNotEnter() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       // A --
       // B --\-- C
@@ -57,7 +57,7 @@ namespace DT.GameEngine {
 
     [Test]
     public void MultipleActiveNodes_BothTransition() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       // A --> B
       // C --> D

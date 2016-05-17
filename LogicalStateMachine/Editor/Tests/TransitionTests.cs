@@ -10,7 +10,7 @@ namespace DT.GameEngine {
   public class TransitionTests {
     [Test]
     public void NoTransitionConditions_TakenImmediately() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
@@ -26,7 +26,7 @@ namespace DT.GameEngine {
 
     [Test]
     public void PopulateStartingContextParameters_CalledWithStartingParameters() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
       GraphContextParameter startingParameter = new GraphContextParameter { type = GraphContextParameterType.Int, key = "Key" };
       graph.AddStartingContextParameter(startingParameter);
 
@@ -47,7 +47,7 @@ namespace DT.GameEngine {
     [TestCase("NotKey", 0, false)]
     [TestCase("NotKey", -1, false)]
     public void IntTransitionCondition_TakenWhenMatching_NotTakenWhenNotMatching(string key, int targetValue, bool expectedEntered) {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
@@ -74,7 +74,7 @@ namespace DT.GameEngine {
 
     [Test]
     public void IntTransitionCondition_TakesCorrectTransition() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
@@ -114,7 +114,7 @@ namespace DT.GameEngine {
     [TestCase("NotKey", 0)]
     [TestCase("NotKey", -1)]
     public void IntTransitionCondition_NotTaken_WhenMissingStartingContextParameter(string key, int targetValue) {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
@@ -143,7 +143,7 @@ namespace DT.GameEngine {
     [TestCase("NotKey", true, false)]
     [TestCase("NotKey", false, false)]
     public void BoolTransitionCondition_TakenWhenMatching_NotTakenWhenNotMatching(string key, bool targetValue, bool expectedEntered) {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
@@ -173,7 +173,7 @@ namespace DT.GameEngine {
     [TestCase("NotKey", true)]
     [TestCase("NotKey", false)]
     public void BoolTransitionCondition_NotTaken_WhenMissingStartingContextParameter(string key, bool targetValue) {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
@@ -200,7 +200,7 @@ namespace DT.GameEngine {
     [TestCase("Key", true)]
     [TestCase("NotKey", false)]
     public void TriggerTransitionCondition_TakenWhenMatching_NotTakenWhenNotMatching(string key, bool expectedEntered) {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
@@ -228,7 +228,7 @@ namespace DT.GameEngine {
     [TestCase("Key")]
     [TestCase("NotKey")]
     public void TriggerTransitionCondition_NotTaken_WhenMissingStartingContextParameter(string key) {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();

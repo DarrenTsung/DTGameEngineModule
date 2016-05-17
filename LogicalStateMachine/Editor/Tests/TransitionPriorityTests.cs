@@ -10,7 +10,7 @@ namespace DT.GameEngine {
   public class TransitionPriorityTests {
     [Test]
     public void WhenMultipleMatchingTransitions_TheFirstIsTaken() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();

@@ -10,7 +10,7 @@ namespace DT.GameEngine {
   public class TransitionManualExitTests {
     [Test]
     public void NoTransitionCondition_WithWaitForManualExit_TakenAfterManualExitTriggered() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
@@ -33,7 +33,7 @@ namespace DT.GameEngine {
     [TestCase("NotKey", 5, false)]
     [TestCase("NotKey", 3, false)]
     public void IntTransitionCondition_WithWaitForManualExit_TakenAfterManualExitTriggered(string key, int targetValue, bool expectedEntered) {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 

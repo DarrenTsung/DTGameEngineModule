@@ -10,7 +10,7 @@ namespace DT.GameEngine {
   public class ComplexGraphTests {
     [Test]
     public void MultipleTransitions_HappenCorrectly() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       // A -> B -> C
       Node nodeA = graph.MakeNode();
@@ -47,7 +47,7 @@ namespace DT.GameEngine {
 
     [Test]
     public void MoreComplexGraph_RunsCorrectly() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
 
       // A --- B --
       //  \--- C --\- D

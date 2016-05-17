@@ -8,7 +8,7 @@ namespace DT.GameEngine {
   public class BasicGraphTests {
     [Test]
     public void AfterStartingGraph_StartingNodeEntered() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
       Node nodeA = graph.MakeNode();
       graph.SetStartingNodes(new Node[] { nodeA });
 
@@ -21,7 +21,7 @@ namespace DT.GameEngine {
 
     [Test]
     public void StartingNodes_DefaultToFirstNode_Automatically() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
       Node nodeA = graph.MakeNode();
 
       bool entered = false;
@@ -33,7 +33,7 @@ namespace DT.GameEngine {
 
     [Test]
     public void NoStartingNodes_DoesNotBreakThings() {
-      Graph graph = ScriptableObject.CreateInstance(typeof(Graph)) as Graph;
+      Graph graph = new Graph();
       graph.Start();
       Assert.IsTrue(true);
     }
