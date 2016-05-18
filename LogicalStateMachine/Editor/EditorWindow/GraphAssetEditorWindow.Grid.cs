@@ -13,9 +13,22 @@ namespace DT.GameEngine {
     private static readonly Color kLightLineColor = new Color(0.0f, 0.0f, 0.0f, 0.15f);
     private static readonly Color kDarkLineColor = new Color(0.0f, 0.0f, 0.0f, 0.25f);
 
+    private static readonly Color kGridBackgroundColor = ColorUtil.HexStringToColor("#444444");
+    private static Texture2D _kGridBackgroundTexture;
+    private static Texture2D kGridBackgroundTexture {
+      get {
+        if (_kGridBackgroundTexture == null) {
+          _kGridBackgroundTexture = Texture2DUtil.CreateTextureWithColor(kGridBackgroundColor);
+        }
+        return _kGridBackgroundTexture;
+      }
+    }
+
 
     // PRAGMA MARK - Internal
 		private void DrawGrid(Rect rect, Vector2 offset) {
+			GUI.Box(rect, "", GUIStyleUtil.StyleWithTexture(kGridBackgroundTexture));
+
       Color oldColor = Handles.color;
 
       int numberOfVerticalLines = Mathf.CeilToInt(rect.width / kGridLineSpacing);
