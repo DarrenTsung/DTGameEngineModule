@@ -41,16 +41,6 @@ namespace DT.GameEngine {
       this._canvasRect = new Rect(0.0f, 0.0f, this.position.width, this.position.height);
     }
 
-    private void CheckEvents(Event currentEvent) {
-      bool rightClick = Event.current.button == 1 && Event.current.isMouse;
-			if (currentEvent.type == EventType.ContextClick || rightClick) {
-        if (this.CanvasRect.Contains(currentEvent.mousePosition)) {
-          this.OpenNodeCreationMenu(currentEvent);
-          currentEvent.Use();
-        }
-      }
-    }
-
     private void ShowNotice(string noticeText) {
       this.ShowNotification(new GUIContent(noticeText));
     }
