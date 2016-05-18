@@ -40,6 +40,7 @@ namespace DT.GameEngine {
 
       Vector2 dragOffset = updatedCanvasPosition - this._startDragCanvasPosition;
       this._draggedNodeViewData.position = this._startDragNodePosition + dragOffset;
+      this._draggedNodeViewData.position = this.SnapToGrid(this._draggedNodeViewData.position);
     }
 
     private void StopDragging() {
@@ -47,7 +48,6 @@ namespace DT.GameEngine {
         return;
       }
 
-      this._draggedNodeViewData.position = this.SnapToGrid(this._draggedNodeViewData.position);
       this.SetTargetDirty();
 
       this._dragging = false;
