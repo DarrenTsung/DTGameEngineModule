@@ -44,8 +44,11 @@ namespace DT.GameEngine {
       if (currentEvent.type == EventType.MouseDown) {
         if (node != null) {
           this.SelectNode(node);
-          this.StartDragging(node, mousePosition);
+          this.StartDraggingNode(node, mousePosition);
         } else {
+          if (currentEvent.modifiers == EventModifiers.Alt) {
+            this.StartDraggingPanner(mousePosition);
+          }
           this.DeselectCurrentNode();
         }
         return;

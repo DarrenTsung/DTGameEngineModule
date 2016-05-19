@@ -9,7 +9,7 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Static
     private const float kNodeSelectedLineWeight = 6.0f;
 
-    private static readonly Vector2 kNodeSize = new Vector2(10 * kGridLineSpacing, 5 * kGridLineSpacing);
+    private static readonly Vector2 kNodeSize = new Vector2(8 * kGridLineSpacing, 4 * kGridLineSpacing);
     private static readonly Vector2 kNodePivot = new Vector2(0.5f, 0.5f);
     private static readonly Color kNodeColor = ColorUtil.HexStringToColor("#909090");
     private static readonly Color kNodeSelectedColor = ColorUtil.HexStringToColor("#e486ea");
@@ -36,13 +36,13 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
-    private void DrawNodes(Rect canvasRect, Vector2 currentPan) {
+    private void DrawNodes(Rect canvasRect) {
       foreach (Node node in this.TargetGraph.GetAllNodes()) {
-        this.DrawNode(node, currentPan);
+        this.DrawNode(node);
       }
     }
 
-    private void DrawNode(Node node, Vector2 currentPan) {
+    private void DrawNode(Node node) {
       NodeViewData viewData = this.GetViewDataForNode(node);
       Rect nodeRect = this.GetNodeRect(node);
 
@@ -58,7 +58,7 @@ namespace DT.GameEngine {
 
     private Rect GetNodeRect(Node node) {
       NodeViewData viewData = this.GetViewDataForNode(node);
-      return RectUtil.MakeRect(viewData.position, kNodeSize, kNodePivot);
+      return RectUtil.MakeRect(viewData.position + this._panner.Position, kNodeSize, kNodePivot);
     }
   }
 }

@@ -22,9 +22,8 @@ namespace DT.GameEngine {
       this.RecomputeCanvasRect();
 
 			GUI.BeginGroup(this.CanvasRect);
-        Vector2 currentPan = Vector2.zero;
-        this.DrawGrid(this.CanvasRect, currentPan);
-        this.DrawNodes(this.CanvasRect, currentPan);
+        this.DrawGrid(this.CanvasRect);
+        this.DrawNodes(this.CanvasRect);
 
         this.DrawInspectorWindow();
 			GUI.EndGroup();

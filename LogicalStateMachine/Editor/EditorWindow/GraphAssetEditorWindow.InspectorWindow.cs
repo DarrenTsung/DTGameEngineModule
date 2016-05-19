@@ -35,7 +35,6 @@ namespace DT.GameEngine {
       }
       heightSoFar += kInspectorHideButtonHeight;
 
-      string title = selectedNodeViewData.name;
       if (!this._inspectorCollapsed) {
         Vector2 inspectorRectPosition = kInspectorWindowPosition + new Vector2(0.0f, heightSoFar);
         Rect inspectorViewRect = new Rect(inspectorRectPosition, new Vector2(kInspectorWindowWidth, kInspectorViewHeight));
