@@ -43,6 +43,7 @@ namespace DT.GameEngine {
     }
 
     private void DrawNode(Node node, Vector2 currentPan) {
+      NodeViewData viewData = this.GetViewDataForNode(node);
       Rect nodeRect = this.GetNodeRect(node);
 
       if (this.IsNodeSelected(node)) {
@@ -52,11 +53,11 @@ namespace DT.GameEngine {
       }
 
       GUIStyle nodeStyle = GUIStyleUtil.StyleWithTexture(GUI.skin.box, kNodeTexture);
-      GUI.Box(nodeRect, "Node " + node.Id, nodeStyle);
+      GUI.Box(nodeRect, viewData.name, nodeStyle);
     }
 
     private Rect GetNodeRect(Node node) {
-      NodeViewData viewData = this.TargetGraphViewData.LoadViewDataForNode(node);
+      NodeViewData viewData = this.GetViewDataForNode(node);
       return RectUtil.MakeRect(viewData.position, kNodeSize, kNodePivot);
     }
   }

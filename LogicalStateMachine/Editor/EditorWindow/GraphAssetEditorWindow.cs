@@ -41,6 +41,16 @@ namespace DT.GameEngine {
       }
     }
 
+    private GUISkin _skin;
+
+    private void OnEnable() {
+			this._skin = (GUISkin)Resources.Load("GraphAssetEditorWindowSkin");
+    }
+
+    private NodeViewData GetViewDataForNode(Node node) {
+      return this.TargetGraphViewData.LoadViewDataForNode(node);
+    }
+
     private void SetTargetDirty() {
       if (this._targetGraphAsset == null) {
         return;

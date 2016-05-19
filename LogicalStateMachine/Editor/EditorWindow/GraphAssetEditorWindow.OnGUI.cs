@@ -18,12 +18,15 @@ namespace DT.GameEngine {
         return;
       }
 
+			GUI.skin = this._skin;
       this.RecomputeCanvasRect();
 
 			GUI.BeginGroup(this.CanvasRect);
         Vector2 currentPan = Vector2.zero;
         this.DrawGrid(this.CanvasRect, currentPan);
         this.DrawNodes(this.CanvasRect, currentPan);
+
+        this.DrawInspectorWindow();
 			GUI.EndGroup();
 
       this.CheckEvents(Event.current);
