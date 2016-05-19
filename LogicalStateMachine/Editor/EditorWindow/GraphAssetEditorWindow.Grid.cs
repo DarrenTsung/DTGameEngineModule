@@ -13,7 +13,7 @@ namespace DT.GameEngine {
     private static readonly Color kLightLineColor = new Color(0.0f, 0.0f, 0.0f, 0.15f);
     private static readonly Color kDarkLineColor = new Color(0.0f, 0.0f, 0.0f, 0.25f);
 
-    private static readonly Color kGridBackgroundColor = ColorUtil.HexStringToColor("#444444");
+    private static readonly Color kGridBackgroundColor = ColorUtil.HexStringToColor("#323232");
     private static Texture2D _kGridBackgroundTexture;
     private static Texture2D kGridBackgroundTexture {
       get {
