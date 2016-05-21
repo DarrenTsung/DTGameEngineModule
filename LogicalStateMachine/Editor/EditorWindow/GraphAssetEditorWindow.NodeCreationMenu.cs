@@ -16,7 +16,7 @@ namespace DT.GameEngine {
     private void MakeNode(object mousePosition) {
       Node newNode = this.TargetGraph.MakeNode();
       NodeViewData nodeViewData = this.TargetGraphViewData.LoadViewDataForNode(newNode);
-      nodeViewData.position = this._grid.SnapToGrid((Vector2)mousePosition);
+      nodeViewData.position = this._grid.SnapToGrid((Vector2)mousePosition + this._panner.Position);
 
       this.SetTargetDirty();
     }
