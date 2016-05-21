@@ -59,6 +59,10 @@ namespace DT.GameEngine {
       this._graphData.SetStartingNodes(nodes);
     }
 
+    public IList<Node> GetStartingNodes() {
+      return this._graphData.GetStartingNodes();
+    }
+
     public void AddStartingContextParameter(GraphContextParameter contextParameter) {
       this._startingContextParameters.Add(contextParameter);
     }

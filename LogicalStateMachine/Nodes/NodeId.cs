@@ -15,11 +15,6 @@ namespace DT.GameEngine {
     }
 
     public static bool operator ==(NodeId a, NodeId b) {
-      // If one is null, but not both, return false.
-      if (((object)a == null) || ((object)b == null)) {
-        return false;
-      }
-
       return a.intValue == b.intValue;
     }
 
@@ -39,7 +34,7 @@ namespace DT.GameEngine {
       return this.intValue.ToString();
     }
 
-    public override bool Equals(System.Object obj) {
+    public override bool Equals(object obj) {
       if (obj == null) {
         return false;
       }

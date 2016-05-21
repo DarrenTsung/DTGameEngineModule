@@ -55,9 +55,14 @@ namespace DT.GameEngine {
 
       Rect nodeShadowRect = nodeRect;
       nodeShadowRect.position = nodeShadowRect.position + new Vector2(kNodeShadowOffset, kNodeShadowOffset);
-      GUI.Box(nodeShadowRect, viewData.name, (GUIStyle)"NodeShadow");
+      GUI.Box(nodeShadowRect, "", (GUIStyle)"NodeShadow");
 
-      GUI.Box(nodeRect, viewData.name, (GUIStyle)"Node");
+      string nodeLabel = viewData.name;
+      if (this.TargetGraph.IsStartingNode(node)) {
+        nodeLabel += " (S)";
+      }
+
+      GUI.Box(nodeRect, nodeLabel, (GUIStyle)"Node");
     }
 
     private Rect GetNodeRect(Node node) {

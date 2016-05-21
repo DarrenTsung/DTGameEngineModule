@@ -6,7 +6,27 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   [Serializable]
-  public class Node : INode, ISerializationCallbackReceiver {
+  public class Node : INode, ISerializationCallbackReceiver, IComparable<Node>{
+    // PRAGMA MARK - Static
+    public static bool operator ==(Node a, Node b) {
+      // If both are null, or both are same instance, return true.
+      if (System.Object.ReferenceEquals(a, b)) {
+        return true;
+      }
+
+      // If one is null, but not both, return false.
+      if (((object)a == null) || ((object)b == null)) {
+        return false;
+      }
+
+      return a.Equals(b);
+    }
+
+    public static bool operator !=(Node a, Node b) {
+      return !(a == b);
+    }
+
+
     // PRAGMA MARK - Public Interface
     public event Action OnEnter = delegate {};
     public event Action OnExit = delegate {};
@@ -29,6 +49,31 @@ namespace DT.GameEngine {
 
     public IList<INodeDelegate> GetNodeDelegates() {
       return this._nodeDelegates;
+    }
+
+    public override bool Equals(object obj) {
+      if (obj == null) {
+        return false;
+      }
+
+      Node otherNode = obj as Node;
+      if (otherNode == null) {
+        return false;
+      }
+
+      return otherNode.Id == this.Id;
+    }
+
+    public bool Equals(Node otherNode) {
+      if (otherNode == null) {
+        return false;
+      }
+
+      return otherNode.Id == this.Id;
+    }
+
+    public override int GetHashCode() {
+      return base.GetHashCode() ^ this.Id;
     }
 
 
@@ -75,13 +120,28 @@ namespace DT.GameEngine {
     }
 
     public void OnBeforeSerialize() {
-      this._serializedNodeDelegates.Clear();
+      if (this._serializedNodeDelegates == null) {
+        this._serializedNodeDelegates = new List<string>();
+      } else {
+        this._serializedNodeDelegates.Clear();
+      }
+
+      if (this._nodeDelegates == null) {
+        return;
+      }
+
       foreach (INodeDelegate nodeDelegate in this._nodeDelegates) {
         string serializedNodeDelegate = JsonSerialization.SerializeGeneric(nodeDelegate);
         if (serializedNodeDelegate != null) {
           this._serializedNodeDelegates.Add(serializedNodeDelegate);
         }
       }
+    }
+
+
+    // PRAGMA MARK - IComparable<Node> Implementation
+    public int CompareTo(Node other) {
+      return this.Id.CompareTo(other.Id);
     }
 
 

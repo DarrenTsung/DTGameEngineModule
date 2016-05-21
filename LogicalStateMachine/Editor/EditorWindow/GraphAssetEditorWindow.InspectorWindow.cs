@@ -9,7 +9,7 @@ using UnityEngine;
 namespace DT.GameEngine {
   public partial class GraphAssetEditorWindow : EditorWindow {
     // PRAGMA MARK - Static
-    private const float kInspectorWindowWidth = 150.0f;
+    private const float kInspectorWindowWidth = 250.0f;
     private static readonly Vector2 kInspectorWindowPosition = new Vector2(10.0f, 20.0f);
 
     private const float kInspectorHideButtonHeight = 25.0f;
