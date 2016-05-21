@@ -8,6 +8,7 @@ namespace DT.GameEngine {
   public partial class GraphAssetEditorWindow : EditorWindow {
     // PRAGMA MARK - Static
     private const float kNodeSelectedLineWeight = 6.0f;
+    private const float kNodeShadowOffset = 3.0f;
 
     private static readonly Vector2 kNodeSize = new Vector2(8 * kGridLineSpacing, 4 * kGridLineSpacing);
     private static readonly Vector2 kNodePivot = new Vector2(0.5f, 0.5f);
@@ -52,8 +53,11 @@ namespace DT.GameEngine {
         GUI.Box(expandedNodeRect, "", nodeSelectedStyle);
       }
 
-      GUIStyle nodeStyle = GUIStyleUtil.StyleWithTexture(GUI.skin.box, kNodeTexture);
-      GUI.Box(nodeRect, viewData.name, nodeStyle);
+      Rect nodeShadowRect = nodeRect;
+      nodeShadowRect.position = nodeShadowRect.position + new Vector2(kNodeShadowOffset, kNodeShadowOffset);
+      GUI.Box(nodeShadowRect, viewData.name, (GUIStyle)"NodeShadow");
+
+      GUI.Box(nodeRect, viewData.name, (GUIStyle)"Node");
     }
 
     private Rect GetNodeRect(Node node) {
