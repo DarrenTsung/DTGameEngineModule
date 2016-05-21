@@ -10,17 +10,6 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Internal
     private Node _selectedNode;
 
-    private Node FindNodeContainingPoint(Vector2 canvasPoint) {
-      foreach (Node node in this.TargetGraph.GetAllNodes().Reverse()) {
-        Rect nodeRect = this.GetNodeRect(node);
-        if (nodeRect.Contains(canvasPoint)) {
-          return node;
-        }
-      }
-
-      return null;
-    }
-
     private Node GetSelectedNode() {
       return this._selectedNode;
     }

@@ -14,21 +14,28 @@ namespace DT.GameEngine {
     }
 
     private void CheckMouseEvents(Event currentEvent) {
+      Vector2 mousePosition = currentEvent.mousePosition;
+
       bool leftMouseButton = currentEvent.button == 0;
       bool rightMouseButton = currentEvent.button == 1;
 
       bool rightMouseButtonMouseDown = rightMouseButton && currentEvent.type == EventType.MouseDown;
 
 			if (currentEvent.type == EventType.ContextClick || rightMouseButtonMouseDown) {
-        if (this.CanvasRect.Contains(currentEvent.mousePosition)) {
-          this.OpenNodeCreationMenu(currentEvent);
+        if (this.CanvasRect.Contains(mousePosition)) {
+          Node node = this.FindNodeContainingPoint(mousePosition);
+          if (node == null) {
+            this.OpenNodeCreationMenu(currentEvent);
+          } else {
+            this.OpenNodeContextMenu(currentEvent, node);
+          }
           currentEvent.Use();
         }
         return;
       }
 
       if (leftMouseButton) {
-        bool mouseInCanvas = this.CanvasRect.Contains(currentEvent.mousePosition);
+        bool mouseInCanvas = this.CanvasRect.Contains(mousePosition);
         if (mouseInCanvas) {
           this.HandleLeftMouseButtonEventInCanvas(currentEvent);
           currentEvent.Use();
