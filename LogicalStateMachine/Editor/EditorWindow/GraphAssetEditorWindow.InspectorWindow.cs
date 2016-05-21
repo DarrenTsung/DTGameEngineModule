@@ -1,4 +1,5 @@
 using DT;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +53,34 @@ namespace DT.GameEngine {
 
     private void DrawNodeInspector(Node node, NodeViewData nodeViewData) {
 			nodeViewData.name = EditorGUILayout.TextField(nodeViewData.name);
+
+      if (GUILayout.Button("Add INodeDelegate")) {
+        GenericMenu nodeDelegateMenu = new GenericMenu();
+        foreach (Type nodeDelegateType in INodeDelegateUtil.ImplementationTypes) {
+          nodeDelegateMenu.AddItem(new GUIContent(nodeDelegateType.Name), false, this.AddNodeDelegateToNode, Tuple.Create(node, nodeDelegateType));
+        }
+        nodeDelegateMenu.ShowAsContext();
+      }
+
+      foreach (INodeDelegate nodeDelegate in node.GetNodeDelegates()) {
+        Type nodeDelegateType = nodeDelegate.GetType();
+        EditorGUILayout.LabelField(nodeDelegateType.Name);
+      }
+    }
+
+    private void AddNodeDelegateToNode(object tupleAsObject) {
+      Tuple<Node, Type> data = tupleAsObject as Tuple<Node, Type>;
+      Node node = data.Item1;
+      Type type = data.Item2;
+
+      INodeDelegate nodeDelegate = Activator.CreateInstance(type) as INodeDelegate;
+      if (nodeDelegate == null) {
+        Debug.LogError("AddNodeDelegateToNode - Failed to cast created type as INodeDelgate!");
+        return;
+      }
+
+      node.AddNodeDelegate(nodeDelegate);
+      this.SetTargetDirty();
     }
   }
 }
