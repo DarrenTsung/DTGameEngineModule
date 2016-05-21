@@ -33,7 +33,7 @@ namespace DT.GameEngine {
     public event Action<Node> OnManualExit = delegate {};
 
     public Node(NodeId id) {
-      this.Id = id;
+      this._id = id;
     }
 
     public void AddNodeDelegate(INodeDelegate nodeDelegate) {
@@ -79,7 +79,7 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - INode Implementation
     public NodeId Id {
-      get; private set;
+      get { return this._id; }
     }
 
     public bool IsManuallyExited {
@@ -146,6 +146,7 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
+    [SerializeField] private NodeId _id;
     [SerializeField] private List<string> _serializedNodeDelegates = new List<string>();
 
     private List<INodeDelegate> _nodeDelegates;
