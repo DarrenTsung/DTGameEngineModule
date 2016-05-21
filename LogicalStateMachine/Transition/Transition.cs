@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   [Serializable]
-  public class Transition : ITransition {
+  public class Transition : ITransition, ISerializationCallbackReceiver {
     // PRAGMA MARK - ITransition Implementation
     public void ConfigureWithContext(TransitionContext context) {
       this._context = context;
@@ -50,6 +50,37 @@ namespace DT.GameEngine {
 
     public Transition(bool waitForManualExit = false) {
       this._waitForManualExit = waitForManualExit;
+    }
+
+
+    // PRAGMA MARK - ISerializationCallbackReceiver Implementation
+    public void OnAfterDeserialize() {
+      this._conditions = new List<ITransitionCondition>();
+      foreach (string serializedCondition in this._serializedConditions) {
+        ITransitionCondition condition = JsonSerialization.DeserializeGeneric<ITransitionCondition>(serializedCondition);
+        if (condition != null) {
+          this._conditions.Add(condition);
+        }
+      }
+    }
+
+    public void OnBeforeSerialize() {
+      if (this._serializedConditions == null) {
+        this._serializedConditions = new List<string>();
+      } else {
+        this._serializedConditions.Clear();
+      }
+
+      if (this._conditions == null) {
+        return;
+      }
+
+      foreach (ITransitionCondition condition in this._conditions) {
+        string serializedCondition = JsonSerialization.SerializeGeneric(condition);
+        if (serializedCondition != null) {
+          this._serializedConditions.Add(serializedCondition);
+        }
+      }
     }
 
 
