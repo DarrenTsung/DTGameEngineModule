@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DT.GameEngine {
   [Serializable]
   public class NodeTransition {
-    public NodeId target;
+    public NodeId[] targets;
     public Transition transition;
   }
 }

@@ -18,12 +18,12 @@ namespace DT.GameEngine {
 
       Transition bTransition = new Transition();
       bTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
-      NodeTransition bNodeTransition = new NodeTransition { target = nodeB.Id, transition = bTransition };
+      NodeTransition bNodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = bTransition };
       graph.AddOutgoingTransitionForNode(nodeA, bNodeTransition);
 
       Transition cTransition = new Transition();
       cTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
-      NodeTransition cNodeTransition = new NodeTransition { target = nodeC.Id, transition = cTransition };
+      NodeTransition cNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = cTransition };
       graph.AddOutgoingTransitionForNode(nodeA, cNodeTransition);
 
       IGraphContext stubContext = Substitute.For<IGraphContext>();

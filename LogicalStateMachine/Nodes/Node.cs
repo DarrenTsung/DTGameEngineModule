@@ -110,7 +110,12 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - ISerializationCallbackReceiver Implementation
     public void OnAfterDeserialize() {
-      this._nodeDelegates = new List<INodeDelegate>();
+      if (this._nodeDelegates == null) {
+        this._nodeDelegates = new List<INodeDelegate>();
+      } else {
+        this._nodeDelegates.Clear();
+      }
+
       foreach (string serializedNodeDelegate in this._serializedNodeDelegates) {
         INodeDelegate nodeDelegate = JsonSerialization.DeserializeGeneric<INodeDelegate>(serializedNodeDelegate);
         if (nodeDelegate != null) {
@@ -149,6 +154,6 @@ namespace DT.GameEngine {
     [SerializeField] private NodeId _id;
     [SerializeField] private List<string> _serializedNodeDelegates = new List<string>();
 
-    private List<INodeDelegate> _nodeDelegates;
+    private List<INodeDelegate> _nodeDelegates = new List<INodeDelegate>();
   }
 }

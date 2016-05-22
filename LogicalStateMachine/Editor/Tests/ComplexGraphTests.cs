@@ -19,12 +19,12 @@ namespace DT.GameEngine {
 
       Transition bTransition = new Transition();
       bTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
-      NodeTransition bNodeTransition = new NodeTransition { target = nodeB.Id, transition = bTransition };
+      NodeTransition bNodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = bTransition };
       graph.AddOutgoingTransitionForNode(nodeA, bNodeTransition);
 
       Transition cTransition = new Transition();
       cTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
-      NodeTransition cNodeTransition = new NodeTransition { target = nodeC.Id, transition = cTransition };
+      NodeTransition cNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = cTransition };
       graph.AddOutgoingTransitionForNode(nodeB, cNodeTransition);
 
       IGraphContext stubContext = Substitute.For<IGraphContext>();
@@ -58,22 +58,22 @@ namespace DT.GameEngine {
 
       Transition bTransition = new Transition();
       bTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
-      NodeTransition bNodeTransition = new NodeTransition { target = nodeB.Id, transition = bTransition };
+      NodeTransition bNodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = bTransition };
       graph.AddOutgoingTransitionForNode(nodeA, bNodeTransition);
 
       Transition cTransition = new Transition();
       cTransition.AddTransitionCondition(new IntTransitionCondition("Key", 3));
-      NodeTransition cNodeTransition = new NodeTransition { target = nodeC.Id, transition = cTransition };
+      NodeTransition cNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = cTransition };
       graph.AddOutgoingTransitionForNode(nodeA, cNodeTransition);
 
       Transition cdTransition = new Transition();
       cdTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
-      NodeTransition cdNodeTransition = new NodeTransition { target = nodeD.Id, transition = cdTransition };
+      NodeTransition cdNodeTransition = new NodeTransition { targets = new NodeId[] { nodeD.Id }, transition = cdTransition };
       graph.AddOutgoingTransitionForNode(nodeC, cdNodeTransition);
 
       Transition bdTransition = new Transition(waitForManualExit: true);
       bdTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
-      NodeTransition bdNodeTransition = new NodeTransition { target = nodeD.Id, transition = bdTransition };
+      NodeTransition bdNodeTransition = new NodeTransition { targets = new NodeId[] { nodeD.Id }, transition = bdTransition };
       graph.AddOutgoingTransitionForNode(nodeB, bdNodeTransition);
 
       IGraphContext stubContext = Substitute.For<IGraphContext>();

@@ -26,7 +26,7 @@ namespace DT.GameEngine {
       transition.AddTransitionCondition(deserialized);
       // END NEW CODE
 
-      NodeTransition nodeTransition = new NodeTransition { target = nodeB.Id, transition = transition };
+      NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
 
       IGraphContext stubContext = Substitute.For<IGraphContext>();
@@ -63,7 +63,7 @@ namespace DT.GameEngine {
       transition.AddTransitionCondition(deserialized);
       // END NEW CODE
 
-      NodeTransition nodeTransition = new NodeTransition { target = nodeB.Id, transition = transition };
+      NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
 
       IGraphContext stubContext = Substitute.For<IGraphContext>();
@@ -97,7 +97,7 @@ namespace DT.GameEngine {
       transition.AddTransitionCondition(deserialized);
       // END NEW CODE
 
-      NodeTransition nodeTransition = new NodeTransition { target = nodeB.Id, transition = transition };
+      NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
 
       IGraphContext stubContext = Substitute.For<IGraphContext>();

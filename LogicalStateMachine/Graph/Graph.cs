@@ -2,6 +2,7 @@ using DT;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace DT.GameEngine {
@@ -132,15 +133,17 @@ namespace DT.GameEngine {
           continue;
         }
 
-        Node targetNode = this._graphData.LoadNodeById(nodeTransition.target);
-        if (targetNode == null) {
-          continue;
-        }
-
         nodeTransition.transition.HandleTransitionUsed();
         this.RemoveActiveNode(node);
-        this.AddActiveNode(targetNode);
-        this.CheckTransitions(targetNode);
+        foreach (Node targetNode in nodeTransition.targets.Select(targetId => this._graphData.LoadNodeById(targetId))) {
+          if (targetNode == null) {
+            continue;
+          }
+
+          this.AddActiveNode(targetNode);
+          this.CheckTransitions(targetNode);
+        }
+
         break;
       }
     }
