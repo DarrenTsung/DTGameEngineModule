@@ -37,7 +37,7 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
-    private void DrawNodes(Rect canvasRect) {
+    private void DrawNodes() {
       foreach (Node node in this.TargetGraph.GetAllNodes()) {
         this.DrawNode(node);
       }

@@ -52,6 +52,10 @@ namespace DT.GameEngine {
     }
 
 
+    public Node LoadNodeById(NodeId id) {
+      return this._graphData.LoadNodeById(id);
+    }
+
     public IList<Node> GetAllNodes() {
       return this._graphData.GetAllNodes();
     }
@@ -76,6 +80,24 @@ namespace DT.GameEngine {
 
     public void AddOutgoingTransitionForNode(Node node, NodeTransition nodeTransition) {
       this._graphData.AddOutgoingTransitionForNode(node, nodeTransition);
+    }
+
+    public IList<NodeTransition> GetOutgoingTransitionsForNode(Node node) {
+      IList<NodeTransition> nodeTransitions = this._graphData.GetOutgoingTransitionsForNode(node);
+
+      foreach (NodeTransition nodeTransition in nodeTransitions) {
+        Transition transition = nodeTransition.transition;
+        if (!transition.HasContext()) {
+          TransitionContext transitionContext = new TransitionContext {
+            graphContext = this._context,
+            nodeContext = new GraphNodeContext(this, node)
+          };
+
+          transition.ConfigureWithContext(transitionContext);
+        }
+      }
+
+      return nodeTransitions;
     }
 
 
@@ -198,24 +220,6 @@ namespace DT.GameEngine {
       this._context = GraphContextFactoryLocator.MakeContext();
       this._context.OnContextUpdated += this.CheckActiveNodesTransitions;
       this._context.PopulateStartingContextParameters(this._startingContextParameters);
-    }
-
-    private IList<NodeTransition> GetOutgoingTransitionsForNode(Node node) {
-      IList<NodeTransition> nodeTransitions = this._graphData.GetOutgoingTransitionsForNode(node);
-
-      foreach (NodeTransition nodeTransition in nodeTransitions) {
-        Transition transition = nodeTransition.transition;
-        if (!transition.HasContext()) {
-          TransitionContext transitionContext = new TransitionContext {
-            graphContext = this._context,
-            nodeContext = new GraphNodeContext(this, node)
-          };
-
-          transition.ConfigureWithContext(transitionContext);
-        }
-      }
-
-      return nodeTransitions;
     }
   }
 }

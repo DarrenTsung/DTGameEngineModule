@@ -20,8 +20,10 @@ namespace DT.GameEngine {
     }
 
     private void MakeTransition(object nodeAsObject) {
-      // TODO (darren): make transition logic here
-      // consider how to make a transition to multiple nodes
+      Node node = nodeAsObject as Node;
+      NodeTransition nodeTransition = new NodeTransition();
+      this.TargetGraph.AddOutgoingTransitionForNode(node, nodeTransition);
+      this.StartEditingNodeTransition(node, nodeTransition);
     }
 
     private void AddToStartingNodes(object nodeAsObject) {

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace DT.GameEngine {
   public partial class GraphAssetEditorWindow : EditorWindow {
     // PRAGMA MARK - Internal
-    private Node _selectedNode;
+    private Node _selectedNode = null;
 
     private Node GetSelectedNode() {
       return this._selectedNode;

@@ -18,22 +18,30 @@ namespace DT.GameEngine {
         return;
       }
 
+      if (EditorWindow.mouseOverWindow == this) {
+        this._willRepaint = true;
+      }
+
 			GUI.skin = this._skin;
       this.RecomputeCanvasRect();
 
 			GUI.BeginGroup(this.CanvasRect);
-        this.DrawGrid(this.CanvasRect);
-        this.DrawNodes(this.CanvasRect);
-
-        this.DrawInspectorWindow();
+        this._currentState.Render();
 			GUI.EndGroup();
 
-      this.CheckEvents(Event.current);
+      this._currentState.HandleEvent(Event.current);
+
+      if (this._willRepaint) {
+        this.Repaint();
+        this._willRepaint = false;
+      }
       this.SaveChanges();
     }
 
 
     // PRAGMA MARK - Internal
+    private bool _willRepaint;
+
     private Rect _canvasRect;
     private Rect CanvasRect {
       get { return this._canvasRect; }

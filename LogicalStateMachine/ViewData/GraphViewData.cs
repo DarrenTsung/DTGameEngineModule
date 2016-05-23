@@ -25,10 +25,7 @@ namespace DT.GameEngine {
     private Dictionary<NodeId, NodeViewData> CachedNodeViewDataMapping {
       get {
         if (this._cachedNodeViewDataMapping == null) {
-          this._cachedNodeViewDataMapping = new Dictionary<NodeId, NodeViewData>();
-          foreach (NodeViewData nodeViewData in this._nodeViewDatas) {
-            this._cachedNodeViewDataMapping[nodeViewData.nodeId] = nodeViewData;
-          }
+          this._cachedNodeViewDataMapping = this._nodeViewDatas.ToMap(viewData => viewData.nodeId);
         }
 
         return this._cachedNodeViewDataMapping;
