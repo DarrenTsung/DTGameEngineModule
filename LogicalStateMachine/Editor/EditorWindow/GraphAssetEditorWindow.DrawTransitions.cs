@@ -47,7 +47,7 @@ namespace DT.GameEngine {
       Direction offsetDirection = DirectionUtil.ConvertVector2(offset);
 
       // ex. (Direction.RIGHT).Vector2Value()   ==   Vector2(1.0f, 0.0f)
-      Vector2 nodeTangent = Vector2.Scale(offsetDirection.Vector2Value(), offset * kTransitionTangentMultiplier);
+      Vector2 nodeTangent = Vector2.Scale(offsetDirection.Vector2Value(), Vector2Util.Abs(offset) * kTransitionTangentMultiplier);
       Vector2 targetNodeTangent = -nodeTangent;
 
       Handles.DrawBezier(point,
