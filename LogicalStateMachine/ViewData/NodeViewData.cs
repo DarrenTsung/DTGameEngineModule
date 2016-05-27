@@ -35,7 +35,7 @@ namespace DT.GameEngine {
     private Dictionary<Transition, TransitionViewData> CachedViewDataMapping {
       get {
         if (this._cachedViewDataMapping == null) {
-          this._cachedViewDataMapping = this._transitionViewDatas.ToMap(viewData => viewData.transition);
+          this._cachedViewDataMapping = this._transitionViewDatas.ToMapWithKeys(viewData => viewData.transition);
         }
         return this._cachedViewDataMapping;
       }
