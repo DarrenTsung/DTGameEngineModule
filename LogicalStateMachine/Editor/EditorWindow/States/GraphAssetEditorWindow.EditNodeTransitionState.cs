@@ -104,7 +104,8 @@ namespace DT.GameEngine {
         TransitionViewData transitionViewData = nodeViewData.GetViewDataForTransition(this._nodeTransition.transition);
         this.Context.DrawTransitionFromPointToPoint(transitionViewData,
                                                     nodeViewData.position + this.Context._panner.Position,
-                                                    mousePosition);
+                                                    mousePosition,
+                                                    TransitionViewStyle.HIGHLIGHTED);
       }
     }
   }

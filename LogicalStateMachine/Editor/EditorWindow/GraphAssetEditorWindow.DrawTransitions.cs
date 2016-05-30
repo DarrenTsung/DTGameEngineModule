@@ -23,25 +23,42 @@ namespace DT.GameEngine {
       NodeViewData nodeViewData = this.GetViewDataForNode(node);
       IList<NodeTransition> nodeTransitions = this.TargetGraph.GetOutgoingTransitionsForNode(node);
       foreach (NodeTransition nodeTransition in nodeTransitions) {
+        TransitionViewStyle transitionStyle = this.GetStyleForTransition(node, nodeTransition);
         TransitionViewData transitionViewData = nodeViewData.GetViewDataForTransition(nodeTransition.transition);
 
         IList<Node> targetNodes = nodeTransition.targets.Select(targetId => this.TargetGraph.LoadNodeById(targetId)).ToList();
         foreach (Node targetNode in targetNodes) {
-          this.DrawTransitionFromNodeToNode(transitionViewData, node, targetNode);
+          this.DrawTransitionFromNodeToNode(transitionViewData, node, targetNode, transitionStyle);
         }
       }
     }
 
-    private void DrawTransitionFromNodeToNode(TransitionViewData transitionViewData, Node node, Node targetNode) {
+    private TransitionViewStyle GetStyleForTransition(Node node, NodeTransition nodeTransition) {
+      if (!this.IsNodeSelected(node)) {
+        return TransitionViewStyle.NORMAL;
+      }
+
+      if (false) {// this.IsTransitionSelected(nodeTransition)) {
+        return TransitionViewStyle.HIGHLIGHTED;
+      }
+
+      return TransitionViewStyle.SEMI_HIGHLIGHTED;
+    }
+
+    private void DrawTransitionFromNodeToNode(TransitionViewData transitionViewData, Node node, Node targetNode, TransitionViewStyle style) {
       NodeViewData nodeViewData = this.GetViewDataForNode(node);
       NodeViewData targetNodeViewData = this.GetViewDataForNode(targetNode);
 
       this.DrawTransitionFromPointToPoint(transitionViewData,
                                           nodeViewData.position + this._panner.Position,
-                                          targetNodeViewData.position + this._panner.Position);
+                                          targetNodeViewData.position + this._panner.Position,
+                                          style);
     }
 
-    private void DrawTransitionFromPointToPoint(TransitionViewData transitionViewData, Vector2 point, Vector2 targetPoint) {
+    private void DrawTransitionFromPointToPoint(TransitionViewData transitionViewData, Vector2 point, Vector2 targetPoint, TransitionViewStyle style) {
+      Color transitionColor = TransitionViewStyleUtil.GetColor(style);
+      GUIStyle transitionArrowStyle = TransitionViewStyleUtil.GetArrowStyle(style);
+
       Vector2 offset = targetPoint - point;
       // ex. A ---> B    ==    Direction.RIGHT
       Direction offsetDirection = DirectionUtil.ConvertVector2(offset);
@@ -54,9 +71,28 @@ namespace DT.GameEngine {
                          targetPoint,
                          point + nodeTangent,
                          targetPoint + targetNodeTangent,
-                         Color.white,
+                         transitionColor,
                          null,
                          kTransitionLineWidth);
+
+      Vector3[] bezierPoints = Handles.MakeBezierPoints(point,
+                                                        targetPoint,
+                                                        point + nodeTangent,
+                                                        targetPoint + targetNodeTangent,
+                                                        division: 40);
+
+      int midPointIndex = Mathf.FloorToInt(bezierPoints.Length / 2.0f);
+      Vector2 midPointTangent = bezierPoints[midPointIndex + 1] - bezierPoints[midPointIndex];
+
+      Vector2 midPoint = (point + targetPoint) / 2.0f;
+      float rotationAngle = Vector2.Angle(Vector2.right, midPointTangent);
+      if (midPointTangent.y < 0.0f) {
+        rotationAngle *= -1.0f;
+      }
+
+      GUIUtility.RotateAroundPivot(rotationAngle, midPoint);
+      GUI.Box(RectUtil.MakeRect(midPoint, new Vector2(10.0f, 10.0f), pivot: new Vector2(0.5f, 0.5f)), "", transitionArrowStyle);
+      GUIUtility.RotateAroundPivot(-rotationAngle, midPoint);
     }
   }
 }
