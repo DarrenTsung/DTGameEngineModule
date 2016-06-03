@@ -24,6 +24,7 @@ namespace DT.GameEngine {
 
     private void DeselectCurrentNode() {
       this._selectedNode = null;
+      this.DeselectCurrentNodeTransition();
     }
   }
 }

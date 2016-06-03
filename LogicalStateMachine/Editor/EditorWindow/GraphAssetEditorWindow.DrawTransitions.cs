@@ -38,7 +38,7 @@ namespace DT.GameEngine {
         return TransitionViewStyle.NORMAL;
       }
 
-      if (false) {// this.IsTransitionSelected(nodeTransition)) {
+      if (this.IsNodeTransitionSelected(nodeTransition)) {
         return TransitionViewStyle.HIGHLIGHTED;
       }
 

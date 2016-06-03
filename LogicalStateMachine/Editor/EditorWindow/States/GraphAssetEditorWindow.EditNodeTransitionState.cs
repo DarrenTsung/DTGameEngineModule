@@ -11,6 +11,9 @@ namespace DT.GameEngine {
     private EditNodeTransitionState _editNodeTransitionState = new EditNodeTransitionState();
 
     private void StartEditingNodeTransition(Node node, NodeTransition nodeTransition) {
+      this.SelectNode(node);
+      this.SelectNodeTransition(nodeTransition);
+
       this._editNodeTransitionState.Configure(node, nodeTransition);
       this.CleanupCurrentState();
       this.SetCurrentState(this._editNodeTransitionState);

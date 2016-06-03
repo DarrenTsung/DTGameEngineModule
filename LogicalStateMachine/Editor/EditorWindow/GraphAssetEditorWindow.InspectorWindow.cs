@@ -54,18 +54,57 @@ namespace DT.GameEngine {
     private void DrawNodeInspector(Node node, NodeViewData nodeViewData) {
 			nodeViewData.name = EditorGUILayout.TextField(nodeViewData.name);
 
-      if (GUILayout.Button("Add INodeDelegate")) {
-        GenericMenu nodeDelegateMenu = new GenericMenu();
-        foreach (Type nodeDelegateType in INodeDelegateUtil.ImplementationTypes) {
-          nodeDelegateMenu.AddItem(new GUIContent(nodeDelegateType.Name), false, this.AddNodeDelegateToNode, Tuple.Create(node, nodeDelegateType));
+      // Node Delegate Button + Fields
+      EditorGUILayout.BeginVertical((GUIStyle)"InspectorBigBox");
+        EditorGUILayout.LabelField("Node Delegates:");
+        foreach (INodeDelegate nodeDelegate in node.GetNodeDelegates()) {
+          Type nodeDelegateType = nodeDelegate.GetType();
+          EditorGUILayout.BeginVertical((GUIStyle)"InspectorBox");
+            EditorGUILayout.LabelField(nodeDelegateType.Name);
+          EditorGUILayout.EndVertical();
         }
-        nodeDelegateMenu.ShowAsContext();
-      }
 
-      foreach (INodeDelegate nodeDelegate in node.GetNodeDelegates()) {
-        Type nodeDelegateType = nodeDelegate.GetType();
-        EditorGUILayout.LabelField(nodeDelegateType.Name);
-      }
+        if (GUILayout.Button("Add INodeDelegate")) {
+          GenericMenu nodeDelegateMenu = new GenericMenu();
+          foreach (Type nodeDelegateType in INodeDelegateUtil.ImplementationTypes) {
+            nodeDelegateMenu.AddItem(new GUIContent(nodeDelegateType.Name), false, this.AddNodeDelegateToNode, Tuple.Create(node, nodeDelegateType));
+          }
+          nodeDelegateMenu.ShowAsContext();
+        }
+      EditorGUILayout.EndVertical();
+
+      EditorGUILayout.Space();
+
+      // Node Transitions
+      EditorGUILayout.BeginVertical((GUIStyle)"InspectorBigBox");
+        EditorGUILayout.LabelField("Transitions:");
+        IList<NodeTransition> nodeTransitions = this.TargetGraph.GetOutgoingTransitionsForNode(node);
+        foreach (NodeTransition nodeTransition in nodeTransitions) {
+          GUIStyle transitionStyle = this.IsNodeTransitionSelected(nodeTransition) ? (GUIStyle)"SelectedInspectorBox" : (GUIStyle)"InspectorBox";
+          Rect transitionRect = EditorGUILayout.BeginVertical(transitionStyle, GUILayout.MinHeight(30.0f));
+
+          Rect selectionRect = transitionRect;
+          selectionRect.size = new Vector2(selectionRect.size.x - 25.0f, selectionRect.size.y);
+          if (GUI.Button(selectionRect, "", (GUIStyle)"InvisibleButton")) {
+            this.SelectNodeTransition(nodeTransition);
+          }
+
+            string targetText = "";
+            targetText += (nodeTransition.targets.Length > 1) ? "Targets: " : "Target: ";
+            targetText += StringUtil.Join(", ", nodeTransition.targets);
+
+            EditorGUILayout.LabelField(targetText);
+
+            Rect editButtonRect = new Rect(new Vector2(transitionRect.x + transitionRect.width - 25.0f,
+                                                       transitionRect.y + 5.0f),
+                                           new Vector2(20.0f, 20.0f));
+            if (GUI.Button(editButtonRect, "", (GUIStyle)"EditButton")) {
+              this.StartEditingNodeTransition(node, nodeTransition);
+            }
+          EditorGUILayout.EndVertical();
+          EditorGUILayout.Space();
+        }
+      EditorGUILayout.EndVertical();
     }
 
     private void AddNodeDelegateToNode(object tupleAsObject) {
