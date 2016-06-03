@@ -108,7 +108,10 @@ namespace DT.GameEngine {
               this.AddPendingNodeTransitionRemoval(node, nodeTransition);
             }
 
-            foreach (ITransitionCondition transitionCondition in nodeTransition.transition.GetTransitionConditions()) {
+            EditorGUILayout.LabelField("Conditions: ");
+            Transition transition = nodeTransition.transition;
+            transition.WaitForManualExit = EditorGUILayout.Toggle("WaitForManualExit: ", transition.WaitForManualExit);
+            foreach (ITransitionCondition transitionCondition in transition.GetTransitionConditions()) {
               EditorGUILayout.BeginVertical(transitionStyle);
                 Type transitionConditionType = transitionCondition.GetType();
                 EditorGUILayout.LabelField(transitionConditionType.Name, EditorStyles.boldLabel);

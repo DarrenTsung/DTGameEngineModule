@@ -56,6 +56,11 @@ namespace DT.GameEngine {
       this._waitForManualExit = waitForManualExit;
     }
 
+    public bool WaitForManualExit {
+      get { return this._waitForManualExit; }
+      set { this._waitForManualExit = value; }
+    }
+
 
     // PRAGMA MARK - ISerializationCallbackReceiver Implementation
     public void OnAfterDeserialize() {
