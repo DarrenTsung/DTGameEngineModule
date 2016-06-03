@@ -9,11 +9,11 @@ using UnityEngine;
 namespace DT.GameEngine {
   public partial class GraphAssetEditorWindow : EditorWindow {
     // PRAGMA MARK - Static
-    private const float kInspectorWindowWidth = 250.0f;
+    private const float kInspectorWindowWidth = 270.0f;
     private static readonly Vector2 kInspectorWindowPosition = new Vector2(10.0f, 20.0f);
 
     private const float kInspectorHideButtonHeight = 25.0f;
-    private const float kInspectorViewHeight = 200.0f;
+    private const float kInspectorViewHeight = 250.0f;
 
     // PRAGMA MARK - Internal
     private bool _inspectorCollapsed = false;
@@ -38,16 +38,15 @@ namespace DT.GameEngine {
 
       if (!this._inspectorCollapsed) {
         Vector2 inspectorRectPosition = kInspectorWindowPosition + new Vector2(0.0f, heightSoFar);
-        Rect inspectorViewRect = new Rect(inspectorRectPosition, new Vector2(kInspectorWindowWidth, kInspectorViewHeight));
 
         Rect inspectorRect = new Rect(inspectorRectPosition, new Vector2(kInspectorWindowWidth, kInspectorViewHeight));
-				this._inspectorScrollPos = GUI.BeginScrollView(inspectorRect, this._inspectorScrollPos, inspectorViewRect);
+				GUILayout.BeginArea(inspectorRect, "", (GUIStyle)"InspectorWindow");
         // Scroll View
-  				GUILayout.BeginArea(inspectorRect, "", (GUIStyle)"InspectorWindow");
+  				this._inspectorScrollPos = EditorGUILayout.BeginScrollView(this._inspectorScrollPos, GUILayout.Height(kInspectorViewHeight));
             this.DrawNodeInspector(selectedNode, selectedNodeViewData);
-  				GUILayout.EndArea();
+  				EditorGUILayout.EndScrollView();
         // End Scroll View
-				GUI.EndScrollView();
+				GUILayout.EndArea();
       }
     }
 
@@ -84,7 +83,8 @@ namespace DT.GameEngine {
           Rect transitionRect = EditorGUILayout.BeginVertical(transitionStyle, GUILayout.MinHeight(30.0f));
 
           Rect selectionRect = transitionRect;
-          selectionRect.size = new Vector2(selectionRect.size.x - 25.0f, selectionRect.size.y);
+          selectionRect.position = new Vector2(selectionRect.position.x + 25.0f, selectionRect.position.y);
+          selectionRect.size = new Vector2(selectionRect.size.x - 50.0f, selectionRect.size.y);
           if (GUI.Button(selectionRect, "", (GUIStyle)"InvisibleButton")) {
             this.SelectNodeTransition(nodeTransition);
           }
@@ -100,6 +100,19 @@ namespace DT.GameEngine {
                                            new Vector2(20.0f, 20.0f));
             if (GUI.Button(editButtonRect, "", (GUIStyle)"EditButton")) {
               this.StartEditingNodeTransition(node, nodeTransition);
+            }
+
+            foreach (ITransitionCondition transitionCondition in nodeTransition.transition.GetTransitionConditions()) {
+              Type transitionConditionType = transitionCondition.GetType();
+              EditorGUILayout.LabelField(transitionConditionType.Name);
+            }
+
+            if (GUILayout.Button("", (GUIStyle)"AddButton", GUILayout.Width(20.0f), GUILayout.Height(20.0f))) {
+              GenericMenu nodeDelegateMenu = new GenericMenu();
+              foreach (Type transitionConditionType in TypeUtil<ITransitionCondition>.ImplementationTypes) {
+                nodeDelegateMenu.AddItem(new GUIContent(transitionConditionType.Name), false, this.AddTransitionCondition, Tuple.Create(nodeTransition, transitionConditionType));
+              }
+              nodeDelegateMenu.ShowAsContext();
             }
           EditorGUILayout.EndVertical();
           EditorGUILayout.Space();
@@ -119,6 +132,21 @@ namespace DT.GameEngine {
       }
 
       node.AddNodeDelegate(nodeDelegate);
+      this.SetTargetDirty();
+    }
+
+    private void AddTransitionCondition(object tupleAsObject) {
+      Tuple<NodeTransition, Type> data = tupleAsObject as Tuple<NodeTransition, Type>;
+      NodeTransition nodeTransition = data.Item1;
+      Type type = data.Item2;
+
+      ITransitionCondition transitionCondition = Activator.CreateInstance(type) as ITransitionCondition;
+      if (transitionCondition == null) {
+        Debug.LogError("AddTransitionCondition - Failed to cast created type as ITransitionCondition!");
+        return;
+      }
+
+      nodeTransition.transition.AddTransitionCondition(transitionCondition);
       this.SetTargetDirty();
     }
   }

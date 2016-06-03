@@ -15,6 +15,7 @@ namespace DT.GameEngine {
       return this._targetValue == context.graphContext.GetInt(this._key);
     }
 
+    public IntTransitionCondition() {}
     public IntTransitionCondition(string key, int targetValue) {
       this._key = key;
       this._targetValue = targetValue;

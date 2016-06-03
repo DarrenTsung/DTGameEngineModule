@@ -19,6 +19,7 @@ namespace DT.GameEngine {
       context.graphContext.ResetTrigger(this._key);
     }
 
+    public TriggerTransitionCondition() {}
     public TriggerTransitionCondition(string key) {
       this._key = key;
     }

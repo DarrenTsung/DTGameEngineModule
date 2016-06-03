@@ -15,6 +15,7 @@ namespace DT.GameEngine {
       return this._targetValue == context.graphContext.GetBool(this._key);
     }
 
+    public BoolTransitionCondition() {}
     public BoolTransitionCondition(string key, bool targetValue) {
       this._key = key;
       this._targetValue = targetValue;

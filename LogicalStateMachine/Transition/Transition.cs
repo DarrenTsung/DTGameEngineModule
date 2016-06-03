@@ -48,6 +48,10 @@ namespace DT.GameEngine {
       this._conditions.Add(condition);
     }
 
+    public IList<ITransitionCondition> GetTransitionConditions() {
+      return this._conditions;
+    }
+
     public Transition(bool waitForManualExit = false) {
       this._waitForManualExit = waitForManualExit;
     }
