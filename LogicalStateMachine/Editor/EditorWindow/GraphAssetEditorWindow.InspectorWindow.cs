@@ -90,7 +90,7 @@ namespace DT.GameEngine {
           Rect transitionRect = EditorGUILayout.BeginVertical(transitionStyle, GUILayout.MinHeight(30.0f));
             string targetText = "";
             targetText += (nodeTransition.targets.Length > 1) ? "Targets: " : "Target: ";
-            targetText += StringUtil.Join(", ", nodeTransition.targets);
+            targetText += StringUtil.Join(", ", nodeTransition.targets.Select(id => this.GetViewDataForNode(this.TargetGraph.LoadNodeById(id)).name));
 
             EditorGUILayout.LabelField(targetText, GUILayout.Height(30.0f));
 
