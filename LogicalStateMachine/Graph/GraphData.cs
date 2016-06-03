@@ -59,6 +59,24 @@ namespace DT.GameEngine {
         return;
       }
 
+      // remove all transitions to this node
+      foreach (NodeData otherNodeData in this._nodeDatas) {
+        List<NodeTransition> nodeTransitionsToRemove = new List<NodeTransition>();
+
+        foreach (NodeTransition transition in otherNodeData.outgoingTransitions) {
+          if (!transition.targets.Contains(node.Id)) {
+            continue;
+          }
+
+          transition.targets = transition.targets.Where(id => id != node.Id).ToArray();
+          if (transition.targets.Length == 0) {
+            nodeTransitionsToRemove.Add(transition);
+          }
+        }
+
+        otherNodeData.outgoingTransitions.RemoveRange(nodeTransitionsToRemove);
+      }
+
       this.ClearCached();
     }
 

@@ -78,6 +78,10 @@ namespace DT.GameEngine {
       return node;
     }
 
+    public void RemoveNode(Node node) {
+      this._graphData.RemoveNode(node);
+    }
+
     public void AddOutgoingTransitionForNode(Node node, NodeTransition nodeTransition) {
       this._graphData.AddOutgoingTransitionForNode(node, nodeTransition);
     }

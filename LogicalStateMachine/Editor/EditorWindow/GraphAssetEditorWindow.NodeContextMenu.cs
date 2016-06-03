@@ -16,6 +16,7 @@ namespace DT.GameEngine {
       } else {
         nodeCreationMenu.AddItem(new GUIContent("Set Starting"), false, this.AddToStartingNodes, node);
       }
+      nodeCreationMenu.AddItem(new GUIContent("Remove"), false, this.RemoveNode, node);
       nodeCreationMenu.ShowAsContext();
     }
 
@@ -45,6 +46,15 @@ namespace DT.GameEngine {
       }
 
       this.TargetGraph.SetStartingNodes(startingNodes);
+      this.SetTargetDirty();
+    }
+
+    private void RemoveNode(object nodeAsObject) {
+      this.RemoveNode(nodeAsObject as Node);
+    }
+
+    private void RemoveNode(Node node) {
+      this.TargetGraph.RemoveNode(node);
       this.SetTargetDirty();
     }
   }
