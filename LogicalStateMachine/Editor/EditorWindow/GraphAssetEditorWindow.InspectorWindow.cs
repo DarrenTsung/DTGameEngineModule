@@ -64,7 +64,7 @@ namespace DT.GameEngine {
           EditorGUILayout.EndVertical();
         }
 
-        if (GUILayout.Button("Add INodeDelegate")) {
+        if (GUILayout.Button("", (GUIStyle)"AddButton", GUILayout.Width(20.0f), GUILayout.Height(20.0f))) {
           GenericMenu nodeDelegateMenu = new GenericMenu();
           foreach (Type nodeDelegateType in INodeDelegateUtil.ImplementationTypes) {
             nodeDelegateMenu.AddItem(new GUIContent(nodeDelegateType.Name), false, this.AddNodeDelegateToNode, Tuple.Create(node, nodeDelegateType));
