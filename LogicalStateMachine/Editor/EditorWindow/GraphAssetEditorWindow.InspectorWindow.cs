@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -81,19 +82,11 @@ namespace DT.GameEngine {
         foreach (NodeTransition nodeTransition in nodeTransitions) {
           GUIStyle transitionStyle = this.IsNodeTransitionSelected(nodeTransition) ? (GUIStyle)"SelectedInspectorBox" : (GUIStyle)"InspectorBox";
           Rect transitionRect = EditorGUILayout.BeginVertical(transitionStyle, GUILayout.MinHeight(30.0f));
-
-          Rect selectionRect = transitionRect;
-          selectionRect.position = new Vector2(selectionRect.position.x + 25.0f, selectionRect.position.y);
-          selectionRect.size = new Vector2(selectionRect.size.x - 50.0f, selectionRect.size.y);
-          if (GUI.Button(selectionRect, "", (GUIStyle)"InvisibleButton")) {
-            this.SelectNodeTransition(nodeTransition);
-          }
-
             string targetText = "";
             targetText += (nodeTransition.targets.Length > 1) ? "Targets: " : "Target: ";
             targetText += StringUtil.Join(", ", nodeTransition.targets);
 
-            EditorGUILayout.LabelField(targetText);
+            EditorGUILayout.LabelField(targetText, GUILayout.Height(30.0f));
 
             Rect editButtonRect = new Rect(new Vector2(transitionRect.x + transitionRect.width - 25.0f,
                                                        transitionRect.y + 5.0f),
@@ -103,8 +96,16 @@ namespace DT.GameEngine {
             }
 
             foreach (ITransitionCondition transitionCondition in nodeTransition.transition.GetTransitionConditions()) {
-              Type transitionConditionType = transitionCondition.GetType();
-              EditorGUILayout.LabelField(transitionConditionType.Name);
+              EditorGUILayout.BeginVertical(transitionStyle);
+                Type transitionConditionType = transitionCondition.GetType();
+                EditorGUILayout.LabelField(transitionConditionType.Name);
+
+                FieldInfo[] fields = TypeUtil.GetInspectorFields(transitionConditionType);
+                foreach (FieldInfo field in fields) {
+                  EditorGUILayoutUtil.DynamicField(field, transitionCondition);
+                }
+              EditorGUILayout.EndVertical();
+              EditorGUILayout.Space();
             }
 
             if (GUILayout.Button("", (GUIStyle)"AddButton", GUILayout.Width(20.0f), GUILayout.Height(20.0f))) {
