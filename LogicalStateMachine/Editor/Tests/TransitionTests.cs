@@ -14,7 +14,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = new Transition() };
+      NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = new Transition(waitForManualExit: false) };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
 
       bool entered = false;
@@ -52,7 +52,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
       transition.AddTransitionCondition(new IntTransitionCondition(key, targetValue));
       NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
@@ -80,12 +80,12 @@ namespace DT.GameEngine {
       Node nodeB = graph.MakeNode();
       Node nodeC = graph.MakeNode();
 
-      Transition bTransition = new Transition();
+      Transition bTransition = new Transition(waitForManualExit: false);
       bTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
       NodeTransition bNodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = bTransition };
       graph.AddOutgoingTransitionForNode(nodeA, bNodeTransition);
 
-      Transition cTransition = new Transition();
+      Transition cTransition = new Transition(waitForManualExit: false);
       cTransition.AddTransitionCondition(new IntTransitionCondition("Key", 10));
       NodeTransition cNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = cTransition };
       graph.AddOutgoingTransitionForNode(nodeA, cNodeTransition);
@@ -119,7 +119,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
       transition.AddTransitionCondition(new IntTransitionCondition(key, targetValue));
       NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
@@ -148,7 +148,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
       transition.AddTransitionCondition(new BoolTransitionCondition(key, targetValue));
       NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
@@ -178,7 +178,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
       transition.AddTransitionCondition(new BoolTransitionCondition(key, targetValue));
       NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
@@ -205,7 +205,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
       transition.AddTransitionCondition(new TriggerTransitionCondition(key));
       NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
@@ -233,7 +233,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
       transition.AddTransitionCondition(new TriggerTransitionCondition(key));
       NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = transition };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);

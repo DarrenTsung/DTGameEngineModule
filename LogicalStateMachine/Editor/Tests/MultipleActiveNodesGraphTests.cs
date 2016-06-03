@@ -40,10 +40,10 @@ namespace DT.GameEngine {
       Node nodeB = graph.MakeNode();
       Node nodeC = graph.MakeNode();
 
-      NodeTransition acNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = new Transition() };
+      NodeTransition acNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = new Transition(waitForManualExit: false) };
       graph.AddOutgoingTransitionForNode(nodeA, acNodeTransition);
 
-      NodeTransition bcNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = new Transition() };
+      NodeTransition bcNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = new Transition(waitForManualExit: false) };
       graph.AddOutgoingTransitionForNode(nodeB, bcNodeTransition);
 
       graph.SetStartingNodes(new Node[] { nodeA, nodeB, nodeC });
@@ -66,10 +66,10 @@ namespace DT.GameEngine {
       Node nodeC = graph.MakeNode();
       Node nodeD = graph.MakeNode();
 
-      NodeTransition abNodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = new Transition() };
+      NodeTransition abNodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = new Transition(waitForManualExit: false) };
       graph.AddOutgoingTransitionForNode(nodeA, abNodeTransition);
 
-      NodeTransition cdNodeTransition = new NodeTransition { targets = new NodeId[] { nodeD.Id }, transition = new Transition() };
+      NodeTransition cdNodeTransition = new NodeTransition { targets = new NodeId[] { nodeD.Id }, transition = new Transition(waitForManualExit: false) };
       graph.AddOutgoingTransitionForNode(nodeC, cdNodeTransition);
 
       graph.SetStartingNodes(new Node[] { nodeA, nodeC });

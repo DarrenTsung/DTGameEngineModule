@@ -16,12 +16,12 @@ namespace DT.GameEngine {
       Node nodeB = graph.MakeNode();
       Node nodeC = graph.MakeNode();
 
-      Transition bTransition = new Transition();
+      Transition bTransition = new Transition(waitForManualExit: false);
       bTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
       NodeTransition bNodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = bTransition };
       graph.AddOutgoingTransitionForNode(nodeA, bNodeTransition);
 
-      Transition cTransition = new Transition();
+      Transition cTransition = new Transition(waitForManualExit: false);
       cTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
       NodeTransition cNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = cTransition };
       graph.AddOutgoingTransitionForNode(nodeA, cNodeTransition);

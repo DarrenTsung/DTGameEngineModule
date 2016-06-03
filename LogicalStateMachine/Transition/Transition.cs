@@ -52,7 +52,7 @@ namespace DT.GameEngine {
       return this._conditions;
     }
 
-    public Transition(bool waitForManualExit = false) {
+    public Transition(bool waitForManualExit = true) {
       this._waitForManualExit = waitForManualExit;
     }
 

@@ -18,7 +18,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
       IntTransitionCondition condition = new IntTransitionCondition(key, targetValue);
       // NEW CODE
       string serialized = TransitionConditionSerializer.Serialize(condition);
@@ -54,7 +54,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
 
       BoolTransitionCondition condition = new BoolTransitionCondition(key, targetValue);
       // NEW CODE
@@ -89,7 +89,7 @@ namespace DT.GameEngine {
       Node nodeA = graph.MakeNode();
       Node nodeB = graph.MakeNode();
 
-      Transition transition = new Transition();
+      Transition transition = new Transition(waitForManualExit: false);
       TriggerTransitionCondition condition = new TriggerTransitionCondition(key);
       // NEW CODE
       string serialized = TransitionConditionSerializer.Serialize(condition);

@@ -15,7 +15,7 @@ namespace DT.GameEngine {
       Node nodeB = graph.MakeNode();
       Node nodeC = graph.MakeNode();
 
-      NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id, nodeC.Id }, transition = new Transition() };
+      NodeTransition nodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id, nodeC.Id }, transition = new Transition(waitForManualExit: false) };
       graph.AddOutgoingTransitionForNode(nodeA, nodeTransition);
 
       bool bEntered = false;
