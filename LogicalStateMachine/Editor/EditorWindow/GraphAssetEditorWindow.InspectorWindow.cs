@@ -60,8 +60,14 @@ namespace DT.GameEngine {
         foreach (INodeDelegate nodeDelegate in node.GetNodeDelegates()) {
           Type nodeDelegateType = nodeDelegate.GetType();
           EditorGUILayout.BeginVertical((GUIStyle)"InspectorBox");
-            EditorGUILayout.LabelField(nodeDelegateType.Name);
+            EditorGUILayout.LabelField(nodeDelegateType.Name, EditorStyles.boldLabel);
+
+            FieldInfo[] fields = TypeUtil.GetInspectorFields(nodeDelegateType);
+            foreach (FieldInfo field in fields) {
+              EditorGUILayoutUtil.DynamicField(field, nodeDelegate);
+            }
           EditorGUILayout.EndVertical();
+          EditorGUILayout.Space();
         }
 
         if (GUILayout.Button("", (GUIStyle)"AddButton", GUILayout.Width(20.0f), GUILayout.Height(20.0f))) {
@@ -98,7 +104,7 @@ namespace DT.GameEngine {
             foreach (ITransitionCondition transitionCondition in nodeTransition.transition.GetTransitionConditions()) {
               EditorGUILayout.BeginVertical(transitionStyle);
                 Type transitionConditionType = transitionCondition.GetType();
-                EditorGUILayout.LabelField(transitionConditionType.Name);
+                EditorGUILayout.LabelField(transitionConditionType.Name, EditorStyles.boldLabel);
 
                 FieldInfo[] fields = TypeUtil.GetInspectorFields(transitionConditionType);
                 foreach (FieldInfo field in fields) {
