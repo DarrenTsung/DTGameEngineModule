@@ -44,6 +44,8 @@ namespace DT.GameEngine {
     private GUISkin _skin;
 
     private void OnEnable() {
+      this.DeselectCurrentNode();
+
 			this._skin = (GUISkin)Resources.Load("GraphAssetEditorWindowSkin");
       this.wantsMouseMove = true;
       this.GoToNormalState();
