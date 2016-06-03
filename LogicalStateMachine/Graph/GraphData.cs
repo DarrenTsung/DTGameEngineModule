@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   [Serializable]
-  public class GraphData {
+  public class GraphData : ISerializationCallbackReceiver {
     public static NodeTransition[] kEmptyNodeTransitionArray = new NodeTransition[0];
 
     public Node LoadNodeById(NodeId id) {
@@ -78,6 +78,16 @@ namespace DT.GameEngine {
       }
 
       this.CachedNodeDataMapping[node.Id].outgoingTransitions.Add(nodeTransition);
+    }
+
+
+    // PRAGMA MARK - ISerializationCallbackReceiver Implementation
+    public void OnAfterDeserialize() {
+      this.ClearCached();
+    }
+
+    public void OnBeforeSerialize() {
+      this.ClearCached();
     }
 
 
