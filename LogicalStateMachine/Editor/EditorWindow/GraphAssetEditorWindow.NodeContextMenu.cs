@@ -21,7 +21,10 @@ namespace DT.GameEngine {
     }
 
     private void MakeTransition(object nodeAsObject) {
-      Node node = nodeAsObject as Node;
+      this.MakeTransition(nodeAsObject as Node);
+    }
+
+    private void MakeTransition(Node node) {
       NodeTransition nodeTransition = new NodeTransition();
       this.TargetGraph.AddOutgoingTransitionForNode(node, nodeTransition);
       this.StartEditingNodeTransition(node, nodeTransition);

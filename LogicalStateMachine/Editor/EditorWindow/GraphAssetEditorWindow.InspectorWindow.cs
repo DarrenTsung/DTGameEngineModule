@@ -131,7 +131,12 @@ namespace DT.GameEngine {
           EditorGUILayout.EndVertical();
           EditorGUILayout.Space();
         }
+
+        if (GUILayout.Button("", (GUIStyle)"AddButton", GUILayout.Width(20.0f), GUILayout.Height(20.0f))) {
+          this.MakeTransition(node);
+        }
       EditorGUILayout.EndVertical();
+      EditorGUILayout.Space();
     }
 
     private void AddNodeDelegateToNode(object tupleAsObject) {
