@@ -35,6 +35,7 @@ namespace DT.GameEngine {
         this.Repaint();
         this._willRepaint = false;
       }
+      this.FlushPendingRemovals();
       this.SaveChanges();
     }
 

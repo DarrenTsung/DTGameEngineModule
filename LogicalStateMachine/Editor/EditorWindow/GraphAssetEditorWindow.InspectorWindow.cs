@@ -101,6 +101,13 @@ namespace DT.GameEngine {
               this.StartEditingNodeTransition(node, nodeTransition);
             }
 
+            Rect removeButtonRect = new Rect(new Vector2(transitionRect.x + transitionRect.width - 50.0f,
+                                                       transitionRect.y + 5.0f),
+                                             new Vector2(20.0f, 20.0f));
+            if (GUI.Button(removeButtonRect, "", (GUIStyle)"RemoveButton")) {
+              this.AddPendingNodeTransitionRemoval(node, nodeTransition);
+            }
+
             foreach (ITransitionCondition transitionCondition in nodeTransition.transition.GetTransitionConditions()) {
               EditorGUILayout.BeginVertical(transitionStyle);
                 Type transitionConditionType = transitionCondition.GetType();
