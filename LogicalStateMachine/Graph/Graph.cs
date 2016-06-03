@@ -86,6 +86,10 @@ namespace DT.GameEngine {
       this._graphData.AddOutgoingTransitionForNode(node, nodeTransition);
     }
 
+    public void RemoveOutgoingTransitionForNode(Node node, NodeTransition nodeTransition) {
+      this._graphData.RemoveOutgoingTransitionForNode(node, nodeTransition);
+    }
+
     public IList<NodeTransition> GetOutgoingTransitionsForNode(Node node) {
       IList<NodeTransition> nodeTransitions = this._graphData.GetOutgoingTransitionsForNode(node);
 

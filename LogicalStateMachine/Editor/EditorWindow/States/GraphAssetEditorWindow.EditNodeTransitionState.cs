@@ -31,6 +31,11 @@ namespace DT.GameEngine {
       public GraphAssetEditorWindow Context { get; set; }
 
       public void Cleanup() {
+        if (this._nodeTransition.targets.Length <= 0) {
+          this.Context.TargetGraph.RemoveOutgoingTransitionForNode(this._node, this._nodeTransition);
+          this.Context.SetTargetDirty();
+        }
+
         this._node = null;
         this._nodeTransition = null;
       }

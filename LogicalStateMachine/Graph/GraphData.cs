@@ -98,6 +98,15 @@ namespace DT.GameEngine {
       this.CachedNodeDataMapping[node.Id].outgoingTransitions.Add(nodeTransition);
     }
 
+    public void RemoveOutgoingTransitionForNode(Node node, NodeTransition nodeTransition) {
+      if (!this.HasNodeWithId(node.Id)) {
+        Debug.LogWarning("GraphData - RemoveOutgoingTransitionForNode has no node with id: " + node.Id + "!");
+        return;
+      }
+
+      this.CachedNodeDataMapping[node.Id].outgoingTransitions.Remove(nodeTransition);
+    }
+
 
     // PRAGMA MARK - ISerializationCallbackReceiver Implementation
     public void OnAfterDeserialize() {
