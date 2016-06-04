@@ -8,6 +8,16 @@ using UnityEngine;
 namespace DT.GameEngine {
   [Serializable]
   public class Graph : IGraph {
+    // PRAGMA MARK - Static Public Interface
+    public static Graph DeepClone(Graph g) {
+      Graph clone = new Graph();
+      clone._startingContextParameters = new List<GraphContextParameter>(g._startingContextParameters);
+      clone._graphData = GraphData.DeepClone(g._graphData);
+
+      return clone;
+    }
+
+
     // PRAGMA MARK - IGraph Implementation
     public void Start() {
       if (this._isActive) {
@@ -17,6 +27,9 @@ namespace DT.GameEngine {
 
       this._isActive = true;
       this.ResetContext();
+      foreach (Node node in this.GetAllNodes()) {
+        node.OnManualExit += this.HandleNodeManualExitTriggered;
+      }
 
       Node[] startingNodes = this._graphData.GetStartingNodes();
       if (startingNodes == null) {
@@ -49,6 +62,9 @@ namespace DT.GameEngine {
 
       this._isActive = false;
       this.ResetContext();
+      foreach (Node node in this.GetAllNodes()) {
+        node.OnManualExit -= this.HandleNodeManualExitTriggered;
+      }
     }
 
 
@@ -73,9 +89,7 @@ namespace DT.GameEngine {
     }
 
     public Node MakeNode() {
-      Node node = this._graphData.MakeNode();
-      node.OnManualExit += this.HandleNodeManualExitTriggered;
-      return node;
+      return this._graphData.MakeNode();
     }
 
     public void RemoveNode(Node node) {

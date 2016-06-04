@@ -6,12 +6,15 @@ using UnityEngine;
 namespace DT.GameEngine {
   public class GraphComponent : MonoBehaviour {
     // PRAGMA MARK - Public Interface
+    [Header("Properties")]
     public GraphAsset graphAsset;
 
 
     // PRAGMA MARK - Internal
     [SerializeField] private bool _startOnEnable = true;
-    [SerializeField] private Graph _graph;
+
+    [Header("Read-only")]
+    [SerializeField, ReadOnly] private Graph _graph;
 
     private void Awake() {
       if (this.graphAsset == null) {
@@ -20,7 +23,7 @@ namespace DT.GameEngine {
         return;
       }
 
-      this._graph = this.graphAsset.graph;
+      this._graph = Graph.DeepClone(this.graphAsset.graph);
     }
 
     private void OnEnable() {

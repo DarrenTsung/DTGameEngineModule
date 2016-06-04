@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   public class DebugNodeDelegate : INodeDelegate {
-    public int publicField;
-
+    // PRAGMA MARK - INodeDelegate Implementation
     public void HandleEnter() {
       Debug.Log("Enter");
     }
@@ -15,8 +14,9 @@ namespace DT.GameEngine {
     }
 
 
-    // PRAGMA MARK - Internal
-    [SerializeField] private int serializedPrivateField = 3;
-    private int nonSerializedPrivateField;
+    // PRAGMA MARK - INodeDelegate.IDeepClonable<INodeDelegate> Implementation
+    public INodeDelegate DeepClone() {
+      return new DebugNodeDelegate();
+    }
   }
 }

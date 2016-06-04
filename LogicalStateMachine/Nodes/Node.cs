@@ -2,12 +2,13 @@ using DT;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace DT.GameEngine {
   [Serializable]
   public class Node : INode, ISerializationCallbackReceiver, IComparable<Node>{
-    // PRAGMA MARK - Static
+    // PRAGMA MARK - Static Public Interface
     public static bool operator ==(Node a, Node b) {
       // If both are null, or both are same instance, return true.
       if (System.Object.ReferenceEquals(a, b)) {
@@ -24,6 +25,13 @@ namespace DT.GameEngine {
 
     public static bool operator !=(Node a, Node b) {
       return !(a == b);
+    }
+
+    public static Node DeepClone(Node n) {
+      Node clone = new Node(n.Id);
+      clone._nodeDelegates = n._nodeDelegates.Select(d => d.DeepClone()).ToList();
+
+      return clone;
     }
 
 

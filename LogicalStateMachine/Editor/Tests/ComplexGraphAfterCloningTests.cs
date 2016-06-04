@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace DT.GameEngine {
-  public class ComplexGraphTests {
+  public class ComplexGraphAfterCloningTests {
     [Test]
     public void MultipleTransitions_HappenCorrectly() {
       Graph graph = new Graph();
@@ -26,6 +26,14 @@ namespace DT.GameEngine {
       cTransition.AddTransitionCondition(new IntTransitionCondition("Key", 5));
       NodeTransition cNodeTransition = new NodeTransition { targets = new NodeId[] { nodeC.Id }, transition = cTransition };
       graph.AddOutgoingTransitionForNode(nodeB, cNodeTransition);
+
+      // CLONING CODE
+      graph = Graph.DeepClone(graph);
+
+      nodeA = graph.LoadNodeById(nodeA.Id);
+      nodeB = graph.LoadNodeById(nodeB.Id);
+      nodeC = graph.LoadNodeById(nodeC.Id);
+      // END CLONING CODE
 
       IGraphContext stubContext = Substitute.For<IGraphContext>();
       stubContext.HasIntParameterKey(Arg.Is("Key")).Returns(true);
@@ -76,6 +84,15 @@ namespace DT.GameEngine {
       NodeTransition bdNodeTransition = new NodeTransition { targets = new NodeId[] { nodeD.Id }, transition = bdTransition };
       graph.AddOutgoingTransitionForNode(nodeB, bdNodeTransition);
 
+      // CLONING CODE
+      Graph clonedGraph = Graph.DeepClone(graph);
+
+      Node clonedNodeA = clonedGraph.LoadNodeById(nodeA.Id);
+      Node clonedNodeB = clonedGraph.LoadNodeById(nodeB.Id);
+      Node clonedNodeC = clonedGraph.LoadNodeById(nodeC.Id);
+      Node clonedNodeD = clonedGraph.LoadNodeById(nodeD.Id);
+      // END CLONING CODE
+
       IGraphContext stubContext = Substitute.For<IGraphContext>();
       stubContext.HasIntParameterKey(Arg.Is("Key")).Returns(true);
       stubContext.GetInt(Arg.Is("Key")).Returns(5);
@@ -88,27 +105,36 @@ namespace DT.GameEngine {
       nodeA.OnEnter += () => { aEntered = true; };
       bool bEntered = false;
       nodeB.OnEnter += () => { bEntered = true; };
-      bool cEntered = false;
-      nodeC.OnEnter += () => { cEntered = true; };
-      bool dEntered = false;
-      nodeD.OnEnter += () => { dEntered = true; };
 
-      graph.Start();
-      Assert.IsTrue(aEntered);
-      Assert.IsTrue(bEntered);
-      Assert.IsFalse(cEntered);
-      Assert.IsFalse(dEntered);
+      bool clonedAEntered = false;
+      clonedNodeA.OnEnter += () => { clonedAEntered = true; };
+      bool clonedBEntered = false;
+      clonedNodeB.OnEnter += () => { clonedBEntered = true; };
+      bool clonedCEntered = false;
+      clonedNodeC.OnEnter += () => { clonedCEntered = true; };
+      bool clonedDEntered = false;
+      clonedNodeD.OnEnter += () => { clonedDEntered = true; };
 
-      aEntered = false;
-      bEntered = false;
-      cEntered = false;
-      dEntered = false;
+      clonedGraph.Start();
+      Assert.IsTrue(clonedAEntered);
+      Assert.IsTrue(clonedBEntered);
+      Assert.IsFalse(clonedCEntered);
+      Assert.IsFalse(clonedDEntered);
 
-      nodeB.TriggerManualExit();
+      // check to make sure the original nodes are not entered
       Assert.IsFalse(aEntered);
       Assert.IsFalse(bEntered);
-      Assert.IsFalse(cEntered);
-      Assert.IsTrue(dEntered);
+
+      clonedAEntered = false;
+      clonedBEntered = false;
+      clonedCEntered = false;
+      clonedDEntered = false;
+
+      clonedNodeB.TriggerManualExit();
+      Assert.IsFalse(clonedAEntered);
+      Assert.IsFalse(clonedBEntered);
+      Assert.IsFalse(clonedCEntered);
+      Assert.IsTrue(clonedDEntered);
     }
 
     [Test]
@@ -133,6 +159,14 @@ namespace DT.GameEngine {
       cbTransition.AddTransitionCondition(new TriggerTransitionCondition("CGoToB"));
       NodeTransition cbNodeTransition = new NodeTransition { targets = new NodeId[] { nodeB.Id }, transition = cbTransition };
       graph.AddOutgoingTransitionForNode(nodeC, cbNodeTransition);
+
+      // CLONING CODE
+      graph = Graph.DeepClone(graph);
+
+      nodeA = graph.LoadNodeById(nodeA.Id);
+      nodeB = graph.LoadNodeById(nodeB.Id);
+      nodeC = graph.LoadNodeById(nodeC.Id);
+      // END CLONING CODE
 
       IGraphContext stubContext = Substitute.For<IGraphContext>();
       stubContext.HasTriggerParameterKey(Arg.Is("BGoToC")).Returns(true);

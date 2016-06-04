@@ -8,8 +8,21 @@ using UnityEngine;
 namespace DT.GameEngine {
   [Serializable]
   public class GraphData : ISerializationCallbackReceiver {
-    public static NodeTransition[] kEmptyNodeTransitionArray = new NodeTransition[0];
+    // PRAGMA MARK - Static Public Interface
+    public static GraphData DeepClone(GraphData data) {
+      GraphData clone = new GraphData();
+      clone._startingNodeIds = (NodeId[])data._startingNodeIds.Clone();
+      clone._nodeDatas = data._nodeDatas.Select(nodeData => NodeData.DeepClone(nodeData)).ToList();
 
+      return clone;
+    }
+
+
+    // PRAGMA MARK - Static Internal
+    private static readonly NodeTransition[] kEmptyNodeTransitionArray = new NodeTransition[0];
+
+
+    // PRAGMA MARK - Public Interface
     public Node LoadNodeById(NodeId id) {
       if (!this.HasNodeWithId(id)) {
         Debug.LogWarning("GraphData - LoadNodeById has no node with id: " + id + "!");

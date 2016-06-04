@@ -2,11 +2,22 @@ using DT;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace DT.GameEngine {
   [Serializable]
   public class Transition : ITransition, ISerializationCallbackReceiver {
+    // PRAGMA MARK - Static Public Interface
+    public static Transition DeepClone(Transition t) {
+      Transition clone = new Transition();
+      clone._waitForManualExit = t._waitForManualExit;
+      clone._conditions = t._conditions.Select(c => c.DeepClone()).ToList();
+
+      return clone;
+    }
+
+
     // PRAGMA MARK - ITransition Implementation
     public void ConfigureWithContext(TransitionContext context) {
       this._context = context;

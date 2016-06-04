@@ -8,5 +8,9 @@ namespace DT.GameEngine {
     // PRAGMA MARK - ITransitionCondition Implementation
     public abstract bool IsConditionMet(TransitionContext context);
     public virtual void HandleTransitionUsed(TransitionContext context) {}
+
+
+    // PRAGMA MARK - ITransitionCondition.IDeepClonable<ITransitionCondition> Implementation
+    public abstract ITransitionCondition DeepClone();
   }
 }

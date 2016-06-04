@@ -22,6 +22,12 @@ namespace DT.GameEngine {
     }
 
 
+    // PRAGMA MARK - ITransitionCondition.IDeepClonable<ITransitionCondition> Implementation
+    public override ITransitionCondition DeepClone() {
+      return new IntTransitionCondition(this._key, this._targetValue);
+    }
+
+
     // PRAGMA MARK - Internal
     [SerializeField] private string _key;
     [SerializeField] private int _targetValue;
