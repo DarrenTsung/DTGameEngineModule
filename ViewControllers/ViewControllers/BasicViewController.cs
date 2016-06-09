@@ -10,7 +10,7 @@ namespace DT {
                                                                       IEndShowSubscriber<IView>,
                                                                       IStartDismissSubscriber<IView>,
                                                                       IEndDismissSubscriber<IView>
-                                                                      where TView : IView {
+                                                                      where TView : MonoBehaviour, IView {
     // PRAGMA MARK - IViewController implementation
     public void Show() {
       this.InitializeViewIfNeededAndDo(() => {
@@ -61,6 +61,17 @@ namespace DT {
       this.OnViewInitialized();
     }
 
+    protected void RecycleView() {
+      if (this._view == null) {
+        Debug.LogWarning("RecycleView called with no view!");
+        return;
+      }
+
+      this._view.RemoveShowDismissEvents(this);
+      ObjectPoolManager.Recycle(this._view.gameObject);
+      this._view = null;
+    }
+
 
     // PRAGMA MARK - IStartShowSubscriber<IView> implementation
     protected UnityEvent _onStartShowOnce = new UnityEvent();
@@ -97,6 +108,7 @@ namespace DT {
       this._onEndDismissOnce.RemoveAllListeners();
 
       this._showDismissEvents.InvokeOnEndDismiss(this);
+      this.RecycleView();
     }
 
 
