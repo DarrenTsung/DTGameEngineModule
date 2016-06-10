@@ -14,9 +14,7 @@ namespace DT.GameEngine {
       gameObject.transform.position = position - pivotVector - relativeTotalBounds.center;
     }
 
-
-    // PRAGMA MARK - Internal
-    private static Bounds ComputeRelativeTotalBounds(GameObject gameObject) {
+    public static Bounds ComputeRelativeTotalBounds(GameObject gameObject) {
       Bounds? computedBounds = null;
       foreach (Renderer r in gameObject.GetComponentsInChildren<Renderer>()) {
         if (computedBounds == null) {
