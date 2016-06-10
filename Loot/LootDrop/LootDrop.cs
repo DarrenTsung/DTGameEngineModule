@@ -6,10 +6,9 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   [Serializable]
-  public abstract class LootDrop : DTEntity, IWeightedObject {
+  public abstract class LootDrop : DTEntity {
     // PRAGMA MARK - Public Interface
     public IdComponent idComponent = new IdComponent();
-    public WeightComponent weightComponent = new WeightComponent();
 
 #if UNITY_EDITOR
     public EditorDisplayComponent editorDisplayComponent = new EditorDisplayComponent();
@@ -37,12 +36,6 @@ namespace DT.GameEngine {
       }
 
       return true;
-    }
-
-
-    // PRAGMA MARK - IWeightedObject Implementation
-    public int Weight {
-      get { return this.weightComponent.weight; }
     }
 
 

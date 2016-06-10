@@ -9,8 +9,11 @@ namespace DT.GameEngine {
     public static ILootReward[] SelectRewardsForLootDropGroupId(int lootDropGroupId) {
       List<ILootReward> rewards = new List<ILootReward>();
 
-      List<LootDrop> lootDrops = LootManager.GetLootDropsForId(lootDropGroupId);
-      LootDrop selectedLootDrop = WeightedSelectionSystem.SelectWeightedObject(lootDrops);
+      LootDropGroup dropGroup = IdList<LootDropGroup>.Instance.LoadById(lootDropGroupId);
+      int selectedLootDropId = WeightedSelectionUtil.SelectWeightedObject(dropGroup.dropList).lootDropId;
+
+      IIdList<LootDrop> lootDropList = ListFactory<LootDrop>.Instance.GetList();
+      LootDrop selectedLootDrop = lootDropList.LoadById(selectedLootDropId);
 
       if (selectedLootDrop == null) {
         Debug.LogError("SelectRewardsForLootDropGroupId: failed to select lootDrop with group id: " + lootDropGroupId);
@@ -24,13 +27,6 @@ namespace DT.GameEngine {
       rewards.AddRange(selectedLootDrop.RewardedLootRewards);
 
       return rewards.ToArray();
-    }
-
-    private static List<LootDrop> GetLootDropsForId(int lootDropGroupId) {
-      LootDropGroup dropGroup = IdList<LootDropGroup>.Instance.LoadById(lootDropGroupId);
-
-      IIdList<LootDrop> lootDropList = ListFactory<LootDrop>.Instance.GetList();
-      return (from lootDropId in dropGroup.lootDropIds select lootDropList.LoadById(lootDropId)).ToList();
     }
   }
 }
