@@ -45,11 +45,7 @@ namespace DT {
       this._view = loadedObject.GetComponent<TView>();
       this._view.AddShowDismissEvents(this);
 
-      // HACK: make this better Darren
-      loadedObject.transform.SetParent(CanvasUtil.ScreenSpaceMainCanvas.transform, false);
-      loadedObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-      ((RectTransform)loadedObject.transform).offsetMin = new Vector2(0.0f, 0.0f);
-      ((RectTransform)loadedObject.transform).offsetMax = new Vector2(0.0f, 0.0f);
+      CanvasUtil.ParentUIElementToCanvas(loadedObject, CanvasUtil.ScreenSpaceMainCanvas);
 
       IContextContainer contextContainer = this._view as IContextContainer;
       if (contextContainer == null) {
