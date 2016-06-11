@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.GameEngine {
-  public class UserIdInventoryObserver<TEntity> where TEntity : DTEntity {
+  public class UserIdInventoryObserver {
     // PRAGMA MARK - Public Interface
     public UserIdInventoryObserver(bool startImmediately = false) {
       this._active = false;
@@ -38,41 +38,41 @@ namespace DT.GameEngine {
     }
 
     public void ClearRecordings() {
-      this._addedIdQuantityInventory = new IdQuantityInventory<TEntity>();
-      this._removedIdQuantityInventory = new IdQuantityInventory<TEntity>();
+      this._addedEntityQuantities = new List<EntityQuantity>();
+      this._removedEntityQuantities = new List<EntityQuantity>();
     }
 
-    public IdQuantity<TEntity>[] GetAllAdded() {
-      return this._addedIdQuantityInventory.ToArray();
+    public EntityQuantity[] GetAllAdded() {
+      return this._addedEntityQuantities.ToArray();
     }
 
-    public IdQuantity<TEntity>[] GetAllRemoved() {
-      return this._removedIdQuantityInventory.ToArray();
+    public EntityQuantity[] GetAllRemoved() {
+      return this._removedEntityQuantities.ToArray();
     }
 
 
     // PRAGMA MARK - Internal
-    private IdQuantityInventory<TEntity> _addedIdQuantityInventory = new IdQuantityInventory<TEntity>();
-    private IdQuantityInventory<TEntity> _removedIdQuantityInventory = new IdQuantityInventory<TEntity>();
+    private List<EntityQuantity> _addedEntityQuantities = new List<EntityQuantity>();
+    private List<EntityQuantity> _removedEntityQuantities = new List<EntityQuantity>();
 
     private bool _active = false;
 
-    private void HandleAddedIdQuantity(IdQuantity<TEntity> addedQuantity) {
-      this._addedIdQuantityInventory.AddIdQuantity(addedQuantity);
+    private void HandleAddedEntityQuantity(EntityQuantity addedQuantity) {
+      this._addedEntityQuantities.Add(addedQuantity);
     }
 
-    private void HandleRemovedIdQuantity(IdQuantity<TEntity> removedQuantity) {
-      this._removedIdQuantityInventory.AddIdQuantity(removedQuantity);
+    private void HandleRemovedEntityQuantity(EntityQuantity removedQuantity) {
+      this._removedEntityQuantities.Add(removedQuantity);
     }
 
     private void AddListeners() {
-      UserIdInventory<TEntity>.Instance.OnAddedIdQuantity += this.HandleAddedIdQuantity;
-      UserIdInventory<TEntity>.Instance.OnRemovedIdQuantity += this.HandleRemovedIdQuantity;
+      UserIdInventory.OnAddedEntityQuantity += this.HandleAddedEntityQuantity;
+      UserIdInventory.OnRemovedEntityQuantity += this.HandleRemovedEntityQuantity;
     }
 
     private void RemoveListeners() {
-      UserIdInventory<TEntity>.Instance.OnAddedIdQuantity -= this.HandleAddedIdQuantity;
-      UserIdInventory<TEntity>.Instance.OnRemovedIdQuantity -= this.HandleRemovedIdQuantity;
+      UserIdInventory.OnAddedEntityQuantity -= this.HandleAddedEntityQuantity;
+      UserIdInventory.OnRemovedEntityQuantity -= this.HandleRemovedEntityQuantity;
     }
   }
 }

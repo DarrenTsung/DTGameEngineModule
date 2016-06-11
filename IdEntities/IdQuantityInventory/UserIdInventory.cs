@@ -7,6 +7,11 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.GameEngine {
+  public static class UserIdInventory {
+    public static Action<EntityQuantity> OnAddedEntityQuantity = delegate {};
+    public static Action<EntityQuantity> OnRemovedEntityQuantity = delegate {};
+  }
+
   [Serializable]
   public partial class UserIdInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity {
     // PRAGMA MARK - Static
@@ -90,10 +95,12 @@ namespace DT.GameEngine {
 
     private void HandleAddedIdQuantity(IdQuantity<TEntity> addQuantity) {
       this.OnAddedIdQuantity.Invoke(addQuantity);
+      UserIdInventory.OnAddedEntityQuantity.Invoke(EntityQuantity.From(addQuantity));
     }
 
     private void HandleRemovedIdQuantity(IdQuantity<TEntity> removeQuantity) {
       this.OnRemovedIdQuantity.Invoke(removeQuantity);
+      UserIdInventory.OnRemovedEntityQuantity.Invoke(EntityQuantity.From(removeQuantity));
     }
   }
 }
