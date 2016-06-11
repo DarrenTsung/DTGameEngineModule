@@ -26,7 +26,7 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Internal
     [Header("Outlets")]
     [SerializeField]
-    private TextController _timerText;
+    private TextOutlet _timerText;
     [SerializeField]
     private Slider _timerSlider;
 

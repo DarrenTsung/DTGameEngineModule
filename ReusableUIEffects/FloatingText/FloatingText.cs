@@ -36,7 +36,7 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Internal
     [Header("Outlets")]
     [SerializeField]
-    private TextController _text = new TextController();
+    private TextOutlet _text = new TextOutlet();
 
     [Header("Properties")]
     [SerializeField]
