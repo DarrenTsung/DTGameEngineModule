@@ -24,5 +24,33 @@ namespace DT.GameEngine {
 
       image.sprite = displayComponent.displaySprite;
     }
+
+    public static void PopulateSpriteOutlet(this DTEntity entity, SpriteOutlet spriteOutlet) {
+      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
+      if (displayComponent == null) {
+        Debug.LogError("PopulateSpriteOutlet - failed to get display component!");
+        return;
+      }
+
+      spriteOutlet.Sprite = displayComponent.displaySprite;
+    }
+
+    public static string DisplayName(this DTEntity entity) {
+      return entity.GetComponent<DisplayComponent>().displayName;
+    }
+
+    public static Sprite DisplaySprite(this DTEntity entity) {
+      return entity.GetComponent<DisplayComponent>().displaySprite;
+    }
+
+    public static void PopulateNameOutlet(this DTEntity entity, TextOutlet textOutlet) {
+      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
+      if (displayComponent == null) {
+        Debug.LogError("PopulateNameOutlet - failed to get display component!");
+        return;
+      }
+
+      textOutlet.Text = displayComponent.displayName;
+    }
 	}
 }
