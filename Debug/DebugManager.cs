@@ -3,14 +3,15 @@ using UnityEngine;
 
 namespace DT.GameEngine {
   public class DebugManager : MonoBehaviour {
-    public bool IsDebug {
+    // PRAGMA MARK - Static
+    public static bool IsDebug {
       get {
         return Debug.isDebugBuild;
       }
     }
 
-    [SerializeField]
-    private bool _showFps = true;
+
+    // PRAGMA MARK - Internal
     private FPSViewController _fpsViewController;
 
     private void Awake() {
@@ -18,13 +19,9 @@ namespace DT.GameEngine {
       this.RefreshShowingViewControllers();
     }
 
-    private void OnValidate() {
-      this.RefreshShowingViewControllers();
-    }
-
     private void RefreshShowingViewControllers() {
       if (this._fpsViewController != null) {
-        this.DismissOrShowViewController(this._showFps, this._fpsViewController);
+        this.DismissOrShowViewController(DebugManager.IsDebug, this._fpsViewController);
       }
     }
 
