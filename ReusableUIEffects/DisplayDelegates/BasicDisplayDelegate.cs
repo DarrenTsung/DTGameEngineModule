@@ -1,11 +1,17 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 namespace DT.GameEngine {
-  public class BasicDisplayDelegate : MonoBehaviour, IDisplayDelegate {
+  public class BasicDisplayDelegate : MonoBehaviour, IDisplayDelegate, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Public Interface
     public void Display() {
       this._animator.SetTrigger("Display");
+    }
+
+
+    // PRAGMA MARK - IRecycleCleanupSubscriber Implementation
+    public void OnRecycleCleanup() {
+      this._animator.SetTrigger("Reset");
     }
 
 
