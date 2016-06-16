@@ -36,7 +36,7 @@ namespace DT {
         this.InitializeView();
       }
 
-      callback();
+      callback.Invoke();
     }
 
     protected void InitializeView() {

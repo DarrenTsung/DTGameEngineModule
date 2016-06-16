@@ -13,24 +13,38 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - Internal
     private FPSViewController _fpsViewController;
+    private GameObject _debugLogger;
+    private int _previousNumberOfTouches;
 
-    private void Awake() {
+    void Awake() {
+      if (!DebugManager.IsDebug) {
+        this.enabled = false;
+        return;
+      }
+
+      DebugLoggerView.Initialize();
+
       this._fpsViewController = new FPSViewController();
-      this.RefreshShowingViewControllers();
+      this._fpsViewController.Show();
+
+      this._debugLogger = ObjectPoolManager.Instantiate("DebugLoggerView");
+      CanvasUtil.ParentUIElementToCanvas(this._debugLogger, CanvasUtil.ScreenSpaceMainCanvas);
+      this._debugLogger.SetActive(false);
     }
 
-    private void RefreshShowingViewControllers() {
-      if (this._fpsViewController != null) {
-        this.DismissOrShowViewController(DebugManager.IsDebug, this._fpsViewController);
+    void Update() {
+      if (!DebugManager.IsDebug) {
+        return;
       }
-    }
 
-    private void DismissOrShowViewController(bool show, IViewController viewController) {
-      if (show) {
-        viewController.Show();
-      } else {
-        viewController.Dismiss();
+      int numberOfTouches = Input.touches.Length;
+      if (numberOfTouches != this._previousNumberOfTouches) {
+        if (Input.touches.Length == 3) {
+          this._debugLogger.ToggleActive();
+        }
       }
+
+      this._previousNumberOfTouches = numberOfTouches;
     }
   }
 }
