@@ -35,6 +35,10 @@ namespace DT.GameEngine {
       spriteOutlet.Sprite = displayComponent.displaySprite;
     }
 
+    public static int Id(this DTEntity entity) {
+      return entity.GetComponent<IdComponent>().id;
+    }
+
     public static string DisplayName(this DTEntity entity) {
       return entity.GetComponent<DisplayComponent>().displayName;
     }
