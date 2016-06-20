@@ -17,6 +17,10 @@ namespace DT.GameEngine {
     public static Bounds ComputeRelativeTotalBounds(GameObject gameObject) {
       Bounds? computedBounds = null;
       foreach (Renderer r in gameObject.GetComponentsInChildren<Renderer>()) {
+        if (r.tag == "PivotPlacerIgnore") {
+          continue;
+        }
+
         if (computedBounds == null) {
           computedBounds = r.bounds;
         } else {
