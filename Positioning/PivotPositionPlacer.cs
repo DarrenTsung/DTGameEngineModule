@@ -7,7 +7,8 @@ namespace DT.GameEngine {
     public static void SetPositionWithPivot(GameObject gameObject, Vector3 position, Vector3 pivot) {
       Bounds relativeTotalBounds = PivotPositionPlacer.ComputeRelativeTotalBounds(gameObject);
 
-      // convert pivot from (0 - 1) space to (-1 - 1) space (extents space)
+      // convert pivot from (0 --- 1) space to (-1 --- 1) space (extents space)
+      // ex. pivot (0.0, 0.5) ==> (-1.0, 0.0)
       Vector3 convertedPivot = 2.0f * (pivot - new Vector3(0.5f, 0.5f, 0.5f));
       Vector3 pivotVector = Vector3.Scale(convertedPivot, relativeTotalBounds.extents);
 
@@ -15,8 +16,12 @@ namespace DT.GameEngine {
     }
 
     public static Bounds ComputeRelativeTotalBounds(GameObject gameObject) {
+      return PivotPositionPlacer.ComputeRelativeTotalBounds(gameObject, gameObject.GetComponentsInChildren<Renderer>());
+    }
+
+    public static Bounds ComputeRelativeTotalBounds(GameObject gameObject, Renderer[] renderers) {
       Bounds? computedBounds = null;
-      foreach (Renderer r in gameObject.GetComponentsInChildren<Renderer>()) {
+      foreach (Renderer r in renderers) {
         if (r.tag == "PivotPlacerIgnore") {
           continue;
         }
