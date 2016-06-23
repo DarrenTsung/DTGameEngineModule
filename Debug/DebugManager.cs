@@ -13,7 +13,7 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - Internal
     private FPSViewController _fpsViewController;
-    private GameObject _debugLogger;
+    private GameObject _debugView;
     private int _previousNumberOfTouches;
 
     void Awake() {
@@ -27,9 +27,9 @@ namespace DT.GameEngine {
       this._fpsViewController = new FPSViewController();
       this._fpsViewController.Show();
 
-      this._debugLogger = ObjectPoolManager.Instantiate("DebugLoggerView");
-      CanvasUtil.ParentUIElementToCanvas(this._debugLogger, CanvasUtil.ScreenSpaceMainCanvas);
-      this._debugLogger.SetActive(false);
+      this._debugView = ObjectPoolManager.Instantiate("DebugView");
+      CanvasUtil.ParentUIElementToCanvas(this._debugView, CanvasUtil.ScreenSpaceMainCanvas);
+      this._debugView.SetActive(false);
     }
 
     void Update() {
@@ -40,8 +40,12 @@ namespace DT.GameEngine {
       int numberOfTouches = Input.touches.Length;
       if (numberOfTouches != this._previousNumberOfTouches) {
         if (Input.touches.Length == 3) {
-          this._debugLogger.ToggleActive();
+          this._debugView.ToggleActive();
         }
+      }
+
+      if (Input.GetKeyDown(KeyCode.D)) {
+        this._debugView.ToggleActive();
       }
 
       this._previousNumberOfTouches = numberOfTouches;
