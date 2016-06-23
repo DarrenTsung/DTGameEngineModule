@@ -1,13 +1,13 @@
 using DT;
-using UnityEngine;
-using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Globalization;
+using UnityEditor;
+using UnityEngine;
 
 namespace DT.GameEngine {
   public partial class IdListWindow : EditorWindow {

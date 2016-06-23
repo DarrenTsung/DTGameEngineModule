@@ -1,13 +1,13 @@
 using DT;
-using UnityEngine;
-using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Globalization;
+using UnityEditor;
+using UnityEngine;
 
 namespace DT.GameEngine {
   public partial class IdListWindow : EditorWindow {
@@ -41,12 +41,21 @@ namespace DT.GameEngine {
             SerializedProperty serializedObj = this._serializedData.GetArrayElementAtIndex(objIndex);
             SerializedProperty serializedObjReference = null;
             if (objIndex < this._serializedDataReference.arraySize) {
-             serializedObjReference = this._serializedDataReference.GetArrayElementAtIndex(objIndex);
+              serializedObjReference = this._serializedDataReference.GetArrayElementAtIndex(objIndex);
             }
 
-            GUIStyle columnStyle = new GUIStyle();
-            columnStyle.normal.background = this.ColumnBackgrounds[objIndex % this.ColumnBackgrounds.Length];
+            GUIStyle columnStyle = this.ColumnStyles[objIndex % this.ColumnStyles.Length];
             Rect objRect = EditorGUILayout.BeginVertical(columnStyle, GUILayout.Width(kLabelWidth + kFieldWidth));
+              // Fold-out buttons
+              EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Expand", GUILayout.Width(100))) {
+                  serializedObj.ExpandAllChildren();
+                }
+                if (GUILayout.Button("Collapse", GUILayout.Width(100))) {
+                  serializedObj.CollapseAllChildren();
+                }
+              EditorGUILayout.EndHorizontal();
+
               this.ObjectOnGUI(entity, serializedObj, serializedObjReference, objRect);
               if (GUILayout.Button("X", GUILayout.Width(70))) {
                 if (EditorUtility.DisplayDialog("Remove Element?",
@@ -122,6 +131,23 @@ namespace DT.GameEngine {
         }
       }
 
+      private GUIStyle[] _columnStyles;
+      private GUIStyle[] ColumnStyles {
+        get {
+          if (this._columnStyles == null || this._columnStyles.Length == 0) {
+            List<GUIStyle> columnStyles = new List<GUIStyle>();
+            foreach (Texture2D columnBackground in this.ColumnBackgrounds) {
+              GUIStyle style = new GUIStyle();
+              style.normal.background = columnBackground;
+              columnStyles.Add(style);
+            }
+
+            this._columnStyles = columnStyles.ToArray();
+          }
+          return this._columnStyles;
+        }
+      }
+
       private Vector2 _currentScrollPosition;
       private GUISkin _skin;
 
@@ -157,6 +183,7 @@ namespace DT.GameEngine {
         return !propertyReferenceValue.Equals(propertyValue);
       }
 
+      private static readonly Texture2D kMissingIconTexture = Texture2DUtil.CreateTextureWithColor(Color.blue, kIconEdgeSize, kIconEdgeSize);
       protected virtual void ObjectOnGUI(TEntity entity, SerializedProperty serializedObj, SerializedProperty serializedObjReference, Rect objRect) {
         // Icon + Title
         Texture2D iconTexture = null;
@@ -170,7 +197,7 @@ namespace DT.GameEngine {
           }
         }
 
-        iconTexture = iconTexture ?? Texture2DUtil.CreateTextureWithColor(Color.blue, kIconEdgeSize, kIconEdgeSize);
+        iconTexture = iconTexture ?? kMissingIconTexture;
 
         GUIStyle titleStyle = new GUIStyle(this._skin.customStyles[0]);
         EditorGUILayout.LabelField(new GUIContent(title, iconTexture), titleStyle,
@@ -184,12 +211,10 @@ namespace DT.GameEngine {
         EditorGUIUtility.fieldWidth = kFieldWidth;
         EditorGUIUtility.labelWidth = kLabelWidth;
 
-        SerializedProperty property = serializedObj;
-        SerializedProperty propertyReference = serializedObjReference;
-        this.DrawPropertyChildrenRecursive(property, propertyReference);
+        this.DrawPropertyChildrenRecursive(serializedObj, serializedObjReference);
 
         EditorGUIUtil.SetBoldDefaultFont(false);
-        property.Reset();
+        serializedObj.Reset();
 
         EditorGUIUtility.fieldWidth = oldFieldWidth;
         EditorGUIUtility.labelWidth = 0;
