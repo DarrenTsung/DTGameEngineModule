@@ -1,7 +1,7 @@
 using DT;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 #if TMPRO
 using TMPro;
 
@@ -24,7 +24,8 @@ namespace DT.GameEngine {
     }
 
     public void SetSize(Vector2 size) {
-      this._containerTransform.sizeDelta = size;
+      this._layoutElement.preferredWidth = size.x;
+      this._layoutElement.preferredHeight = size.y;
     }
 
 
@@ -43,10 +44,13 @@ namespace DT.GameEngine {
     private Image _requiredImage;
     [SerializeField]
     private TMP_Text _requiredLabel;
-    [SerializeField]
-    private RectTransform _containerTransform;
 
     private IViewIdQuantity _requiredViewIdQuantity;
+    private LayoutElement _layoutElement;
+
+    void Awake() {
+      this._layoutElement = this.GetRequiredComponent<LayoutElement>();
+    }
 
     private void HandleInventoryUpdated() {
       this.UpdateUserCount();
