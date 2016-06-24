@@ -8,7 +8,7 @@ namespace DT.GameEngine {
   public class FPSViewController : BasicViewController<FPSView> {
     public FPSViewController() {
       this._viewPrefabName = "FPSView";
-      UnityBehaviourManager.OnUpdate += this.HandleUpdate;
+      MonoBehaviourHelper.OnUpdate += this.HandleUpdate;
     }
 
     private int _frameCount = 0;

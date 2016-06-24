@@ -39,7 +39,7 @@ namespace DT.GameEngine {
       return this._componentMap.SafeGet(type);
     }
 
-    public bool HasComponent<TComponent>() {
+    public bool HasComponent<TComponent>() where TComponent : class, IDTComponent {
       return this.HasComponent(typeof(TComponent));
     }
 

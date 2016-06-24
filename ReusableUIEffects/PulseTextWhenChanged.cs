@@ -1,24 +1,18 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 namespace DT {
 	public class PulseTextWhenChanged : MonoBehaviour {
 		// PRAGMA MARK - Internal
-		[SerializeField]
-		private Text _textReference;
-		[SerializeField]
-		private Transform _textTransform;
+		[SerializeField] private Text _textReference;
+		[SerializeField] private Transform _textTransform;
 
-		[SerializeField]
-		private float _fontSizePulseAdditiveAmount = 0.2f;
-		[SerializeField]
-		private float _pulseWavelengthTime = 0.5f;
-		[SerializeField]
-		private int _pulseTimes = 1;
+		[SerializeField] private float _fontSizePulseAdditiveAmount = 0.2f;
+		[SerializeField] private float _pulseWavelengthTime = 0.5f;
+		[SerializeField] private int _pulseTimes = 1;
 
-		[SerializeField, ReadOnly]
-		private Vector3 _baseScale;
+		[SerializeField, ReadOnly] private Vector3 _baseScale;
 		private string _previousText;
 
 		private void Awake() {

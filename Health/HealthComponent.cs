@@ -97,7 +97,7 @@ namespace DT.GameEngine {
 
 		protected IHealthComponentDelegate _delegate;
 
-    private IEnumerator _invulnerableCoroutine;
+    private Coroutine _invulnerableCoroutine;
 
 		protected virtual void Awake() {
       if (this._delegate == null) {
