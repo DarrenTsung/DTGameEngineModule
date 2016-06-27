@@ -1,14 +1,21 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace DT.GameEngine {
   public class FloatingText : MonoBehaviour, IRecycleSetupSubscriber, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Static
-    public static FloatingText Create(string text, GameObject parent = null) {
+    public static void Create(string text, GameObject parent) {
+      RecyclablePrefab parentRecyclable = parent.GetRequiredComponentInParent<RecyclablePrefab>();
+      if (parentRecyclable == null) {
+        // don't need to log since using required component
+        return;
+      }
+
       FloatingText floatingText = ObjectPoolManager.Instantiate<FloatingText>("FloatingText", parent);
       floatingText.SetupWithText(text);
-      return floatingText;
+
+      parentRecyclable.AttachChildRecyclableObject(floatingText.gameObject);
     }
 
 
@@ -65,6 +72,9 @@ namespace DT.GameEngine {
         this._text.Color = newColor;
       }, finishedCallback: () => {
         ObjectPoolManager.Recycle(this.gameObject);
+
+        RecyclablePrefab parentRecyclable = this.GetRequiredComponentInParent<RecyclablePrefab>();
+        parentRecyclable.DettachChildRecyclableObject(this.gameObject);
       });
     }
 

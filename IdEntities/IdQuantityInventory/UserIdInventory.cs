@@ -69,8 +69,7 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
-    [SerializeField]
-    private IdQuantityInventory<TEntity> _idQuantityInventory = new IdQuantityInventory<TEntity>();
+    [SerializeField] private IdQuantityInventory<TEntity> _idQuantityInventory = new IdQuantityInventory<TEntity>();
 
     // after deserialization from formatter, we want to re-initialize any fields
     // that have the [NonSerialized] attribute
