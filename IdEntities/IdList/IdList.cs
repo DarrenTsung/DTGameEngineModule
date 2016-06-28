@@ -2,6 +2,7 @@ using DT;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 ﻿using UnityEngine;
 
 #if UNITY_EDITOR
@@ -68,11 +69,16 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
-    [SerializeField]
-    protected List<TEntity> _data = new List<TEntity>();
+    [SerializeField] protected List<TEntity> _data = new List<TEntity>();
+
     private Dictionary<int, TEntity> _map = new Dictionary<int, TEntity>();
 
     private void Initialize() {
+      foreach (TEntity entity in this._data) {
+        DTEntityInitializer.Initialize<TEntity>(entity);
+      }
+
+      this.SortDataById();
       this.CreateMap();
       this.CreateCachedMappings();
     }
@@ -84,20 +90,12 @@ namespace DT.GameEngine {
       this._map.Clear();
 
       foreach (TEntity entity in this._data) {
-        if (entity == null) {
-          continue;
-        }
-
-        DTEntityInitializer.Initialize<TEntity>(entity);
-
-        IdComponent idComponent = entity.GetComponent<IdComponent>();
-        if (idComponent == null) {
-          Debug.LogError("IdList - entity does not have IdComponent!");
-          continue;
-        }
-
-        this._map[idComponent.id] = entity;
+        this._map[entity.Id()] = entity;
       }
+    }
+
+    private void SortDataById() {
+      this._data = this._data.OrderBy(entity => entity.Id()).ToList();
     }
   }
 }
