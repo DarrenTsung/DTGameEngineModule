@@ -5,12 +5,15 @@ using UnityEngine;
 namespace DT.GameEngine {
 	public class IdAttribute : PropertyAttribute {
     public Type type;
+    public bool hidePrefixLabel;
 
-    public IdAttribute(Type type) {
+    public IdAttribute(Type type, bool hidePrefixLabel = false) : this(hidePrefixLabel) {
       this.type = type;
     }
 
-    public IdAttribute() {
+    public IdAttribute(bool hidePrefixLabel = false) {
+      this.hidePrefixLabel = hidePrefixLabel;
+
       // NOTE: if IdAttribute is created without type argument, then IdListDrawer will attempt to
       // infer the DTEntity type from the generic type arguments from the enclosing class
 

@@ -17,7 +17,7 @@ namespace DT.GameEngine {
     private MethodInfo _drawListFieldMethod = null;
     private MethodInfo GetDrawListFieldMethod() {
       if (this._drawListFieldMethod == null) {
-        IdAttribute idAttribute = attribute as IdAttribute;
+        IdAttribute idAttribute = this.attribute as IdAttribute;
 
         Type entityType = idAttribute.type;
         if (entityType == null) {
@@ -50,19 +50,22 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - Public Internal
 		public override void OnGUI(Rect contentRect, SerializedProperty property, GUIContent label) {
-      EditorGUILayout.PrefixLabel(label);
-      EditorGUI.indentLevel++;
+      IdAttribute idAttribute = this.attribute as IdAttribute;
 
-			if (property.propertyType == SerializedPropertyType.Integer) {
-        MethodInfo drawListMethod = this.GetDrawListFieldMethod();
-        if (drawListMethod != null) {
-          drawListMethod.Invoke(null, new object[] { property });
+      EditorGUILayout.BeginHorizontal();
+        if (!idAttribute.hidePrefixLabel) {
+          EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtilityUtil.IndentedLabelWidth));
         }
-			} else {
-        EditorGUI.LabelField(contentRect, "Use IdListDrawer with int types!");
-      }
 
-      EditorGUI.indentLevel--;
+  			if (property.propertyType == SerializedPropertyType.Integer) {
+          MethodInfo drawListMethod = this.GetDrawListFieldMethod();
+          if (drawListMethod != null) {
+            drawListMethod.Invoke(null, new object[] { property });
+          }
+  			} else {
+          EditorGUILayout.LabelField("Use IdListDrawer with int types!");
+        }
+      EditorGUILayout.EndHorizontal();
 		}
 
     private class IdListDrawerUtil<TEntity> where TEntity : DTEntity {

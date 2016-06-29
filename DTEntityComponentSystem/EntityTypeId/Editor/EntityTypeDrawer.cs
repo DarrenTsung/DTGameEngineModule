@@ -15,7 +15,7 @@ namespace DT.GameEngine {
       this._property = property;
 
       EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.PrefixLabel(label);
+        EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtilityUtil.IndentedLabelWidth));
         if (this.DTEntityTypeNames.Length == 0) {
           EditorGUILayout.LabelField("No DTEntity types found!");
   			} else {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DT.GameEngine {
   [Serializable]
   public class IdQuantity<TEntity> where TEntity : DTEntity {
-    [Id]
+    [Id(hidePrefixLabel = true)]
     public int id;
     public int quantity;
 
