@@ -53,7 +53,7 @@ namespace DT {
     [SerializeField] private bool _skipAnimationWhenDecrementing = false;
 
     [Space]
-    [SerializeField] private AnimationCurve _curve = AnimationCurveUtil.EaseFrom0To1();
+    [SerializeField] private AnimationCurve _curve = AnimationCurveUtil.NormalizedEaseFrom0To1();
     [SerializeField] private float _animationDuration = 0.8f;
 
     [Header("Read-Only")]
