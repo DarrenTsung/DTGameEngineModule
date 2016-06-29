@@ -42,8 +42,7 @@ namespace DT.GameEngine {
           }
         }
 
-        Type utilType = typeof(IdListDrawer.IdListDrawerUtil<>).MakeGenericType(entityType);
-        this._drawListFieldMethod = utilType.GetMethod("DrawListField", BindingFlags.NonPublic | BindingFlags.Static);
+        this._drawListFieldMethod = IdListDrawerUtil.GetDrawListFieldMethod(entityType);
       }
       return this._drawListFieldMethod;
     }
@@ -51,19 +50,19 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - Public Internal
 		public override void OnGUI(Rect contentRect, SerializedProperty property, GUIContent label) {
-      // Draw label and modify contentRect
-      contentRect = EditorGUI.PrefixLabel(contentRect, GUIUtility.GetControlID(FocusType.Passive), label);
+      EditorGUILayout.PrefixLabel(label);
+      EditorGUI.indentLevel++;
 
-      EditorGUI.indentLevel--;
 			if (property.propertyType == SerializedPropertyType.Integer) {
         MethodInfo drawListMethod = this.GetDrawListFieldMethod();
         if (drawListMethod != null) {
-          drawListMethod.Invoke(null, new object[] { contentRect, property });
+          drawListMethod.Invoke(null, new object[] { property });
         }
 			} else {
         EditorGUI.LabelField(contentRect, "Use IdListDrawer with int types!");
       }
-      EditorGUI.indentLevel++;
+
+      EditorGUI.indentLevel--;
 		}
 
     private class IdListDrawerUtil<TEntity> where TEntity : DTEntity {

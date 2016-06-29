@@ -1,23 +1,27 @@
 using DT;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 
 namespace DT.GameEngine {
   public static class DTEntityUtil {
     static DTEntityUtil() {
-      DTEntityUtil._entitySubclasses =
+      DTEntityUtil.EntitySubclasses =
         (from assembly in AppDomain.CurrentDomain.GetAssemblies()
             from type in assembly.GetTypes()
             where type != typeof(DTEntity) && typeof(DTEntity).IsAssignableFrom(type) && !type.IsAbstract
             select type).ToArray();
+
+      DTEntityUtil.EntitySubclassesByName = DTEntityUtil.EntitySubclasses.ToMapWithKeys(t => t.Name);
     }
 
     public static Type[] EntitySubclasses {
-      get { return DTEntityUtil._entitySubclasses; }
+      get; private set;
     }
 
-    private static Type[] _entitySubclasses;
+    public static Dictionary<string, Type> EntitySubclassesByName {
+      get; private set;
+    }
   }
 }
