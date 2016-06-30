@@ -5,6 +5,12 @@ using System.Collections;
 #if TK2D
 namespace DT.GameEngine {
 	public class CameraController2D : CameraController {
+    public new static CameraController2D Main {
+      get {
+  			return CameraController.Main<CameraController2D>();
+      }
+    }
+
 		// PRAGMA MARK - Public Interface
 		public float DistanceOutsideCameraScreenExtents(Vector2 point) {
 			Rect cameraExtents = this.CameraWorldScreenExtents();
@@ -82,6 +88,11 @@ namespace DT.GameEngine {
       Rect cameraWorldScreenExtents = this.CameraWorldScreenExtents();
       return cameraWorldScreenExtents.min + Vector2.Scale(new Vector2(cameraWorldScreenExtents.width, cameraWorldScreenExtents.height), relativePosition);
     }
+
+    public Vector3 WorldToScreenPoint(Vector3 position) {
+      return this.Camera.ScreenCamera.WorldToScreenPoint(position);
+    }
+
 
 		// PRAGMA MARK - Internal
     protected tk2dCamera Camera {
