@@ -39,12 +39,20 @@ namespace DT.GameEngine {
       }
     }
 
-    private int? _currentSelectedIndex = 0;
+    private int? _currentSelectedIndex = null;
     private int CurrentSelectedIndex {
-      get { return this._currentSelectedIndex.Value; }
+      get {
+        if (this._currentSelectedIndex == null) {
+          this._currentSelectedIndex = this.GetIndexForPropertyStringValue();
+          this.HandleCurrentSelectedIndexChanged();
+        }
+
+        return this._currentSelectedIndex.Value;
+      }
       set {
         if (this._currentSelectedIndex == null) {
           this._currentSelectedIndex = this.GetIndexForPropertyStringValue();
+          this.HandleCurrentSelectedIndexChanged();
         }
 
         if (this._currentSelectedIndex.Value == value) {
