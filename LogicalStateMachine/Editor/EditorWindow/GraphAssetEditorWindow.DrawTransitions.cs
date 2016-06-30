@@ -59,26 +59,19 @@ namespace DT.GameEngine {
       Color transitionColor = TransitionViewStyleUtil.GetColor(style);
       GUIStyle transitionArrowStyle = TransitionViewStyleUtil.GetArrowStyle(style);
 
-      Vector2 offset = targetPoint - point;
-      // ex. A ---> B    ==    Direction.RIGHT
-      Direction offsetDirection = DirectionUtil.ConvertVector2(offset);
-
-      // ex. (Direction.RIGHT).Vector2Value()   ==   Vector2(1.0f, 0.0f)
-      Vector2 nodeTangent = Vector2.Scale(offsetDirection.Vector2Value(), Vector2Util.Abs(offset) * kTransitionTangentMultiplier);
-      Vector2 targetNodeTangent = -nodeTangent;
-
-      Handles.DrawBezier(point,
-                         targetPoint,
-                         point + nodeTangent,
-                         targetPoint + targetNodeTangent,
+      CubicBezierV2 bezier = new CubicBezierV2(point, targetPoint, kTransitionTangentMultiplier);
+      Handles.DrawBezier(bezier.start,
+                         bezier.end,
+                         bezier.startTangent,
+                         bezier.endTangent,
                          transitionColor,
                          null,
                          kTransitionLineWidth);
 
-      Vector3[] bezierPoints = Handles.MakeBezierPoints(point,
-                                                        targetPoint,
-                                                        point + nodeTangent,
-                                                        targetPoint + targetNodeTangent,
+      Vector3[] bezierPoints = Handles.MakeBezierPoints(bezier.start,
+                                                        bezier.end,
+                                                        bezier.startTangent,
+                                                        bezier.endTangent,
                                                         division: 40);
 
       int midPointIndex = Mathf.FloorToInt(bezierPoints.Length / 2.0f);
