@@ -14,16 +14,18 @@ namespace DT.GameEngine {
     // PRAGMA MARK - Static Interface
     public static EntityQuantity From<TEntity>(IdQuantity<TEntity> idQuantity) where TEntity : DTEntity {
       TEntity entity = idQuantity.GetEntity();
-      return new EntityQuantity(entity, idQuantity.quantity);
+      return new EntityQuantity(entity, typeof(TEntity), idQuantity.quantity);
     }
 
 
     // PRAGMA MARK - Public Interface
     public DTEntity entity;
+    public Type entityType;
     public int quantity;
 
-    private EntityQuantity(DTEntity entity, int quantity = 1) {
+    private EntityQuantity(DTEntity entity, Type entityType, int quantity = 1) {
       this.entity = entity;
+      this.entityType = entityType;
       this.quantity = quantity;
     }
 	}
