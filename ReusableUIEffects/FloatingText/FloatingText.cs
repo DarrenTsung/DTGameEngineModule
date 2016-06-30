@@ -72,9 +72,6 @@ namespace DT.GameEngine {
         this._text.Color = newColor;
       }, finishedCallback: () => {
         ObjectPoolManager.Recycle(this.gameObject);
-
-        RecyclablePrefab parentRecyclable = this.GetRequiredComponentInParent<RecyclablePrefab>();
-        parentRecyclable.DettachChildRecyclableObject(this.gameObject);
       });
     }
 
