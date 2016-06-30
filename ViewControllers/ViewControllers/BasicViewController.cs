@@ -45,7 +45,7 @@ namespace DT {
       this._view = loadedObject.GetComponent<TView>();
       this._view.AddShowDismissEvents(this);
 
-      CanvasUtil.ParentUIElementToCanvas(loadedObject, CanvasUtil.ScreenSpaceMainCanvas);
+      ViewManagerLocator.Main.AttachView(loadedObject);
 
       IContextContainer contextContainer = this._view as IContextContainer;
       if (contextContainer == null) {

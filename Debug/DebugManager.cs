@@ -28,7 +28,7 @@ namespace DT.GameEngine {
       this._fpsViewController.Show();
 
       this._debugView = ObjectPoolManager.Instantiate("DebugView");
-      CanvasUtil.ParentUIElementToCanvas(this._debugView, CanvasUtil.ScreenSpaceMainCanvas);
+      ViewManagerLocator.Main.AttachView(this._debugView);
       this._debugView.SetActive(false);
     }
 

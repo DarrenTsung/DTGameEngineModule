@@ -18,7 +18,7 @@ namespace DT.GameEngine {
       }
 
       FlyingEntityQuantity f = ObjectPoolManager.Instantiate<FlyingEntityQuantity>("FlyingEntityQuantity");
-      CanvasUtil.ParentUIElementToCanvas(f.gameObject, CanvasUtil.ScreenSpaceMainCanvas);
+      ViewManagerLocator.Main.AttachView(f.gameObject);
 
       parentRecyclable.AttachChildRecyclableObject(f.gameObject);
 
