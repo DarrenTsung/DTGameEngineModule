@@ -13,14 +13,15 @@ namespace DT {
         return;
       }
 
+      if (this._animationCoroutine != null) {
+        this.CleanupAnimation();
+        this.StopCoroutine(this._animationCoroutine);
+        this._animationCoroutine = null;
+      }
+
       if (this._skipAnimationWhenDecrementing && amount < this._currentAmount) {
         this.SetCurrentAmount(amount);
         return;
-      }
-
-      if (this._animationCoroutine != null) {
-        this.StopCoroutine(this._animationCoroutine);
-        this._animationCoroutine = null;
       }
 
       if (amount == this._currentAmount) {
@@ -81,7 +82,10 @@ namespace DT {
       }
 
       this.SetCurrentAmount(targetAmount);
+      this.CleanupAnimation();
+    }
 
+    private void CleanupAnimation() {
       if (this._animateColor) {
         this._textOutlet.Color = this._cachedBaseColor;
       }
