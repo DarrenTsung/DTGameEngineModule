@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace DT.GameEngine {
   public class FlyingEntityQuantity : MonoBehaviour, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Static Public Interface
-    public static float kAnimationDuration = 2.0f;
+    public static float kAnimationDuration = 1.5f;
 
     public static void Make(EntityQuantity entityQuantity, Vector2 screenPosition, GameObject recycleParent, Action finishedCallback) {
       RecyclablePrefab parentRecyclable = recycleParent.GetRequiredComponentInParent<RecyclablePrefab>();
@@ -67,7 +67,7 @@ namespace DT.GameEngine {
     private void AnimateToTarget(Vector2 targetPosition) {
       Vector2 startPosition = this.transform.position;
 
-      CubicBezierV2 bezier = new CubicBezierV2(startPosition, targetPosition);
+      QuadBezierV2 bezier = new QuadBezierV2(startPosition, targetPosition, axis: Axis.HORIZONTAL);
       this.DoEaseEveryFrameForDuration(FlyingEntityQuantity.kAnimationDuration, EaseType.SineIn, (float percentage) => {
         Vector2 position = bezier.Evaluate(percentage);
         this.transform.position = position;
