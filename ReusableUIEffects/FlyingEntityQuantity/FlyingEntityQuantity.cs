@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 namespace DT.GameEngine {
+  // TODO (darren): rename class in Unity so GUIDs don't get lost
   public class FlyingEntityQuantity : MonoBehaviour, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Static Public Interface
     public static float kAnimationDuration = 1.5f;
 
-    public static void Make(EntityQuantity entityQuantity, Vector2 screenPosition, GameObject recycleParent, Action finishedCallback) {
+    public static void Make(IIdQuantity idQuantity, Vector2 screenPosition, GameObject recycleParent, Action finishedCallback) {
       RecyclablePrefab parentRecyclable = recycleParent.GetRequiredComponentInParent<RecyclablePrefab>();
       if (parentRecyclable == null) {
         // don't need to log since using required component
@@ -23,17 +24,16 @@ namespace DT.GameEngine {
       parentRecyclable.AttachChildRecyclableObject(f.gameObject);
 
       f.transform.position = screenPosition;
-      f.Configure(entityQuantity, finishedCallback);
+      f.Configure(idQuantity, finishedCallback);
     }
 
 
     // PRAGMA MARK - Public Interface
-    public void Configure(EntityQuantity entityQuantity, Action finishedCallback) {
-      this._entityQuantity = entityQuantity;
+    public void Configure(IIdQuantity idQuantity, Action finishedCallback) {
       this._finishedCallback = finishedCallback;
       this._finishedCallbackInvoked = false;
 
-      string key = FlyingEntityTarget.KeyForTypeId(entityQuantity.entityType, entityQuantity.entity.Id());
+      string key = FlyingEntityTarget.KeyForTypeId(idQuantity.EntityType, idQuantity.Id);
       RectTransform targetTransform = FlyingEntityTarget.targets.GetValue(key);
       if (targetTransform == null) {
         Debug.LogError("Failed to find target for key: " + key + "!");
@@ -41,8 +41,8 @@ namespace DT.GameEngine {
         return;
       }
 
-      this._displayImage.sprite = this._entityQuantity.entity.DisplaySprite();
-      this._quantityText.Text = this._entityQuantity.quantity.ToString();
+      this._displayImage.sprite = idQuantity.Entity.DisplaySprite();
+      this._quantityText.Text = idQuantity.Quantity.ToString();
 
       this.AnimateToTarget(targetTransform.position);
     }
@@ -61,8 +61,6 @@ namespace DT.GameEngine {
 
     private Action _finishedCallback;
     private bool _finishedCallbackInvoked = false;
-
-    private EntityQuantity _entityQuantity;
 
     private void AnimateToTarget(Vector2 targetPosition) {
       Vector2 startPosition = this.transform.position;

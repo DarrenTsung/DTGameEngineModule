@@ -1,28 +1,25 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 #if TMPRO
 using TMPro;
 
 namespace DT.GameEngine {
   public class IdQuantityView : MonoBehaviour, IRecycleSetupSubscriber, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Public Interface
-    public void SetupWithIdQuantity<TEntity>(IdQuantity<TEntity> idQuantity) where TEntity : DTEntity {
-      IViewIdQuantity viewIdQuantity = new ViewIdQuantity<TEntity>(idQuantity);
-
-      DTEntity entity = viewIdQuantity.Entity;
-      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
+    public void SetupWithIdQuantity(IIdQuantity idQuantity) {
+      DisplayComponent displayComponent = idQuantity.Entity.GetComponent<DisplayComponent>();
       if (displayComponent != null) {
         this._image.sprite = displayComponent.displaySprite;
       }
 
-      if (viewIdQuantity.Quantity <= 0) {
+      if (idQuantity.Quantity <= 0) {
         Debug.LogWarning("IdQuantityView - don't know how to show a quantity less than or equal to zero!");
       }
 
-      if (viewIdQuantity.Quantity > 1) {
+      if (idQuantity.Quantity > 1) {
         this._textContainer.SetActive(true);
-        this._text.SetText(string.Format("x{0}", viewIdQuantity.Quantity));
+        this._text.SetText(string.Format("x{0}", idQuantity.Quantity));
       } else {
         this._textContainer.SetActive(false);
       }

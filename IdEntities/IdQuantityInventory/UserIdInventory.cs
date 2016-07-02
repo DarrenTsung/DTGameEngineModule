@@ -8,12 +8,20 @@ using UnityEngine.Events;
 
 namespace DT.GameEngine {
   public static class UserIdInventory {
-    public static Action<EntityQuantity> OnAddedEntityQuantity = delegate {};
-    public static Action<EntityQuantity> OnRemovedEntityQuantity = delegate {};
+    public static event Action<IIdQuantity> OnAddedIdQuantity = delegate {};
+    public static event Action<IIdQuantity> OnRemovedIdQuantity = delegate {};
+
+    public static void NotifyListenersOfAddedIdQuantity(IIdQuantity idQuantity) {
+      UserIdInventory.OnAddedIdQuantity.Invoke(idQuantity);
+    }
+
+    public static void NotifyListenersOfRemovedIdQuantity(IIdQuantity idQuantity) {
+      UserIdInventory.OnRemovedIdQuantity.Invoke(idQuantity);
+    }
   }
 
   [Serializable]
-  public partial class UserIdInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity {
+  public partial class UserIdInventory<TEntity> : IUserIdInventory, IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity {
     // PRAGMA MARK - Static
     public static Action<UserIdInventory<TEntity>> OnUserInventoryFirstCreated = delegate {};
 
@@ -23,33 +31,16 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Public Interface
-    [field: NonSerialized]
-    public Action OnInventoryUpdated = delegate {};
-    [field: NonSerialized]
-    public Action<IdQuantity<TEntity>> OnAddedIdQuantity = delegate {};
-    [field: NonSerialized]
-    public Action<IdQuantity<TEntity>> OnRemovedIdQuantity = delegate {};
+    [field: NonSerialized] public event Action OnInventoryUpdated = delegate {};
+    [field: NonSerialized] public event Action<IdQuantity<TEntity>> OnAddedIdQuantity = delegate {};
+    [field: NonSerialized] public event Action<IdQuantity<TEntity>> OnRemovedIdQuantity = delegate {};
 
     public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
       this._idQuantityInventory.AddIdQuantity(addQuantity);
     }
 
-    public bool CanRemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
-      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
-        if (!this.CanRemoveIdQuantity(removeQuantity)) {
-          return false;
-        }
-      }
-
-      return true;
-    }
-
     public bool CanRemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
       return this._idQuantityInventory.CanRemoveIdQuantity(removeQuantity);
-    }
-
-    public bool RemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
-      return this._idQuantityInventory.RemoveIdQuantityList(removeQuantities);
     }
 
     public bool RemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
@@ -94,12 +85,12 @@ namespace DT.GameEngine {
 
     private void HandleAddedIdQuantity(IdQuantity<TEntity> addQuantity) {
       this.OnAddedIdQuantity.Invoke(addQuantity);
-      UserIdInventory.OnAddedEntityQuantity.Invoke(EntityQuantity.From(addQuantity));
+      UserIdInventory.NotifyListenersOfAddedIdQuantity(addQuantity);
     }
 
     private void HandleRemovedIdQuantity(IdQuantity<TEntity> removeQuantity) {
       this.OnRemovedIdQuantity.Invoke(removeQuantity);
-      UserIdInventory.OnRemovedEntityQuantity.Invoke(EntityQuantity.From(removeQuantity));
+      UserIdInventory.NotifyListenersOfRemovedIdQuantity(removeQuantity);
     }
   }
 }

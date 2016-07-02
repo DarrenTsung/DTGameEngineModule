@@ -10,12 +10,13 @@ namespace DT.GameEngine {
   [Serializable]
   public class IdQuantityInventory<TEntity> : IEnumerable<IdQuantity<TEntity>> where TEntity : DTEntity {
     // PRAGMA MARK - Public Interface
-    [field: NonSerialized]
-    public Action OnInventoryUpdated = delegate {};
-    [field: NonSerialized]
-    public Action<IdQuantity<TEntity>> OnAddedIdQuantity = delegate {};
-    [field: NonSerialized]
-    public Action<IdQuantity<TEntity>> OnRemovedIdQuantity = delegate {};
+    #pragma warning disable 67 // NOTE (darren): suppress 'event not used' warning due to Unity / Mono 2.6 bug
+    // https://issuetracker.unity3d.com/issues/c-number-compiler-reports-warnings
+    [field: NonSerialized] public event Action OnInventoryUpdated = delegate {};
+    #pragma warning restore 67
+
+    [field: NonSerialized] public event Action<IdQuantity<TEntity>> OnAddedIdQuantity = delegate {};
+    [field: NonSerialized] public event Action<IdQuantity<TEntity>> OnRemovedIdQuantity = delegate {};
 
     public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
       IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(addQuantity.id);
@@ -25,35 +26,12 @@ namespace DT.GameEngine {
       this.OnAddedIdQuantity.Invoke(addQuantity);
     }
 
-    public bool CanRemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
-      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
-        if (!this.CanRemoveIdQuantity(removeQuantity)) {
-          return false;
-        }
-      }
-
-      return true;
-    }
-
     public bool CanRemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
       IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(removeQuantity.id);
       return idQuantity.quantity >= removeQuantity.quantity;
     }
 
-    public bool RemoveIdQuantityList(IEnumerable<IdQuantity<TEntity>> removeQuantities) {
-      if (!this.CanRemoveIdQuantityList(removeQuantities)) {
-        Debug.LogWarning("RemoveIdQuantityList - don't have enough to remove!");
-        return false;
-      }
-
-      foreach (IdQuantity<TEntity> removeQuantity in removeQuantities) {
-        this.RemoveIdQuantity(removeQuantity, silenceInventoryUpdatedEvent: true);
-      }
-      this.OnInventoryUpdated.Invoke();
-      return true;
-    }
-
-    public bool RemoveIdQuantity(IdQuantity<TEntity> removeQuantity, bool silenceInventoryUpdatedEvent = false) {
+    public bool RemoveIdQuantity(IdQuantity<TEntity> removeQuantity) {
       IdQuantity<TEntity> idQuantity = this.GetIdQuantityForId(removeQuantity.id);
       if (idQuantity.quantity < removeQuantity.quantity) {
         Debug.LogWarning("RemoveIdQuantity: Can't remove " + removeQuantity.quantity + " of " + typeof(TEntity).Name + " id: " + removeQuantity.id + "!");
@@ -62,9 +40,7 @@ namespace DT.GameEngine {
 
       idQuantity.quantity -= removeQuantity.quantity;
       this.OnRemovedIdQuantity.Invoke(removeQuantity);
-      if (!silenceInventoryUpdatedEvent) {
-        this.OnInventoryUpdated.Invoke();
-      }
+      this.OnInventoryUpdated.Invoke();
       return true;
     }
 
