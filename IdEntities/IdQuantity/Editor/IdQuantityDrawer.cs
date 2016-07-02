@@ -16,7 +16,7 @@ namespace DT.GameEngine {
       EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtilityUtil.IndentedLabelWidth));
         EditorGUILayout.PropertyField(this.IdProperty, GUILayout.Width(30.0f));
-        EditorGUILayout.IntField(this.QuantityProperty.intValue);
+        this.QuantityProperty.intValue = EditorGUILayout.IntField(this.QuantityProperty.intValue);
       EditorGUILayout.EndHorizontal();
 		}
 
