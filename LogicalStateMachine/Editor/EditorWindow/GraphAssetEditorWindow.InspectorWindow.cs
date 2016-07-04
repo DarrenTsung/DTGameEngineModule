@@ -126,7 +126,7 @@ namespace DT.GameEngine {
 
             if (GUILayout.Button("", (GUIStyle)"AddButton", GUILayout.Width(20.0f), GUILayout.Height(20.0f))) {
               GenericMenu nodeDelegateMenu = new GenericMenu();
-              foreach (Type transitionConditionType in TypeUtil<ITransitionCondition>.ImplementationTypes) {
+              foreach (Type transitionConditionType in TypeUtil.GetImplementationTypes(typeof(ITransitionCondition))) {
                 nodeDelegateMenu.AddItem(new GUIContent(transitionConditionType.Name), false, this.AddTransitionCondition, Tuple.Create(nodeTransition, transitionConditionType));
               }
               nodeDelegateMenu.ShowAsContext();
