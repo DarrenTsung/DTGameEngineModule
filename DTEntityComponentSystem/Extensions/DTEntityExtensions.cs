@@ -1,7 +1,7 @@
 using DT;
 using System;
-﻿using UnityEngine;
-﻿using UnityEngine.UI;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace DT.GameEngine {
   public static class DTEntityExtensions {
@@ -56,5 +56,19 @@ namespace DT.GameEngine {
 
       textOutlet.Text = displayComponent.displayName;
     }
-	}
+
+    public static string GetDropdownTitle(this DTEntity entity) {
+      EditorDisplayComponent editorDisplayComponent = entity.GetComponent<EditorDisplayComponent>();
+      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
+
+      string title = "No DisplayComponent";
+      if (editorDisplayComponent != null) {
+        title = editorDisplayComponent.title;
+      } else if (displayComponent != null) {
+        title = displayComponent.displayName;
+      }
+
+      return string.Format("{0} - {1}", entity.Id(), title);
+    }
+  }
 }

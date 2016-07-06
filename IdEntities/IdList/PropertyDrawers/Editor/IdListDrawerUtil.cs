@@ -29,25 +29,11 @@ namespace DT.GameEngine {
           foreach (TEntity obj in list) {
             IdComponent idComponent = obj.GetComponent<IdComponent>();
 
-            displayedOptions.Add(string.Format("{0} - {1}", idComponent.id, ListDrawer<TEntity>.GetTitleForObject(obj)));
+            displayedOptions.Add(obj.GetDropdownTitle());
             optionValues.Add(idComponent.id);
           }
           property.intValue = EditorGUILayout.IntPopup(property.intValue, displayedOptions.ToArray(), optionValues.ToArray());
         }
-      }
-
-      private static string GetTitleForObject(TEntity obj) {
-        EditorDisplayComponent editorDisplayComponent = obj.GetComponent<EditorDisplayComponent>();
-
-        string title = "No EditorDisplayComponent";
-        if (editorDisplayComponent != null) {
-          if (!editorDisplayComponent.title.IsNullOrEmpty()) {
-            title = Regex.Replace(editorDisplayComponent.title, @"\s+", "");
-          } else {
-            title = "Empty Title";
-          }
-        }
-        return title;
       }
     }
   }
