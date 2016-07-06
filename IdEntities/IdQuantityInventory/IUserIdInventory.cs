@@ -12,5 +12,7 @@ namespace DT.GameEngine {
     event Action OnInventoryUpdated;
 
     int GetCountOfId(int id);
+
+    void AddIdQuantity(int id, int quantity);
   }
 }

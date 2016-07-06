@@ -68,6 +68,16 @@ namespace DT.GameEngine {
     }
 
 
+    // PRAGMA MARK - IIdList Implementation
+    public IEnumerable<int> Ids() {
+      return this._data.Select(e => e.Id());
+    }
+
+    DTEntity IIdList.LoadById(int id) {
+      return this.LoadById(id);
+    }
+
+
     // PRAGMA MARK - Internal
     [SerializeField] protected List<TEntity> _data = new List<TEntity>();
 

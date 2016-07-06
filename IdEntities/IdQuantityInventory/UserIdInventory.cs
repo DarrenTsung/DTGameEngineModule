@@ -35,6 +35,12 @@ namespace DT.GameEngine {
     [field: NonSerialized] public event Action<IdQuantity<TEntity>> OnAddedIdQuantity = delegate {};
     [field: NonSerialized] public event Action<IdQuantity<TEntity>> OnRemovedIdQuantity = delegate {};
 
+    public UserIdInventory() {
+      this._idQuantityInventory.OnInventoryUpdated += this.HandleInventoryUpdated;
+      this._idQuantityInventory.OnAddedIdQuantity += this.HandleAddedIdQuantity;
+      this._idQuantityInventory.OnRemovedIdQuantity += this.HandleRemovedIdQuantity;
+    }
+
     public void AddIdQuantity(IdQuantity<TEntity> addQuantity) {
       this._idQuantityInventory.AddIdQuantity(addQuantity);
     }
@@ -52,10 +58,9 @@ namespace DT.GameEngine {
     }
 
 
-    public UserIdInventory() {
-      this._idQuantityInventory.OnInventoryUpdated += this.HandleInventoryUpdated;
-      this._idQuantityInventory.OnAddedIdQuantity += this.HandleAddedIdQuantity;
-      this._idQuantityInventory.OnRemovedIdQuantity += this.HandleRemovedIdQuantity;
+    // PRAGMA MARK - IUserIdInventory Implementation
+    void IUserIdInventory.AddIdQuantity(int id, int quantity) {
+      this.AddIdQuantity(new IdQuantity<TEntity>(id, quantity));
     }
 
 
