@@ -58,15 +58,19 @@ namespace DT.GameEngine {
     }
 
     public static string GetDropdownTitle(this DTEntity entity) {
-      EditorDisplayComponent editorDisplayComponent = entity.GetComponent<EditorDisplayComponent>();
-      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
-
       string title = "No DisplayComponent";
-      if (editorDisplayComponent != null) {
-        title = editorDisplayComponent.title;
-      } else if (displayComponent != null) {
+
+      DisplayComponent displayComponent = entity.GetComponent<DisplayComponent>();
+      if (displayComponent != null) {
         title = displayComponent.displayName;
       }
+
+#if UNITY_EDITOR
+      EditorDisplayComponent editorDisplayComponent = entity.GetComponent<EditorDisplayComponent>();
+      if (editorDisplayComponent != null) {
+        title = editorDisplayComponent.title;
+      }
+#endif
 
       return string.Format("{0} - {1}", entity.Id(), title);
     }
