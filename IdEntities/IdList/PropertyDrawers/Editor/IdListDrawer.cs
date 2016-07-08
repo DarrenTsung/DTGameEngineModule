@@ -52,7 +52,7 @@ namespace DT.GameEngine {
 		public override void OnGUI(Rect contentRect, SerializedProperty property, GUIContent label) {
       IdAttribute idAttribute = this.attribute as IdAttribute;
 
-      EditorGUILayout.BeginHorizontal();
+      EditorGUILayout.BeginHorizontal(GUILayout.Height(EditorGUIUtility.singleLineHeight));
         if (!idAttribute.hidePrefixLabel) {
           EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtilityUtil.IndentedLabelWidth));
         }
