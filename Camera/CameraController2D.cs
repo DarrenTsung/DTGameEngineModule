@@ -12,19 +12,24 @@ namespace DT.GameEngine {
     }
 
 		// PRAGMA MARK - Public Interface
-		public float DistanceOutsideCameraScreenExtents(Vector2 point) {
+		public float DistanceOutsideCameraScreenExtents(Vector2 point, Direction[] cameraSidesToIgnore = null) {
 			Rect cameraExtents = this.CameraWorldScreenExtents();
 			float distanceOutside = 0.0f;
 
-			if (point.x < cameraExtents.xMin) {
+      // NOTE (darren): DoesNotContainDirection is an extension method so it is fine if cameraSidesToIgnore is null,
+			if (cameraSidesToIgnore.DoesNotContainDirection(Direction.LEFT) && point.x < cameraExtents.xMin) {
 				distanceOutside = Mathf.Max(distanceOutside, Mathf.Abs(point.x - cameraExtents.xMin));
-			} else if (point.x > cameraExtents.xMax) {
+			}
+
+      if (cameraSidesToIgnore.DoesNotContainDirection(Direction.RIGHT) && point.x > cameraExtents.xMax) {
 				distanceOutside = Mathf.Max(distanceOutside, Mathf.Abs(point.x - cameraExtents.xMax));
 			}
 
-			if (point.y < cameraExtents.yMin) {
+			if (cameraSidesToIgnore.DoesNotContainDirection(Direction.DOWN) && point.y < cameraExtents.yMin) {
 				distanceOutside = Mathf.Max(distanceOutside, Mathf.Abs(point.y - cameraExtents.yMin));
-			} else if (point.y > cameraExtents.yMax) {
+			}
+
+      if (cameraSidesToIgnore.DoesNotContainDirection(Direction.UP) && point.y > cameraExtents.yMax) {
 				distanceOutside = Mathf.Max(distanceOutside, Mathf.Abs(point.y - cameraExtents.yMax));
 			}
 
@@ -95,7 +100,7 @@ namespace DT.GameEngine {
 
 
 		// PRAGMA MARK - Internal
-    protected tk2dCamera Camera {
+    private tk2dCamera Camera {
       get {
         if (this._camera == null) {
           this._camera = this.GetComponent<tk2dCamera>();
@@ -105,22 +110,18 @@ namespace DT.GameEngine {
     }
 
     [SerializeField]
-    protected bool _followPlayer;
+    private bool _followPlayer;
 
-		protected tk2dCamera _camera;
-		protected Transform _targetTransform;
-		protected Vector2 _offsetVector;
+		private tk2dCamera _camera;
+		private Transform _targetTransform;
+		private Vector2 _offsetVector;
 
-		protected void Awake() {
+		void Awake() {
 			_camera = this.GetComponent<tk2dCamera>();
 			DTGameEngineNotifications.PlayerChanged.AddListener(SetupWithPlayer);
 		}
 
-		protected virtual void SetupWithPlayer(int playerIndex, GameObject player) {
-			_targetTransform = player.transform;
-		}
-
-		protected void LateUpdate() {
+		void LateUpdate() {
 			if (!_targetTransform || !this._followPlayer) {
 				return;
 			}
@@ -133,7 +134,11 @@ namespace DT.GameEngine {
 			// this.RestrictCameraInBounds(_bounds, _boundsPosition);
 		}
 
-		protected bool RestrictCameraInBounds(Rect otherBounds, Vector3 otherPosition) {
+		private void SetupWithPlayer(int playerIndex, GameObject player) {
+			_targetTransform = player.transform;
+		}
+
+		private bool RestrictCameraInBounds(Rect otherBounds, Vector3 otherPosition) {
 			Rect cameraExtents = this.Camera.ScreenExtents;
 
 			float yOver = (transform.position.y + cameraExtents.yMax) - (otherPosition.y + otherBounds.yMax);

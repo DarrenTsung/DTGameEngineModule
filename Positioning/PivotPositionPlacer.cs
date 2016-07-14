@@ -4,7 +4,7 @@ using UnityEngine;
 namespace DT.GameEngine {
   public static class PivotPositionPlacer {
     // PRAGMA MARK - Public Interface
-    public static void SetPositionWithPivot(GameObject gameObject, Vector3 position, Vector3 pivot) {
+    public static void SetPositionWithPivot(GameObject gameObject, Vector3 position, Vector3 pivot, bool useLocalSpace = false) {
       Bounds relativeTotalBounds = PivotPositionPlacer.ComputeRelativeTotalBounds(gameObject);
 
       // convert pivot from (0 --- 1) space to (-1 --- 1) space (extents space)
@@ -12,7 +12,7 @@ namespace DT.GameEngine {
       Vector3 convertedPivot = 2.0f * (pivot - new Vector3(0.5f, 0.5f, 0.5f));
       Vector3 pivotVector = Vector3.Scale(convertedPivot, relativeTotalBounds.extents);
 
-      gameObject.transform.position = position - pivotVector - relativeTotalBounds.center;
+      gameObject.transform.localPosition = position - pivotVector - relativeTotalBounds.center;
     }
 
     public static Bounds ComputeRelativeTotalBounds(GameObject gameObject) {
