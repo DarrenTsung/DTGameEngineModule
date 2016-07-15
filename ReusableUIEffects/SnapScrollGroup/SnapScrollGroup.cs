@@ -49,6 +49,14 @@ namespace DT.GameEngine {
       Debug.LogWarning("SelectFirst - Failed to select object matching predicate!");
     }
 
+    public T ShowingObject {
+      get { return this._objects[this.ShowingIndex]; }
+    }
+
+    public bool IsStill {
+      get { return Mathf.Approximately(this._currentIndex, this.ShowingIndex); }
+    }
+
 
     // PRAGMA MARK - Internal
     private T[] _objects;
@@ -65,6 +73,10 @@ namespace DT.GameEngine {
     private Vector2 _spacingOffset;
 
     private CoroutineWrapper _snapCoroutine;
+
+    private int ShowingIndex {
+      get { return this._objects.ClampIndex(Mathf.RoundToInt(this._currentIndex)); }
+    }
 
     private void Select(int index, bool instant = false) {
       if (!this._objects.ContainsIndex(index)) {
@@ -187,7 +199,7 @@ namespace DT.GameEngine {
         }
       }
 
-      closestIndex = MathUtil.Clamp(closestIndex, 0, this._objects.Length - 1);
+      closestIndex = this._objects.ClampIndex(closestIndex);
       this.Select(closestIndex);
     }
   }
