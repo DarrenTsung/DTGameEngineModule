@@ -18,7 +18,7 @@ namespace DT.GameEngine {
 
     private Vector3 _cachedPosition;
 
-    void Update() {
+    void LateUpdate() {
       if (this._transformToFollow == null) {
         Debug.LogWarning("FollowTransform - no transform to follow! Why is this even being used?");
         return;
