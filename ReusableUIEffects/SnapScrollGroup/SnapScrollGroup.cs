@@ -9,6 +9,9 @@ using UnityEngine.EventSystems;
 namespace DT.GameEngine {
   public class SnapScrollGroup<T> {
     // PRAGMA MARK - Public Interface
+    public delegate void ScrollChanged(T left, T right, float percentageBetween);
+    public event ScrollChanged OnScrollChanged = delegate {};
+
     public SnapScrollGroup(SnapScrollGroupConfig config, IList<T> objects, Func<T, GameObject> recycledViewProvider) {
       if (config.IsInvalid()) {
         Debug.LogError("SnapScrollGroup - config is invalid, some part of set-up is incorrect!");
@@ -115,6 +118,15 @@ namespace DT.GameEngine {
         GameObject g = this.GetViewForIndex(shownIndex);
         g.transform.localPosition = this.GetLocalPositionForIndex(shownIndex);
       }
+
+      int leftIndex = Mathf.FloorToInt(this._currentIndex);
+      int rightIndex = Mathf.CeilToInt(this._currentIndex);
+
+      T left = this._objects.SafeGet(leftIndex);
+      T right = this._objects.SafeGet(rightIndex);
+
+      float percentageBetween = this._currentIndex - leftIndex;
+      this.OnScrollChanged.Invoke(left, right, percentageBetween);
     }
 
     private Vector3 GetLocalPositionForIndex(int index) {
