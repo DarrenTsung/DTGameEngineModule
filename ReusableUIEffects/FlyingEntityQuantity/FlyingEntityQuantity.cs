@@ -9,7 +9,7 @@ namespace DT.GameEngine {
   // TODO (darren): rename class in Unity so GUIDs don't get lost
   public class FlyingEntityQuantity : MonoBehaviour, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Static Public Interface
-    public static float kAnimationDuration = 1.5f;
+    public static float kAnimationDuration = 1.2f;
 
     public static void Make(IIdQuantity idQuantity, Vector2 screenPosition, GameObject recycleParent, Action finishedCallback) {
       RecyclablePrefab parentRecyclable = recycleParent.GetRequiredComponentInParent<RecyclablePrefab>();
@@ -59,6 +59,9 @@ namespace DT.GameEngine {
     [SerializeField] private Image _displayImage;
     [SerializeField] private TextOutlet _quantityText;
 
+    [Space]
+    [SerializeField] private TweenController _tweenController;
+
     private Action _finishedCallback;
     private bool _finishedCallbackInvoked = false;
 
@@ -66,9 +69,13 @@ namespace DT.GameEngine {
       Vector2 startPosition = this.transform.position;
 
       QuadBezierV2 bezier = new QuadBezierV2(startPosition, targetPosition, axis: Axis.HORIZONTAL);
-      this.DoEaseEveryFrameForDuration(FlyingEntityQuantity.kAnimationDuration, EaseType.SineIn, (float percentage) => {
+      this.DoEaseEveryFrameForDuration(FlyingEntityQuantity.kAnimationDuration, EaseType.QuadIn, (float percentage) => {
         Vector2 position = bezier.Evaluate(percentage);
         this.transform.position = position;
+
+        if (this._tweenController != null) {
+          this._tweenController.Value = percentage;
+        }
       }, finishedCallback: () => {
         this.InvokeFinishedCallbackIfNecessary();
         ObjectPoolManager.Recycle(this.gameObject);

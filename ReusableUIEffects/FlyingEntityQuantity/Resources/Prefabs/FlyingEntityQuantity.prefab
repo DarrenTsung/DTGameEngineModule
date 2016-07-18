@@ -9,6 +9,8 @@ GameObject:
   m_Component:
   - 224: {fileID: 22484204}
   - 114: {fileID: 11469734}
+  - 114: {fileID: 11498006}
+  - 114: {fileID: 11455886}
   m_Layer: 5
   m_Name: FlyingEntityQuantity
   m_TagString: Untagged
@@ -77,6 +79,67 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11455886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 111386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8befafc9f745b4dde88a218afc6cb44b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _value: 0
+  _controller: {fileID: 11498006}
+  _xScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0.20000005
+      tangentMode: 17
+    - time: 1
+      value: 1.2
+      inSlope: 0.20000005
+      outSlope: 0
+      tangentMode: 5
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  _yScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0.20000005
+      tangentMode: 21
+    - time: 1
+      value: 1.2
+      inSlope: 0.20000005
+      outSlope: 0
+      tangentMode: 21
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  _zScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &11469734
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -92,6 +155,7 @@ MonoBehaviour:
   _quantityText:
     _unityText: {fileID: 0}
     _tmpText: {fileID: 11487656}
+  _tweenController: {fileID: 11498006}
 --- !u!114 &11487656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -137,12 +201,12 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 47.6
+  m_fontSize: 51
   m_fontSizeBase: 36
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_textAlignment: 4
   m_characterSpacing: 0
   m_lineSpacing: 0
@@ -171,6 +235,21 @@ MonoBehaviour:
   m_uvLineOffset: 0
   m_hasFontAssetChanged: 0
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &11498006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 111386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f52f2de699b47d3b2b69d364d45b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _value: 0
+  _duration: 1
+  _tweens:
+  - {fileID: 11455886}
 --- !u!222 &22225846
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -214,8 +293,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 22484204}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0.9, y: 0.15}
-  m_AnchorMax: {x: 1.8, y: 0.85}
+  m_AnchorMin: {x: 0.9, y: 0.2}
+  m_AnchorMax: {x: 1.8, y: 0.8}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
@@ -237,7 +316,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &100100000
 Prefab:
