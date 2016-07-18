@@ -46,6 +46,9 @@ namespace DT {
 
 
     // PRAGMA MARK - Internal
+    [Header("Outlets")]
+    [SerializeField] private TweenController _startAnimateTweenController;
+
     [Header("Properties")]
     [SerializeField] private bool _animateColor = false;
     [SerializeField] private Color _colorWhileAnimating = Color.yellow;
@@ -71,6 +74,10 @@ namespace DT {
       }
 
       int startAmount = this._currentAmount;
+
+      if (this._startAnimateTweenController != null) {
+        this._startAnimateTweenController.Play();
+      }
 
       for (float t = 0.0f; t <= this._animationDuration; t += Time.deltaTime) {
         float normalizedT = t / this._animationDuration;
