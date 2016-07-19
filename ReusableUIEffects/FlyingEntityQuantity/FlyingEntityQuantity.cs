@@ -9,9 +9,10 @@ namespace DT.GameEngine {
   // TODO (darren): rename class in Unity so GUIDs don't get lost
   public class FlyingEntityQuantity : MonoBehaviour, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Static Public Interface
-    public static float kAnimationDuration = 1.2f;
+    public static float kAnimationDuration = 0.8f;
+    public static float kScaleInDuration = 0.4f;
 
-    public static void Make(IIdQuantity idQuantity, Vector2 screenPosition, GameObject recycleParent, Action finishedCallback) {
+    public static void Make(IIdQuantity idQuantity, Vector2 screenPosition, GameObject recycleParent, Action finishedCallback = null) {
       RecyclablePrefab parentRecyclable = recycleParent.GetRequiredComponentInParent<RecyclablePrefab>();
       if (parentRecyclable == null) {
         // don't need to log since using required component
@@ -44,7 +45,9 @@ namespace DT.GameEngine {
       this._displayImage.sprite = idQuantity.Entity.DisplaySprite();
       this._quantityText.Text = idQuantity.Quantity.ToString();
 
-      this.AnimateToTarget(targetTransform.position);
+      this.ScaleIn(finishedCallback: () => {
+        this.AnimateToTarget(targetTransform.position);
+      });
     }
 
 
@@ -61,6 +64,9 @@ namespace DT.GameEngine {
 
     [Space]
     [SerializeField] private TweenController _tweenController;
+
+    [Header("Properties")]
+    [SerializeField] private AnimationCurve _scaleInCurve;
 
     private Action _finishedCallback;
     private bool _finishedCallbackInvoked = false;
@@ -82,9 +88,17 @@ namespace DT.GameEngine {
       });
     }
 
+    private void ScaleIn(Action finishedCallback) {
+      this.DoEveryFrameForDuration(FlyingEntityQuantity.kScaleInDuration, (float time, float duration) => {
+        float scale = this._scaleInCurve.Evaluate(time / duration);
+        this.transform.localScale = new Vector3(scale, scale, 1.0f);
+      }, finishedCallback);
+    }
+
     private void InvokeFinishedCallbackIfNecessary() {
-      if (!this._finishedCallbackInvoked) {
+      if (!this._finishedCallbackInvoked && this._finishedCallback != null) {
         this._finishedCallback.Invoke();
+        this._finishedCallback = null;
         this._finishedCallbackInvoked = true;
       }
     }
