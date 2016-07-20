@@ -10,6 +10,7 @@ GameObject:
   - 224: {fileID: 22428026}
   - 222: {fileID: 22200530}
   - 114: {fileID: 11417674}
+  - 114: {fileID: 11436296}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -51,6 +52,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &183500
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22431422}
+  - 222: {fileID: 22262776}
+  - 114: {fileID: 11408850}
+  m_Layer: 0
+  m_Name: Inline Graphic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &478616
 Transform:
   m_ObjectHideFlags: 1
@@ -60,10 +78,31 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 22402770}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11408850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acad1b29b4fa38344ac775aade9ac185, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  texture: {fileID: 2800000, guid: 706205955309a4131b2a4827025786d8, type: 3}
 --- !u!114 &11417674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,13 +116,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Nothing to add!
+  m_text: +<sprite=2>
   m_fontAsset: {fileID: 11400000, guid: 27456178f4a434509827e88d678d45e9, type: 2}
   m_sharedMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
   m_fontMaterial: {fileID: 0}
@@ -107,8 +146,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
@@ -141,6 +180,20 @@ MonoBehaviour:
   m_uvLineOffset: 0
   m_hasFontAssetChanged: 0
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &11436296
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 143890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3849e1601c4ff034f93ece771466626b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_spriteAsset: {fileID: 11400000, guid: 0719feb40a11f41aba719c1f66d79799, type: 2}
+  m_inlineGraphic: {fileID: 11408850}
+  m_inlineGraphicCanvasRenderer: {fileID: 22262776}
 --- !u!114 &11462012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -163,15 +216,15 @@ MonoBehaviour:
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 0.8009768
-      value: 0.9982407
-      inSlope: -0.029120574
-      outSlope: -0.029120574
+    - time: 0.575
+      value: 0.88250536
+      inSlope: -0.52133566
+      outSlope: -0.52133566
       tangentMode: 0
     - time: 1
       value: 0.00000008381903
-      inSlope: -7.9991193
-      outSlope: -7.9991193
+      inSlope: -4.1341515
+      outSlope: -4.1341515
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -184,15 +237,15 @@ MonoBehaviour:
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 0.99998516
-      value: 0.6986258
-      inSlope: 1.2252623
-      outSlope: 1.2252623
+    - time: 1.0041518
+      value: 0.45
+      inSlope: 0.4357161
+      outSlope: 0.4357161
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  _animationDuration: 1.2
+  _animationDuration: 0.7
 --- !u!114 &11469966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -236,6 +289,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 143890}
+--- !u!222 &22262776
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183500}
 --- !u!223 &22339632
 Canvas:
   m_ObjectHideFlags: 1
@@ -251,6 +310,7 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: -873395165
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -263,6 +323,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.02, y: 0.02, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 22428026}
   m_Father: {fileID: 478616}
@@ -281,8 +342,28 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 22431422}
   m_Father: {fileID: 22402770}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &22431422
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183500}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 22428026}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
