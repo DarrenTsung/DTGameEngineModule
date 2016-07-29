@@ -7,10 +7,8 @@ namespace DT.GameEngine {
     public class GameSessionEvent : UnityEvent<T> {}
 
     // PRAGMA MARK - Public Interface
-    [HideInInspector]
-    public GameSessionEvent OnStarted = new GameSessionEvent();
-    [HideInInspector]
-    public GameSessionEvent OnFinished = new GameSessionEvent();
+    [HideInInspector] public GameSessionEvent OnStarted = new GameSessionEvent();
+    [HideInInspector] public GameSessionEvent OnFinished = new GameSessionEvent();
 
     public void Start() {
       if (this.Started) {
