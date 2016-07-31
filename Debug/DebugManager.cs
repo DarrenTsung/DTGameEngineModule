@@ -22,7 +22,7 @@ namespace DT.GameEngine {
         return;
       }
 
-      DebugLoggerView.Initialize();
+      DebugLogger.Initialize();
 
       this._fpsViewController = new FPSViewController();
       this._fpsViewController.Show();
