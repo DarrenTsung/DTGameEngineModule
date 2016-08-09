@@ -1,7 +1,7 @@
 using DT;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 ﻿using UnityEngine;
 ﻿using UnityEngine.Events;
 
@@ -96,7 +96,7 @@ namespace DT.GameEngine {
       TPlayerActionSet playerActions = this.ActionsForPlayerIndex(playerIndex);
       if (playerActions.Device == null) {
   			InputDevice unusedDevice = this.FindUnusedDevice();
-  			if (unusedDevice) {
+  			if (unusedDevice != null) {
           this.BindDeviceToPlayerIndex(unusedDevice, playerIndex);
   			} else {
   				this.LogIfDebugEnabled("Player changed (" + playerIndex + ") and had no device - failed to find an unused device!");
