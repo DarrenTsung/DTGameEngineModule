@@ -60,6 +60,8 @@ GameObject:
   - 114: {fileID: 11452200}
   - 95: {fileID: 9530588}
   - 114: {fileID: 11451052}
+  - 114: {fileID: 114000013165900464}
+  - 114: {fileID: 114000012628346136}
   m_Layer: 5
   m_Name: IdQuantityView
   m_TagString: Untagged
@@ -122,10 +124,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5885d1f4cf700490cabecd0d26753abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _containerTransform: {fileID: 22429434}
-  _image: {fileID: 11433862}
-  _text: {fileID: 11488436}
+  _image:
+    _spriteRenderer: {fileID: 0}
+    _image: {fileID: 11433862}
+  _text:
+    _unityText: {fileID: 0}
+    _tmpText: {fileID: 11488436}
   _textContainer: {fileID: 127866}
+  _formatterType: 0
+  _hideTextIfQuantityIsZero: 1
 --- !u!114 &11452200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,7 +250,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 170, y: -181}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22422412
 RectTransform:
@@ -278,10 +285,10 @@ RectTransform:
   - {fileID: 22422412}
   m_Father: {fileID: 22401802}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22486106
 RectTransform:
@@ -312,3 +319,34 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 195718}
   m_IsPrefabParent: 1
+--- !u!114 &114000012628346136
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f2f5dbbc5d4145fdb7a5a2b4ccd08eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _component: {fileID: 114000013165900464}
+  _serialized: 
+--- !u!114 &114000013165900464
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 150
+  m_PreferredHeight: 150
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1

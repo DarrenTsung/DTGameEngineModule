@@ -1,75 +1,57 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-#if TMPRO
-using TMPro;
 
 namespace DT.GameEngine {
-  public class IdQuantityView : MonoBehaviour, IRecycleSetupSubscriber, IRecycleCleanupSubscriber {
+  public class IdQuantityView : MonoBehaviour {
+    private enum QuantityFormatterType {
+      xQuantity,
+      QuantityName,
+    }
+
     // PRAGMA MARK - Public Interface
-    public void SetupWithIdQuantity(IIdQuantity idQuantity) {
+    public void Configure(IIdQuantity idQuantity) {
       DisplayComponent displayComponent = idQuantity.Entity.GetComponent<DisplayComponent>();
       if (displayComponent != null) {
-        this._image.sprite = displayComponent.displaySprite;
+        this._image.Sprite = displayComponent.displaySprite;
       }
 
-      if (idQuantity.Quantity <= 0) {
-        Debug.LogWarning("IdQuantityView - don't know how to show a quantity less than or equal to zero!");
-      }
-
-      if (idQuantity.Quantity > 1) {
-        this._textContainer.SetActive(true);
-        this._text.SetText(string.Format("x{0}", idQuantity.Quantity));
-      } else {
-        this._textContainer.SetActive(false);
-      }
-    }
-
-    public void SetSize(Vector2 size) {
-      this._containerTransform.sizeDelta = size;
-    }
-
-    public void SetImageScale(Vector2 scale) {
-      this._image.transform.localScale = scale;
-    }
-
-    public void SetFontSize(float fontSize) {
-      this._text.fontSize = fontSize;
-    }
-
-
-    // PRAGMA MARK - IRecycleSetupSubscriber Implementation
-    public void OnRecycleSetup() {
-      this._oldSize = this._containerTransform.sizeDelta;
-      this._oldImageScale = this._image.transform.localScale;
-      this._oldFontSize = this._text.fontSize;
-    }
-
-
-    // PRAGMA MARK - IRecycleCleanupSubscriber Implementation
-    public void OnRecycleCleanup() {
-      this._containerTransform.sizeDelta = this._oldSize;
-      this._image.transform.localScale = this._oldImageScale;
-      this._text.fontSize = this._oldFontSize;
+      this.FormatText(idQuantity);
     }
 
 
     // PRAGMA MARK - Internal
     [Header("Outlets")]
-    [SerializeField]
-    private RectTransform _containerTransform;
+    [SerializeField] private SpriteOutlet _image;
 
-    [SerializeField]
-    private Image _image;
+    [SerializeField] private TextOutlet _text;
+    [SerializeField] private GameObject _textContainer;
 
-    [SerializeField]
-    private TMP_Text _text;
-    [SerializeField]
-    private GameObject _textContainer;
+    [Header("Properties")]
+    [SerializeField] private QuantityFormatterType _formatterType = QuantityFormatterType.QuantityName;
+    [SerializeField] private bool _hideTextIfQuantityIsZero = true;
 
-    private Vector2 _oldSize;
-    private Vector2 _oldImageScale;
-    private float _oldFontSize;
+
+    private void FormatText(IIdQuantity idQuantity) {
+      if (this._hideTextIfQuantityIsZero && idQuantity.Quantity <= 0) {
+        this._textContainer.SetActive(false);
+        return;
+      }
+
+      this._textContainer.SetActive(true);
+      switch (this._formatterType) {
+        case QuantityFormatterType.xQuantity:
+          this._text.Text = string.Format("x{0}", idQuantity.Quantity);
+          break;
+        case QuantityFormatterType.QuantityName:
+        default:
+        {
+          string text = idQuantity.Quantity > 1 ? string.Format("{0} ", idQuantity.Quantity) : "";
+          text += idQuantity.Entity.DisplayName();
+          this._text.Text = text;
+          break;
+        }
+      }
+    }
   }
 }
-#endif
