@@ -34,6 +34,12 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - User Instance
+    // NOTE (darren): this event is called in IdList.UserIdListUtil, but is not
+    // recognized by the compiler so we need to silence unraised event warnings
+#pragma warning disable 67
+    public static event Action OnUserInstanceDirtied = delegate {};
+#pragma warning restore 67
+
     public static IdList<TEntity> UserInstance {
       get {
         return IdList<TEntity>.UserIdListUtil.UserInstance;

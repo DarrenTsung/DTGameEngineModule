@@ -35,7 +35,6 @@ namespace DT.GameEngine {
       private static IdList<TEntity> _userInstance;
       private static bool _instanceDirtied;
   		private static object _lock = new object();
-
       public static IdList<TEntity> UserInstance {
         get {
           lock (_lock) {
@@ -50,7 +49,10 @@ namespace DT.GameEngine {
 
       public static void DirtyUserInstance() {
         _instanceDirtied = true;
+        IdList<TEntity>.OnUserInstanceDirtied.Invoke();
+
         // TODO (darren): move this check to be checked every 30 seconds or something
+        // and must be saved on ApplicationQuit
         UserIdListUtil.SaveUserInstanceIfDirty();
       }
 
