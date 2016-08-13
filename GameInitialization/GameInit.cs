@@ -11,13 +11,17 @@ namespace DT {
 
 		void Start() {
 			this.InitializeGame();
+
+      CoroutineWrapper.DoAfterFrame(() => {
+        this.DelayedInitializeGame();
+      });
 		}
 
     protected virtual void InitializeGameOnAwake() {
       CoroutineWrapper.Initialize();
     }
 
-		protected virtual void InitializeGame() {
-		}
+		protected virtual void InitializeGame() {}
+    protected virtual void DelayedInitializeGame() {}
 	}
 }
