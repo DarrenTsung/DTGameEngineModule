@@ -1,7 +1,7 @@
 using DT;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 ﻿using UnityEngine;
 ﻿using UnityEngine.Events;
 
@@ -70,7 +70,6 @@ namespace DT.GameEngine {
       base.Awake();
 
 			InputManager.OnDeviceAttached += this.OnDeviceAttached;
-			InputManager.OnDeviceDetached += this.OnDeviceDetached;
 		}
 
     protected override void BindDeviceToPlayerIndex(InputDevice device, int playerIndex) {
