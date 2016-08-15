@@ -1,6 +1,7 @@
 using DT;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 ﻿using UnityEngine;
 
 #if UNITY_EDITOR
@@ -32,6 +33,8 @@ namespace DT.GameEngine {
 
   #if UNITY_EDITOR
       public static void DirtyInstance() {
+        _instance._data = _instance._data.OrderBy(x => x.Id()).ToList();
+
         Resources.UnloadAsset(_instance);
         _instance = null;
       }
