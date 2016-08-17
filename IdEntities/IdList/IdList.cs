@@ -54,6 +54,10 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - IIdList<TEntity> Implementation
     public TEntity LoadById(int id) {
+      if (!this._map.ContainsKey(id)) {
+        Debug.LogError("Failed to load entity (" + typeof(TEntity) + ") for id: " + id);
+      }
+
       return this._map.SafeGet(id);
     }
 
