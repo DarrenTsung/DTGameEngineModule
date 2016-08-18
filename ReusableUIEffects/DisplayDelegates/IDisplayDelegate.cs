@@ -1,8 +1,8 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 namespace DT.GameEngine {
   public interface IDisplayDelegate {
-    void Display();
+    void Display(bool instant = false);
   }
 }

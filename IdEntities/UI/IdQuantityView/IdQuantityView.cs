@@ -19,9 +19,21 @@ namespace DT.GameEngine {
       this.FormatText(idQuantity);
     }
 
+    public BasicDisplayDelegate DisplayDelegate {
+      get { return this._displayDelegate; }
+    }
+
+    public LayoutElement LayoutElement {
+      get { return this._layoutElement; }
+    }
+
 
     // PRAGMA MARK - Internal
     [Header("Outlets")]
+    [SerializeField] private BasicDisplayDelegate _displayDelegate;
+    [SerializeField] private LayoutElement _layoutElement;
+
+    [Space]
     [SerializeField] private SpriteOutlet _image;
 
     [SerializeField] private TextOutlet _text;

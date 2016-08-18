@@ -4,8 +4,12 @@ using UnityEngine;
 namespace DT.GameEngine {
   public class BasicDisplayDelegate : MonoBehaviour, IDisplayDelegate, IRecycleCleanupSubscriber {
     // PRAGMA MARK - Public Interface
-    public void Display() {
-      this._animator.SetTrigger("Display");
+    public void Display(bool instant = false) {
+      if (instant) {
+        this._animator.SetTrigger("DisplayInstant");
+      } else {
+        this._animator.SetTrigger("Display");
+      }
     }
 
 

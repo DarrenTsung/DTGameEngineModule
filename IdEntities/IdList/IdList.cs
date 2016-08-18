@@ -31,6 +31,10 @@ namespace DT.GameEngine {
     }
 #endif
 
+    public static TEntity Load(int id, bool verify = true) {
+      return IdList<TEntity>.Instance.LoadById(id, verify);
+    }
+
 
 
     // PRAGMA MARK - User Instance
