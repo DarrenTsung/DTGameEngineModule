@@ -6,11 +6,11 @@ using System.Collections.Generic;
 namespace DT.GameEngine {
   public interface IIdList {
     IEnumerable<int> Ids();
-    DTEntity LoadById(int id);
+    DTEntity LoadById(int id, bool verify = true);
   }
 
   public interface IIdList<TEntity> : IIdList, IEnumerable<TEntity> where TEntity : DTEntity {
-    new TEntity LoadById(int id);
+    new TEntity LoadById(int id, bool verify = true);
 
 #if UNITY_EDITOR
     void RemoveAt(int index);

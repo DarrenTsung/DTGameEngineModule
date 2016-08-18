@@ -53,8 +53,8 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - IIdList<TEntity> Implementation
-    public TEntity LoadById(int id) {
-      if (!this._map.ContainsKey(id)) {
+    public TEntity LoadById(int id, bool verify = true) {
+      if (verify && !this._map.ContainsKey(id)) {
         Debug.LogError("Failed to load entity (" + typeof(TEntity) + ") for id: " + id);
       }
 
@@ -83,8 +83,8 @@ namespace DT.GameEngine {
       return this._data.Select(e => e.Id());
     }
 
-    DTEntity IIdList.LoadById(int id) {
-      return this.LoadById(id);
+    DTEntity IIdList.LoadById(int id, bool verify) {
+      return this.LoadById(id, verify);
     }
 
 
