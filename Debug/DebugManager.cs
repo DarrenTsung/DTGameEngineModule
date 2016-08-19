@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 namespace DT.GameEngine {
-  public class DebugManager : MonoBehaviour {
+  public class DebugManager : Singleton<DebugManager> {
     // PRAGMA MARK - Static
     private const float kTouchOffsetMax = 100.0f;
     private const float kTimescaleScrubMax = 20.0f;
@@ -12,6 +12,20 @@ namespace DT.GameEngine {
     public static bool IsDebug {
       get {
         return Debug.isDebugBuild;
+      }
+    }
+
+    private static float? _timeOffset;
+    public static float TimeOffset {
+      get {
+        if (DebugManager._timeOffset == null) {
+          DebugManager._timeOffset = PlayerPrefs.GetFloat("DebugManager::TimeOffset", defaultValue: 0.0f);
+        }
+        return DebugManager._timeOffset.Value;
+      }
+      set {
+        DebugManager._timeOffset = value;
+        PlayerPrefs.SetFloat("DebugManager::TimeOffset", DebugManager._timeOffset.Value);
       }
     }
 
@@ -92,6 +106,9 @@ namespace DT.GameEngine {
         }
 
         Time.timeScale = timeScale;
+
+        float timeScaleDifference = timeScale - 1.0f;
+        DebugManager.TimeOffset += Time.unscaledDeltaTime * timeScaleDifference;
 
         previousNumberOfTouches = numberOfTouches;
         yield return null;
