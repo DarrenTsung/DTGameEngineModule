@@ -31,8 +31,8 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
-    private FPSViewController _fpsViewController;
     private GameObject _debugView;
+    private GameObject _fpsView;
 
     void Awake() {
       if (!DebugManager.IsDebug) {
@@ -42,8 +42,8 @@ namespace DT.GameEngine {
 
       DebugLogger.Initialize();
 
-      this._fpsViewController = new FPSViewController();
-      this._fpsViewController.Show();
+      this._fpsView = ObjectPoolManager.Instantiate("FPSView");
+      ViewManagerLocator.Main.AttachView(this._fpsView);
 
       this._debugView = ObjectPoolManager.Instantiate("DebugView");
       ViewManagerLocator.Main.AttachView(this._debugView);
