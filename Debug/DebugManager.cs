@@ -5,7 +5,8 @@ using UnityEngine;
 namespace DT.GameEngine {
   public class DebugManager : Singleton<DebugManager> {
     // PRAGMA MARK - Static
-    private const float kTouchOffsetMax = 100.0f;
+    private const float kTouchScrubMaxDistance = 400.0f;
+    private const float kTouchScrubMinDistance = 100.0f;
     private const float kTimeScaleScrubMax = 20.0f;
     private const float kTimeScaleScrubMin = 0.1f;
 
@@ -97,7 +98,11 @@ namespace DT.GameEngine {
           }
 
           float yOffset = touchCenter.y - scrubTouchStartingCenter.y;
-          timeScaleScrub = Mathf.Clamp(yOffset, -kTouchOffsetMax, kTouchOffsetMax) / kTouchOffsetMax;
+          if (yOffset > 0.0f) {
+            timeScaleScrub = Mathf.Min(yOffset, kTouchScrubMaxDistance) / kTouchScrubMaxDistance;
+          } else if (yOffset < 0.0f) {
+            timeScaleScrub = Mathf.Max(yOffset, -kTouchScrubMinDistance) / kTouchScrubMinDistance;
+          }
         }
 
         float timeScale = 1.0f;
