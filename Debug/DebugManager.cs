@@ -6,8 +6,8 @@ namespace DT.GameEngine {
   public class DebugManager : Singleton<DebugManager> {
     // PRAGMA MARK - Static
     private const float kTouchOffsetMax = 100.0f;
-    private const float kTimescaleScrubMax = 20.0f;
-    private const float kTimescaleScrubMin = 0.1f;
+    private const float kTimeScaleScrubMax = 20.0f;
+    private const float kTimeScaleScrubMin = 0.1f;
 
     public static bool IsDebug {
       get {
@@ -32,7 +32,6 @@ namespace DT.GameEngine {
 
     // PRAGMA MARK - Internal
     private GameObject _debugView;
-    private GameObject _fpsView;
 
     void Awake() {
       if (!DebugManager.IsDebug) {
@@ -42,15 +41,18 @@ namespace DT.GameEngine {
 
       DebugLogger.Initialize();
 
-      this._fpsView = ObjectPoolManager.Instantiate("FPSView");
-      ViewManagerLocator.Main.AttachView(this._fpsView);
+      GameObject fpsView = ObjectPoolManager.Instantiate("FPSView");
+      ViewManagerLocator.Main.AttachView(fpsView);
+
+      GameObject timeScaleScrubView = ObjectPoolManager.Instantiate("TimeScaleScrubView");
+      ViewManagerLocator.Main.AttachView(timeScaleScrubView);
 
       this._debugView = ObjectPoolManager.Instantiate("DebugView");
       ViewManagerLocator.Main.AttachView(this._debugView);
       this._debugView.SetActive(false);
 
       CoroutineWrapper.StartCoroutine(this.UpdateToggleDebugView());
-      CoroutineWrapper.StartCoroutine(this.UpdateTimescaleScrubbing());
+      CoroutineWrapper.StartCoroutine(this.UpdateTimeScaleScrubbing());
     }
 
     private IEnumerator UpdateToggleDebugView() {
@@ -73,7 +75,7 @@ namespace DT.GameEngine {
       }
     }
 
-    private IEnumerator UpdateTimescaleScrubbing() {
+    private IEnumerator UpdateTimeScaleScrubbing() {
       int previousNumberOfTouches = 0;
       Vector2 scrubTouchStartingCenter = Vector2.zero;
 
@@ -100,9 +102,9 @@ namespace DT.GameEngine {
 
         float timeScale = 1.0f;
         if (timeScaleScrub > 0) {
-          timeScale = Mathf.Lerp(1.0f, kTimescaleScrubMax, timeScaleScrub);
+          timeScale = Mathf.Lerp(1.0f, kTimeScaleScrubMax, timeScaleScrub);
         } else if (timeScaleScrub < 0) {
-          timeScale = Mathf.Lerp(1.0f, kTimescaleScrubMin, -timeScaleScrub);
+          timeScale = Mathf.Lerp(1.0f, kTimeScaleScrubMin, -timeScaleScrub);
         }
 
         Time.timeScale = timeScale;
