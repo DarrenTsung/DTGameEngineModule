@@ -54,6 +54,10 @@ namespace DT.GameEngine {
       IdList<TEntity>.UserIdListUtil.DirtyUserInstance();
     }
 
+    public static TEntity UserLoad(int id, bool verify = true) {
+      return IdList<TEntity>.UserInstance.LoadById(id, verify);
+    }
+
 
 
     // PRAGMA MARK - IIdList<TEntity> Implementation
