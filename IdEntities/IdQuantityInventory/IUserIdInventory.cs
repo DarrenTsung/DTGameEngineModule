@@ -14,5 +14,6 @@ namespace DT.GameEngine {
     int GetCountOfId(int id);
 
     void AddIdQuantity(int id, int quantity);
+    void RemoveIdQuantity(int id, int quantity);
   }
 }

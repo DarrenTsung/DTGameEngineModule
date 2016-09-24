@@ -32,7 +32,7 @@ namespace DT.GameEngine {
 
 
     // PRAGMA MARK - Internal
-    private GameObject _debugView;
+    private GameObject _debugMenu;
 
     void Awake() {
       if (!DebugManager.IsDebug) {
@@ -48,9 +48,9 @@ namespace DT.GameEngine {
       GameObject timeScaleScrubView = ObjectPoolManager.Instantiate("TimeScaleScrubView");
       ViewManagerLocator.Main.AttachView(timeScaleScrubView);
 
-      this._debugView = ObjectPoolManager.Instantiate("DebugView");
-      ViewManagerLocator.Main.AttachView(this._debugView);
-      this._debugView.SetActive(false);
+      this._debugMenu = ObjectPoolManager.Instantiate("DebugMenu");
+      ViewManagerLocator.Main.AttachView(this._debugMenu);
+      this._debugMenu.SetActive(false);
 
       CoroutineWrapper.StartCoroutine(this.UpdateToggleDebugView());
       CoroutineWrapper.StartCoroutine(this.UpdateTimeScaleScrubbing());
@@ -63,12 +63,12 @@ namespace DT.GameEngine {
         int numberOfTouches = Input.touches.Length;
         if (numberOfTouches != previousNumberOfTouches) {
           if (Input.touches.Length == 3) {
-            this._debugView.ToggleActive();
+            this._debugMenu.ToggleActive();
           }
         }
 
         if (Input.GetKeyDown(KeyCode.D)) {
-          this._debugView.ToggleActive();
+          this._debugMenu.ToggleActive();
         }
 
         previousNumberOfTouches = numberOfTouches;

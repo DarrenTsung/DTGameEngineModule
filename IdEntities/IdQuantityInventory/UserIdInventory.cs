@@ -63,6 +63,10 @@ namespace DT.GameEngine {
       this.AddIdQuantity(new IdQuantity<TEntity>(id, quantity));
     }
 
+    void IUserIdInventory.RemoveIdQuantity(int id, int quantity) {
+      this.RemoveIdQuantity(new IdQuantity<TEntity>(id, quantity));
+    }
+
 
     // PRAGMA MARK - Internal
     [SerializeField] private IdQuantityInventory<TEntity> _idQuantityInventory = new IdQuantityInventory<TEntity>();

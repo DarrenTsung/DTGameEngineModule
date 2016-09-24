@@ -1,0 +1,408 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1000011282429100}
+  m_IsPrefabParent: 1
+--- !u!1 &1000011282429100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 224000013189149178}
+  - 222: {fileID: 222000010460121808}
+  - 114: {fileID: 114000014250464980}
+  - 114: {fileID: 114000013970484176}
+  - 114: {fileID: 114000012418791344}
+  - 114: {fileID: 114000011320222440}
+  m_Layer: 5
+  m_Name: DebugLogger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1000013716149356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 224000012440019604}
+  - 222: {fileID: 222000013633878750}
+  - 114: {fileID: 114000012315963298}
+  - 114: {fileID: 114000010971534976}
+  m_Layer: 5
+  m_Name: LogText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1000014246579188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 224000013360620674}
+  - 222: {fileID: 222000010837229826}
+  - 114: {fileID: 114000010293652358}
+  m_Layer: 5
+  m_Name: LoggerBackground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &114000010293652358
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014246579188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 9312fe5319b7c4c13bf47657c5afdbee, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!114 &114000010971534976
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013716149356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
+--- !u!114 &114000011320222440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011282429100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 143b438b62d174c7dbc0a1106116793d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _logOutlet:
+    _unityText: {fileID: 0}
+    _tmpText: {fileID: 114000012315963298}
+--- !u!114 &114000012315963298
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013716149356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 496f2e385b0c62542b5c739ccfafd8da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_text: "\nUnityServicesShowcaseLearnCommunityAsset StoreGet Unity\n\n\nForumsAnswersFeedbackIssue
+    TrackerBlogEvangelistsUser Groups\n\nFind posts and topics...\nAsk a question
+    \ \nSpaces \n \n \nHome /\navatar image\n1\nQuestion by KrisSchnee \xB7 Dec 20,
+    2014 at 10:15 PM \xB7 ui\nHow Do I Create a Scrolling Text Window in Unity 4.6?\nI'm
+    having a lot of trouble trying to understand the documentation for ScrollRects
+    in the new UI system. It looks like any ScrollRect has to be contained in a Panel
+    object for some unknown reason, and like there's some constraint causing the Panel
+    to either be the size of the screen, or (if reduced) to squash the actual ScrollRect
+    to a tiny size. What do I need to do to set up a simple, large scrolling window
+    with a block of text in it?\n\nAdd comment \xB7 Reward user\n2 Replies \xB7 Add
+    your reply Sort: \n avatar image\n2\nAnswer by GMT \xB7 Dec 20, 2014 at 11:24
+    PM\nI just put that in myself from this Brackeys video:\n\nhttps://www.youtube.com/watch?v=MWOvwegLDl0\n\nIf
+    I hadn't seen that video I don't think I'd have ever figured it out!\n\nAdd comment
+    \xB7 Reward user \xB7 Share\navatar image\n2\nAnswer by Mmmpies \xB7 Dec 20, 2014
+    at 10:23 PM\nYou should be able to create a panel with a ScrollRect component
+    and then child your text to it. On the Panel with the ScrollRect put your text
+    as the content.\n\nDoing all this without testing first which normally goes really
+    well!\n\nYou can also put a mask on the panel with the ScrollRect and attach whatever
+    scrollBars you want.\n\nJust tried it and it works! If you put a ContentSizeFilter
+    on the panel and drag the text so it's doesn't truncate the text at all. That's
+    the text you're expanding not the panel.\n\nEDIT:\n\nOK now I've finished what
+    I'm doing, ignore all the other bit's just look at the textScrollRect and child
+    Text content...\n\npanel with ScrollRect\n\nThat's what the parent panel looks
+    like and it has this as it's additional components\n\nScrollRect panel Components\n\nAnd
+    I've reached my attachment limit. I'll add a comment for the screen grab of the
+    Text content.\n\n\ntextscrollrect.png (35.1 kB)\ntextscrollrect2.png (30.3 kB)\nAdd
+    comment \xB7 Reward user \xB7  Hide 2 \xB7 Share\navatar imageMmmpies \xB7 Dec
+    21, 2014 at 12:05 AM 0\n![Text][1]\n\nthe scrollbar will then allow you to scroll
+    up and down the text.\n\nAs for the resize you need to look at the Anchors, also
+    shown in the images. [1]: /storage/temp/37367-textpanel.png\n\ntextpanel.png (34.3
+    kB)\n avatar imageKrisSchnee \xB7 Dec 22, 2014 at 01:32 AM 2\nThanks to the writers
+    above for dealing with my snippily-worded question. (Tough to learn a new feature
+    while sick and rusty on coding.)\n\nIt looks like part of my problem was that
+    the Panel's component \"Canvas Scaler\" had its \"UI Scale Mode\" set to \"Constant
+    Pixel Size\", which baffled me because I kept trying to convey \"I want this box
+    to be small\" and having it fill half the screen in Game Mode. Changed that setting
+    to \"Scale With Screen Size\" and that helped. It might not be the best choice
+    in your program, though.\n\nTo recap for others' reference: Make a Panel. Resize
+    to taste. Under it (ie. as a child object), make a Text object. (Optionally, put
+    an Image under the Panel instead and the Text under that.) Give the Panel/Image
+    a Scroll Rect component, and set its Content to be the Text. The Text will need
+    to be made larger than the parent object. It should work now as a click-and-drag
+    block of scrolling text, but be visible outside the parent object. That's bad,
+    so give the parent a new Mask component. (Apparently you can also add an Image
+    to get fine control over the mask shape.) You'll probably want to disable horizontal
+    scrolling, on the Scroll Rect script.\n\nThe scrollbar part: Make a UI\\Scrollbar
+    object. Set to BottomToTop mode. Make it a sibling of the Panel/Image, then set
+    that second object's \"Horizontal Scrollbar\" slot to the new object. You'll likely
+    want to set the rect transform's anchor (using that square bullseye thing in the
+    Inspector) to lock it to a particular side of the parent.\n\nYour answer\navatar
+    image\n\n\nFill in the details...\nHint: You can notify a user about this post
+    by typing @username\nPost Answer\nWelcome to Unity Answers\nThe best place to
+    ask and answer questions about development with Unity.\n\nTo help users navigate
+    the site we have posted a user guide.\n\nIf you are a new user, check out our
+    FAQ for more information.\n\nIf you are a moderator, see our Moderator Guidelines
+    page.\n\nWe are making improvements to UA, see the list of changes.\n\nFor troubleshooting
+    common problems with Unity 5.x Editor (including Win 10).\n\n FollowFollow this
+    Question\n Answers   Answers and Comments\n\n30 People are following this question.\n\navatar
+    imageavatar imageavatar imageavatar imageavatar imageavatar imageavatar imageavatar
+    imageavatar imageavatar imageavatar imageavatar imageavatar imageavatar imageavatar
+    imageavatar imageavatar imageavatar imageavatar imageavatar imageavatar imageavatar
+    imageavatar imageavatar imageavatar imageavatar imageavatar imageavatar imageavatar
+    imageavatar image\nRelated Questions\nNew UI scroll area expansion 1 Answer\n\nText
+    Background 0 Answers\n\nText only seen in the Inspector 2 Answers\n\nTrouble toggling
+    Raw Image script component inherited from Canvas upon mouse click 0 Answers\n\nUnity
+    UI crossfadealpha only fades on mousehover 0 Answers"
+  m_fontAsset: {fileID: 11400000, guid: 27456178f4a434509827e88d678d45e9, type: 2}
+  m_sharedMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
+  m_fontMaterial: {fileID: 0}
+  m_baseMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
+  m_isNewBaseMaterial: 0
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_tintAllSprites: 0
+  m_enableVertexGradient: 0
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_outlineColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontSize: 40
+  m_fontSizeBase: 40
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_textAlignment: 8
+  m_characterSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 4
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_ignoreCulling: 1
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_pageToDisplay: 1
+  m_margin: {x: 30, y: 30, z: 30, w: 30}
+  m_havePropertiesChanged: 1
+  m_isInputParsingRequired: 1
+  m_inputSource: 0
+  m_isNewTextObject: 0
+  m_uvOffset: {x: 0, y: 0}
+  m_uvLineOffset: 0
+  m_hasFontAssetChanged: 0
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114000012418791344
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011282429100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 86c2073acd7104eb0aa948982e1545ed, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!114 &114000013970484176
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011282429100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1200242548, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 0
+--- !u!114 &114000014250464980
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011282429100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1367256648, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Content: {fileID: 224000012440019604}
+  m_Horizontal: 0
+  m_Vertical: 1
+  m_MovementType: 1
+  m_Elasticity: 0.1
+  m_Inertia: 1
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 1
+  m_Viewport: {fileID: 224000013189149178}
+  m_HorizontalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 0}
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!222 &222000010460121808
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011282429100}
+--- !u!222 &222000010837229826
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014246579188}
+--- !u!222 &222000013633878750
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013716149356}
+--- !u!224 &224000012440019604
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013716149356}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 224000013189149178}
+  m_RootOrder: 1
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!224 &224000013189149178
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011282429100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 224000013360620674}
+  - {fileID: 224000012440019604}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 40}
+  m_SizeDelta: {x: -80, y: -80}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!224 &224000013360620674
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014246579188}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 224000013189149178}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0}
