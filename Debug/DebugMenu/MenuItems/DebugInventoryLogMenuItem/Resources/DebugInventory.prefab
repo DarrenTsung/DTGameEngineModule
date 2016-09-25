@@ -968,7 +968,7 @@ MonoBehaviour:
   m_sharedMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
   m_fontMaterial: {fileID: 0}
   m_baseMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
-  m_isNewBaseMaterial: 0
+  m_isNewBaseMaterial: 1
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_fontColor32:
     serializedVersion: 2
@@ -1579,7 +1579,7 @@ MonoBehaviour:
   m_sharedMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
   m_fontMaterial: {fileID: 0}
   m_baseMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
-  m_isNewBaseMaterial: 0
+  m_isNewBaseMaterial: 1
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_fontColor32:
     serializedVersion: 2
@@ -1797,7 +1797,7 @@ MonoBehaviour:
   m_sharedMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
   m_fontMaterial: {fileID: 0}
   m_baseMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
-  m_isNewBaseMaterial: 0
+  m_isNewBaseMaterial: 1
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_fontColor32:
     serializedVersion: 2
