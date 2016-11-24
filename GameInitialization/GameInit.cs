@@ -2,7 +2,7 @@
 using System.Collections;
 ﻿using UnityEngine;
 
-namespace DT {
+namespace DT.GameEngine {
 	public class GameInit : MonoBehaviour {
 		// PRAGMA MARK - Internal
     void Awake() {
@@ -19,6 +19,7 @@ namespace DT {
 
     protected virtual void InitializeGameOnAwake() {
       CoroutineWrapper.Initialize();
+      DebugManager.Instance.EmptyInitialize();
     }
 
 		protected virtual void InitializeGame() {}

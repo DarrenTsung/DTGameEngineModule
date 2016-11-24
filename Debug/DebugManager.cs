@@ -48,12 +48,20 @@ namespace DT.GameEngine {
       GameObject timeScaleScrubView = ObjectPoolManager.Instantiate("TimeScaleScrubView");
       ViewManagerLocator.Main.AttachView(timeScaleScrubView);
 
-      this._debugMenu = ObjectPoolManager.Instantiate("DebugMenu");
-      ViewManagerLocator.Main.AttachView(this._debugMenu);
-      this._debugMenu.SetActive(false);
-
       CoroutineWrapper.StartCoroutine(this.UpdateToggleDebugView());
       CoroutineWrapper.StartCoroutine(this.UpdateTimeScaleScrubbing());
+    }
+
+    private GameObject DebugMenu {
+      get {
+        if (this._debugMenu == null) {
+          this._debugMenu = ObjectPoolManager.Instantiate("DebugMenu");
+          ViewManagerLocator.Main.AttachView(this._debugMenu);
+          this._debugMenu.SetActive(false);
+        }
+
+        return this._debugMenu;
+      }
     }
 
     private IEnumerator UpdateToggleDebugView() {
@@ -63,12 +71,12 @@ namespace DT.GameEngine {
         int numberOfTouches = Input.touches.Length;
         if (numberOfTouches != previousNumberOfTouches) {
           if (Input.touches.Length == 3) {
-            this._debugMenu.ToggleActive();
+            this.DebugMenu.ToggleActive();
           }
         }
 
         if (Input.GetKeyDown(KeyCode.D)) {
-          this._debugMenu.ToggleActive();
+          this.DebugMenu.ToggleActive();
         }
 
         previousNumberOfTouches = numberOfTouches;

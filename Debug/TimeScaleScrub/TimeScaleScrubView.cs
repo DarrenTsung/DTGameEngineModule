@@ -19,6 +19,10 @@ namespace DT.GameEngine {
     [SerializeField] private TextOutlet _timeScaleText;
     [SerializeField] private CanvasGroup _canvasGroup;
 
+    void OnDestroy() {
+      MonoBehaviourHelper.OnUpdate -= this.HandleUpdate;
+    }
+
     private void HandleUpdate() {
       float timeScale = Time.timeScale;
 
