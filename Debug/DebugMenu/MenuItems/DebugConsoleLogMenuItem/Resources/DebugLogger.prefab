@@ -78,15 +78,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
+  m_Color: {r: 0.13235295, g: 0.13235295, b: 0.13235295, a: 0.78431374}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 9312fe5319b7c4c13bf47657c5afdbee, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 86c2073acd7104eb0aa948982e1545ed, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -205,10 +205,10 @@ MonoBehaviour:
     Background 0 Answers\n\nText only seen in the Inspector 2 Answers\n\nTrouble toggling
     Raw Image script component inherited from Canvas upon mouse click 0 Answers\n\nUnity
     UI crossfadealpha only fades on mousehover 0 Answers"
-  m_fontAsset: {fileID: 11400000, guid: 27456178f4a434509827e88d678d45e9, type: 2}
-  m_sharedMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 316f956b856b45c448987b5018ec3ef4, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 316f956b856b45c448987b5018ec3ef4, type: 2}
   m_fontMaterial: {fileID: 0}
-  m_baseMaterial: {fileID: 2195644, guid: 27456178f4a434509827e88d678d45e9, type: 2}
+  m_baseMaterial: {fileID: 2100000, guid: 316f956b856b45c448987b5018ec3ef4, type: 2}
   m_isNewBaseMaterial: 0
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_fontColor32:
@@ -228,8 +228,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
