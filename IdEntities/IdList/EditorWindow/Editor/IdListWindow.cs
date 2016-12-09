@@ -55,7 +55,9 @@ namespace DT.GameEngine {
     private void OnEnable() {
       this.titleContent = new GUIContent("IdListWindow");
 
-      this.SelectEntityType(DTEntityUtil.EntitySubclasses[0]);
+      if (DTEntityUtil.EntitySubclasses.Length > 0) {
+        this.SelectEntityType(DTEntityUtil.EntitySubclasses[0]);
+      }
     }
 
     // PRAGMA MARK - Internal
