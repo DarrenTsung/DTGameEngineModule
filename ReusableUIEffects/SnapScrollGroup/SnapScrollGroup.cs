@@ -122,8 +122,8 @@ namespace DT.GameEngine {
       int leftIndex = Mathf.FloorToInt(this._currentIndex);
       int rightIndex = Mathf.CeilToInt(this._currentIndex);
 
-      T left = this._objects.SafeGet(leftIndex);
-      T right = this._objects.SafeGet(rightIndex);
+      T left = this._objects.GetValueOrDefault(leftIndex);
+      T right = this._objects.GetValueOrDefault(rightIndex);
 
       float percentageBetween = this._currentIndex - leftIndex;
       this.OnScrollChanged.Invoke(left, right, percentageBetween);
